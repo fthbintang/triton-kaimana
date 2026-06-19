@@ -96,20 +96,68 @@
         <!-- 3 PILIHAN TOMBOL LAYANAN -->
         <div class="row g-4 justify-content-center">
 
-            <!-- 1. Waarmeking -->
+            <!-- 1. Waarmeking (Membuka Pilihan Dokumen via Pop-up) -->
             <div class="col-md-4 col-sm-6">
-                <a href="{{ route('layanan.waarmeking') }}" class="text-decoration-none text-dark">
-                    <div class="card h-100 p-4 text-center menu-card">
-                        <div class="card-body">
-                            <div class="icon-box">
-                                <i class="bi bi-file-earmark-check-fill fs-2"></i>
+                <div class="card h-100 p-4 text-center menu-card" data-bs-toggle="modal"
+                    data-bs-target="#modalWaarmeking">
+                    <div class="card-body">
+                        <div class="icon-box">
+                            <i class="bi bi-file-earmark-check-fill fs-2"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Permohonan Waarmeking</h5>
+                        <p class="small text-muted mb-0">Pembuatan surat permohonan pengesahan surat keterangan ahli
+                            waris di bawah tangan beserta rincian tabungan.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalWaarmeking" tabindex="-1" aria-labelledby="modalWaarmekingLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content" style="border-radius: 16px; border: none;">
+                        <div class="modal-header border-0 pb-0">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body pt-0 text-center">
+                            <i class="bi bi-folder2-open text-court" style="font-size: 3.5rem;"></i>
+                            <h4 class="fw-bold mt-2 text-dark">Pilih Dokumen Waarmeking</h4>
+                            <p class="text-muted small mb-4">Silakan pilih jenis dokumen kelengkapan waarmeking yang
+                                ingin Anda buat</p>
+
+                            <div class="row g-3 justify-content-center">
+                                <div class="col-md-6">
+                                    <a href="{{ route('layanan.waarmeking') }}" wire:navigate
+                                        class="text-decoration-none text-dark">
+                                        <div class="card p-4 h-100 menu-card border border-light-subtle">
+                                            <div class="text-court mb-2"><i class="bi bi-file-earmark-text fs-3"></i>
+                                            </div>
+                                            <h6 class="fw-bold mb-1">1. Surat Permohonan</h6>
+                                            <p class="text-muted m-0" style="font-size: 0.75rem;">Formulir utama
+                                                permohonan waarmeking untuk diajukan ke Ketua Pengadilan.</p>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <a href="{{ route('layanan.surat-kuasa') }}" class="text-decoration-none text-dark">
+                                        <div class="card p-4 h-100 menu-card border border-light-subtle">
+                                            <div class="text-warning mb-2"><i
+                                                    class="bi bi-file-earmark-person fs-3"></i></div>
+                                            <h6 class="fw-bold mb-1">2. Surat Kuasa</h6>
+                                            <p class="text-muted m-0" style="font-size: 0.75rem;">Surat pemberian kuasa
+                                                pengurusan jika diwakilkan oleh salah satu ahli waris.</p>
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
-                            <h5 class="fw-bold mb-2">Permohonan Waarmeking</h5>
-                            <p class="small text-muted mb-0">Pembuatan surat permohonan pengesahan surat keterangan ahli
-                                waris di bawah tangan beserta rincian tabungan.</p>
+                        </div>
+                        <div class="modal-footer border-0 justify-content-center pb-4">
+                            <button type="button" class="btn btn-sm btn-secondary rounded-pill px-3"
+                                data-bs-dismiss="modal">Batal</button>
                         </div>
                     </div>
-                </a>
+                </div>
             </div>
 
             <!-- 2. Surat Kuasa Insidentil -->

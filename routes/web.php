@@ -7,7 +7,6 @@ Route::get('/', function () {
     return view('portal');
 })->name('portal');
 
-// Route form waarmeking yang sudah kita buat sebelumnya (pastikan sudah ada)
 Route::get('/layanan/waarmeking', FormWaarmeking::class)->name('layanan.waarmeking');
 
 // Route placeholder untuk layanan lainnya (bisa Anda hubungkan ke component masing-masing nanti)
