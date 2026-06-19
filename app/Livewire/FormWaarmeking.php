@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Permohonan;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 
 class FormWaarmeking extends Component
 {
@@ -199,13 +200,15 @@ class FormWaarmeking extends Component
             'status'        => 'tunda'
         ]);
 
-        // 7. Tampilkan notifikasi sukses dan reset form kembali ke kondisi kosong awal
-        $this->pesan_sukses = 'Permohonan Waarmeking Anda berhasil dikirim ke sistem TRITON!';
+        // 7. Tampilkan notifikasi sukses via SweetAlert2 (mengirim nama pemohon) dan reset form
+        $this->dispatch('permohonan-sukses', nama: $this->nama_pemohon);
         
-        $this->resetExcept('pesan_sukses'); 
-        $this->mount(); 
+        // Reset seluruh form ke kondisi kosong awal
+        $this->reset(); 
+        $this->mount();
     }
 
+    #[Layout('layouts.app_waarmeking')]
     public function render()
     {
         return view('livewire.form-waarmeking');

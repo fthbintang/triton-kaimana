@@ -1,17 +1,14 @@
 <div class="card shadow-sm border-0 rounded-3">
-    <div class="card-header bg-court text-white p-3 text-center rounded-top-3">
-        <h5 class="fw-bold m-0" style="letter-spacing: 0.5px;">FORMULIR PENDAFTARAN SURAT PERMOHONAN WAARMEKING</h5>
-        <small class="text-white-50">Isilah data di bawah ini secara lengkap dan benar sesuai dokumen asli</small>
+    <div class="card-header bg-court text-white p-4 text-center rounded-top-3">
+        <h5 class="fw-bold m-0 text-uppercase" style="letter-spacing: 1px;">
+            Formulir Surat Permohonan Waarmeking
+        </h5>
+        <p class="text-white-50 small m-0 mt-1">
+            Isilah data di bawah ini secara lengkap dan benar sesuai dengan dokumen asli
+        </p>
     </div>
 
     <div class="card-body p-4 p-md-5">
-
-        @if ($pesan_sukses)
-            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i> <strong>Pendaftaran Berhasil!</strong> {{ $pesan_sukses }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
 
         <form wire:submit.prevent="simpan">
 
@@ -56,17 +53,16 @@
                     <span class="badge badge-court me-2">II</span> Data Detail Pemohon & Pewaris
                 </h5>
                 <div class="row g-3">
-                    <!-- Tempat Lahir -->
                     <div class="col-md-6">
                         <label class="form-label fw-semibold text-muted small">Tempat Lahir</label>
                         <input type="text" wire:model="tempat_lahir"
-                            class="form-control @error('tempat_lahir') is-invalid @enderror">
+                            class="form-control @error('tempat_lahir') is-invalid @enderror"
+                            placeholder="Kota/Kabupaten">
                         @error('tempat_lahir')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <!-- Tanggal Lahir -->
                     <div class="col-md-6">
                         <label class="form-label fw-semibold text-muted small">Tanggal Lahir</label>
                         <input type="date" wire:model="tanggal_lahir"
@@ -76,12 +72,11 @@
                         @enderror
                     </div>
 
-                    <!-- Jenis Kelamin -->
                     <div class="col-md-6">
                         <label class="form-label fw-semibold text-muted small">Jenis Kelamin</label>
                         <select wire:model="jenis_kelamin"
                             class="form-select @error('jenis_kelamin') is-invalid @enderror">
-                            <option value="">-- Pilih --</option>
+                            <option value="">-- Pilih Jenis Kelamin --</option>
                             <option value="Laki-laki">Laki-laki</option>
                             <option value="Perempuan">Perempuan</option>
                         </select>
@@ -90,27 +85,25 @@
                         @enderror
                     </div>
 
-                    <!-- Agama -->
                     <div class="col-md-6">
                         <label class="form-label fw-semibold text-muted small">Agama</label>
                         <input type="text" wire:model="agama"
-                            class="form-control @error('agama') is-invalid @enderror">
+                            class="form-control @error('agama') is-invalid @enderror" placeholder="Agama Pemohon">
                         @error('agama')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <!-- Pekerjaan -->
                     <div class="col-md-6">
                         <label class="form-label fw-semibold text-muted small">Pekerjaan</label>
                         <input type="text" wire:model="pekerjaan"
-                            class="form-control @error('pekerjaan') is-invalid @enderror">
+                            class="form-control @error('pekerjaan') is-invalid @enderror"
+                            placeholder="Pekerjaan Sekarang">
                         @error('pekerjaan')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <!-- Nama Pewaris -->
                     <div class="col-md-6">
                         <label class="form-label fw-semibold text-muted small">Nama Pewaris (Almarhum/ah)</label>
                         <input type="text" wire:model="nama_pewaris" placeholder="Contoh: Alm. John Doe"
@@ -120,11 +113,10 @@
                         @enderror
                     </div>
 
-                    <!-- Alamat Lengkap -->
                     <div class="col-12">
                         <label class="form-label fw-semibold text-muted small">Alamat Lengkap (Sesuai Domisili)</label>
                         <textarea wire:model="alamat" rows="2" class="form-control @error('alamat') is-invalid @enderror"
-                            placeholder="Tuliskan alamat lengkap..."></textarea>
+                            placeholder="Tuliskan nama jalan, RT/RW, kelurahan, dan kecamatan..."></textarea>
                         @error('alamat')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -137,8 +129,9 @@
                     <h5 class="text-court fw-bold m-0">
                         <span class="badge badge-court me-2">III</span> Informasi Rekening Bank Pewaris
                     </h5>
-                    <button type="button" wire:click="tambahBank" class="btn btn-sm btn-outline-court fw-semibold">
-                        <i class="bi bi-plus-lg me-1"></i> Tambah Rekening Bank
+                    <button type="button" wire:click="tambahBank"
+                        class="btn btn-sm btn-outline-court fw-semibold rounded-pill px-3">
+                        <i class="bi bi-plus-lg me-1"></i> Tambah Bank
                     </button>
                 </div>
 
@@ -146,10 +139,11 @@
                     <div class="card bg-light border-0 mb-3 shadow-sm rounded-3">
                         <div class="card-body p-3">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="badge bg-secondary">Rekening #{{ $index + 1 }}</span>
+                                <span class="badge bg-secondary rounded-pill px-3">Rekening
+                                    #{{ $index + 1 }}</span>
                                 @if (count($daftar_rekening) > 1)
                                     <button type="button" wire:click="hapusBank({{ $index }})"
-                                        class="btn btn-sm btn-link text-danger text-decoration-none p-0">
+                                        class="btn btn-sm btn-link text-danger text-decoration-none p-0 fw-medium">
                                         <i class="bi bi-trash3-fill me-1"></i> Hapus
                                     </button>
                                 @endif
@@ -181,6 +175,7 @@
                                     <label class="form-label text-muted small mb-1">Nomor Rekening</label>
                                     <input type="text"
                                         wire:model="daftar_rekening.{{ $index }}.nomor_rekening"
+                                        placeholder="Masukkan nomor rekening"
                                         class="form-control form-control-sm @error('daftar_rekening.' . $index . '.nomor_rekening') is-invalid @enderror">
                                     @error('daftar_rekening.' . $index . '.nomor_rekening')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -206,7 +201,7 @@
                                     <label class="form-label text-muted small mb-1">Terbilang (Otomatis)</label>
                                     <input type="text"
                                         wire:model="daftar_rekening.{{ $index }}.nominal_huruf" readonly
-                                        class="form-control form-control-sm bg-white text-muted fst-italic fw-semibold">
+                                        class="form-control form-control-sm bg-white text-muted fst-italic fw-semibold border-light-subtle">
                                 </div>
                             </div>
                         </div>
@@ -214,11 +209,61 @@
                 @endforeach
             </div>
 
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4 border-top pt-3">
-                <button type="submit" class="btn btn-court px-5 py-2 fw-bold shadow-sm">
-                    <i class="bi bi-file-earmark-arrow-up-fill me-2"></i> Kirim Permohonan Resmi
-                </button>
+            <div class="row g-2 mt-4 pt-3 border-top">
+                <div class="col-6 col-md-3 order-1">
+                    <a href="/" wire:navigate
+                        class="btn btn-light border text-secondary w-100 py-2 fw-semibold rounded-3 shadow-sm">
+                        <i class="bi bi-arrow-left me-1"></i> Kembali
+                    </a>
+                </div>
+                <div class="col-12 col-md-6 order-3 order-md-2">
+                </div>
+                <div class="col-6 col-md-3 order-2 order-md-3">
+                    <button type="submit" class="btn btn-court w-100 py-2 fw-bold rounded-3 shadow-sm">
+                        Kirim Form <i class="bi bi-send-fill ms-1 small"></i>
+                    </button>
+                </div>
             </div>
+
         </form>
     </div>
 </div>
+
+<!-- SCRIPT LISTENER SWEETALERT2 -->
+<script>
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('permohonan-sukses', (event) => {
+            // Ambil nama dari event detail sesuai standar Livewire terbaru
+            const namaPemohon = event.nama || event[0].nama;
+
+            Swal.fire({
+                title: "Pendaftaran Berhasil!",
+                html: `
+                    <div class="text-start small">
+                        <p class="text-center fw-semibold text-success mb-3">Permohonan Waarmeking Anda berhasil dikirim ke sistem TRITON!</p>
+                        <hr>
+                        <ol class="ps-3 mb-0 text-muted">
+                            <li class="mb-2">Silakan kembali ke <strong>Meja PTSP Hukum</strong> untuk dibantu petugas mencetak Surat Permohonan Anda.</li>
+                            <li>Sampaikan kepada petugas bahwa permohonan diajukan atas nama: <br>
+                                <span class="badge bg-court text-white mt-1 px-3 py-2 fs-6 w-100 text-truncate">
+                                    <i class="bi bi-person-fill me-1"></i> ${namaPemohon}
+                                </span>
+                            </li>
+                        </ol>
+                    </div>
+                `,
+                icon: "success",
+                confirmButtonText: '<i class="bi bi-arrow-left-circle me-1"></i> Selesai & Kembali',
+                confirmButtonColor: '#2c3e50',
+                allowOutsideClick: false,
+                customClass: {
+                    popup: 'rounded-4 shadow'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.navigate('/');
+                }
+            });
+        });
+    });
+</script>
