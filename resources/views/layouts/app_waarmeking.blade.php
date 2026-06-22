@@ -102,7 +102,7 @@
                 <hr class="line-double">
 
                 <div class="mt-4">
-                    <livewire:form-waarmeking />
+                    {{ $slot }}
                 </div>
 
                 <div class="text-center mt-4 mb-5">

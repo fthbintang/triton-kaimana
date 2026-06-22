@@ -6,7 +6,7 @@ use App\Models\Permohonan;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
-class FormWaarmeking extends Component
+class FormPermohonanWaarmeking extends Component
 {
     // 1. Data Utama Pemohon
     public string $nama_pemohon = '';
@@ -211,6 +211,6 @@ class FormWaarmeking extends Component
     #[Layout('layouts.app_waarmeking')]
     public function render()
     {
-        return view('livewire.form-waarmeking');
+        return view('livewire.form-permohonan-waarmeking');
     }
 }
