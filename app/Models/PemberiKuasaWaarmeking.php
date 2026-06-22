@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PenerimaKuasa extends Model
+class PemberiKuasaWaarmeking extends Model
 {
     use HasFactory;
 
-    protected $table = 'penerima_kuasa';
+    protected $table = 'pemberi_kuasa_waarmeking';
     protected $guarded = ['id'];
 
-    // Relasi balik ke model induk
     public function suratKuasa()
     {
-        return $this->belongsTo(SuratKuasa::class, 'surat_kuasa_id');
+        return $this->belongsTo(SuratKuasaWaarmeking::class, 'surat_kuasa_waarmeking_id');
     }
 }
