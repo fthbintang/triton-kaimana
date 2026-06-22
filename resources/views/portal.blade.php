@@ -76,7 +76,7 @@
                 style="max-height: 110px;">
             <h2 class="fw-bold text-dark m-0">APLIKASI TRITON</h2>
             <p class="fw-semibold text-court my-1" style="font-size: 0.95rem; letter-spacing: 0.5px;">
-                (Terintegrasi Pelayanan Informasi Dan Permohonan Online)
+                (Template Registrasi Informasi, Tatacara, dan Output Naskah Hukum Kaimana)
             </p>
             <p class="text-secondary lead fs-6 m-0">Sistem Pelayanan Hukum Mandiri — Pengadilan Negeri Kaimana</p>
             <p class="text-muted fw-medium small text-uppercase pt-3" style="letter-spacing: 1px; font-size: 0.8rem;">
@@ -162,7 +162,8 @@
 
             <!-- 2. Surat Kuasa Insidentil -->
             <div class="col-md-4 col-sm-6">
-                <a href="{{ route('layanan.surat-kuasa') }}" class="text-decoration-none text-dark">
+                <a href="{{ route('layanan.permohononan-kuasa-insidentil') }}" wire:navigate
+                    class="text-decoration-none text-dark">
                     <div class="card h-100 p-4 text-center menu-card">
                         <div class="card-body">
                             <div class="icon-box">
