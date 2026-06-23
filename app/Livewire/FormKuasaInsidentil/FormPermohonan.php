@@ -8,6 +8,8 @@ use Livewire\Attributes\Layout;
 
 class FormPermohonan extends Component
 {
+    public $tujuan_pimpinan = 'Ketua';
+    
     // Properti Utama Tabel Permohonan (Penerima Kuasa)
     public string $no_hp_pemohon = '';
     public string $nama_pemohon = ''; 
@@ -42,6 +44,8 @@ class FormPermohonan extends Component
     protected function rules()
     {
         return [
+            'tujuan_pimpinan' => 'required|string',
+            
             // Validasi Penerima Kuasa (Pemohon)
             'no_hp_pemohon' => 'required|numeric|min_digits:10',
             'nama_pemohon' => 'required|string|max:255',
@@ -120,6 +124,7 @@ class FormPermohonan extends Component
                 'hubungan_keluarga' => $this->hubungan_pemberi_ke_penerima,
             ],
             'perkara' => [
+                'tujuan_pimpinan'    => $this->tujuan_pimpinan,
                 'kedudukan_pemberi'  => $this->kedudukan_pemberi,
                 'jenis_perkara'      => $this->jenis_perkara,
                 'alasan_tidak_hadir' => $this->alasan_tidak_hadir,

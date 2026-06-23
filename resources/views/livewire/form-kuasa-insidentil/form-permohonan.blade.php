@@ -14,6 +14,21 @@
                 <div class="card-body p-4 p-md-5">
                     <form wire:submit="simpan">
 
+                        <div class="col-md-12 mb-4">
+                            <label class="form-label fw-semibold text-muted small mb-1">Tujuan Permohonan Surat
+                                (Kepada Yth.)</label>
+                            <select wire:model="tujuan_pimpinan"
+                                class="form-select form-select-sm @error('tujuan_pimpinan') is-invalid @enderror">
+                                <option value="Ketua">Ketua Pengadilan Negeri Kaimana</option>
+                                <option value="Wakil Ketua">Wakil Ketua Pengadilan Negeri Kaimana</option>
+                                <option value="Plh. Ketua">Plh. Ketua Pengadilan Negeri Kaimana</option>
+                                <option value="Plt. Ketua">Plt. Ketua Pengadilan Negeri Kaimana</option>
+                            </select>
+                            @error('tujuan_pimpinan')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <div class="mb-5">
                             <h5 class="text-court fw-bold border-bottom pb-2 mb-3">
                                 <span class="badge badge-court me-2">I</span> Data Penerima Kuasa (Pemohon yang Datang)
