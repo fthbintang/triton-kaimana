@@ -107,6 +107,6 @@ class FormSuratKuasa extends Component
     #[Layout('layouts.app')]
     public function render()
     {
-        return view('livewire.form-waarmeking.form-permohonan-surat-kuasa');
+        return view('livewire.form-waarmeking.form-surat-kuasa');
     }
 }

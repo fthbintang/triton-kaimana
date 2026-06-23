@@ -42,6 +42,24 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold text-muted small mb-1">Tempat Lahir</label>
+                                    <input type="text"
+                                        class="form-control form-control-sm @error('tempat_lahir_penerima') is-invalid @enderror"
+                                        wire:model="tempat_lahir_penerima" placeholder="Contoh: Kaimana">
+                                    @error('tempat_lahir_penerima')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold text-muted small mb-1">Tanggal Lahir</label>
+                                    <input type="date"
+                                        class="form-control form-control-sm @error('tanggal_lahir_penerima') is-invalid @enderror"
+                                        wire:model="tanggal_lahir_penerima">
+                                    @error('tanggal_lahir_penerima')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                                 <div class="col-md-4">
                                     <label class="form-label text-muted small mb-1 fw-semibold">Jenis Kelamin</label>
                                     <select wire:model="jenis_kelamin_penerima"
@@ -69,6 +87,17 @@
                                         class="form-control form-control-sm @error('pekerjaan_penerima') is-invalid @enderror"
                                         wire:model="pekerjaan_penerima" placeholder="Contoh: PNS, Swasta">
                                     @error('pekerjaan_penerima')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label fw-semibold text-muted small mb-1">Hubungan Anda Terhadap
+                                        Pemberi Kuasa</label>
+                                    <input type="text"
+                                        class="form-control form-control-sm @error('hubungan_penerima_ke_pemberi') is-invalid @enderror"
+                                        wire:model="hubungan_penerima_ke_pemberi"
+                                        placeholder="Contoh: Anak Kandung, Suami, Istri">
+                                    @error('hubungan_penerima_ke_pemberi')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -124,6 +153,26 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
+                                    <label class="form-label fw-semibold text-muted small mb-1">Tempat Lahir Pemberi
+                                        Kuasa</label>
+                                    <input type="text"
+                                        class="form-control form-control-sm @error('tempat_lahir_pemberi') is-invalid @enderror"
+                                        wire:model="tempat_lahir_pemberi" placeholder="Contoh: Jayapura">
+                                    @error('tempat_lahir_pemberi')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold text-muted small mb-1">Tanggal Lahir Pemberi
+                                        Kuasa</label>
+                                    <input type="date"
+                                        class="form-control form-control-sm @error('tanggal_lahir_pemberi') is-invalid @enderror"
+                                        wire:model="tanggal_lahir_pemberi">
+                                    @error('tanggal_lahir_pemberi')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-4">
                                     <label class="form-label text-muted small mb-1 fw-semibold">Jenis Kelamin</label>
                                     <select wire:model="jenis_kelamin_pemberi"
                                         class="form-select form-select-sm @error('jenis_kelamin_pemberi') is-invalid @enderror">
@@ -135,12 +184,32 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label class="form-label text-muted small mb-1 fw-semibold">Agama</label>
                                     <input type="text"
                                         class="form-control form-control-sm @error('agama_pemberi') is-invalid @enderror"
                                         wire:model="agama_pemberi" placeholder="Contoh: Islam, Kristen">
                                     @error('agama_pemberi')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label text-muted small mb-1 fw-semibold">Pekerjaan</label>
+                                    <input type="text"
+                                        class="form-control form-control-sm @error('pekerjaan_pemberi') is-invalid @enderror"
+                                        wire:model="pekerjaan_pemberi" placeholder="Contoh: Ibu Rumah Tangga">
+                                    @error('pekerjaan_pemberi')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label fw-semibold text-muted small mb-1">Hubungan Pemberi Kuasa
+                                        Terhadap Anda</label>
+                                    <input type="text"
+                                        class="form-control form-control-sm @error('hubungan_pemberi_ke_penerima') is-invalid @enderror"
+                                        wire:model="hubungan_pemberi_ke_penerima"
+                                        placeholder="Contoh: Ibu Kandung, Ayah Kandung">
+                                    @error('hubungan_pemberi_ke_penerima')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -159,28 +228,53 @@
 
                         <div class="mb-5">
                             <h5 class="text-court fw-bold border-bottom pb-2 mb-3">
-                                <span class="badge badge-court me-2">III</span> Hubungan Keluarga & Objek Perkara
+                                <span class="badge badge-court me-2">III</span> Detail Perkara & Alasan Hukum
                             </h5>
 
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label class="form-label fw-semibold text-muted small mb-1">Hubungan
-                                        Keluarga</label>
-                                    <input type="text"
-                                        class="form-control form-control-sm @error('hubungan_keluarga') is-invalid @enderror"
-                                        wire:model="hubungan_keluarga"
-                                        placeholder="Contoh: Suami, Istri, Ayah, Ibu, Saudara Kandung dll">
-                                    @error('hubungan_keluarga')
+                                    <label class="form-label text-muted small mb-1 fw-semibold">Kedudukan Pemberi
+                                        Kuasa</label>
+                                    <select wire:model="kedudukan_pemberi"
+                                        class="form-select form-select-sm @error('kedudukan_pemberi') is-invalid @enderror">
+                                        <option value="">-- Pilih --</option>
+                                        <option value="Pemohon">Pemohon</option>
+                                        <option value="Penggugat">Penggugat</option>
+                                        <option value="Tergugat">Tergugat</option>
+                                    </select>
+                                    @error('kedudukan_pemberi')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label fw-semibold text-muted small mb-1">Perkara Permohonan Yang
+                                    <label class="form-label fw-semibold text-muted small mb-1">Jenis Perkara Yang
                                         Diajukan</label>
                                     <input type="text"
-                                        class="form-control form-control-sm @error('perkara_permohonan') is-invalid @enderror"
-                                        wire:model="perkara_permohonan" placeholder="Contoh: Permohonan Ganti Nama">
-                                    @error('perkara_permohonan')
+                                        class="form-control form-control-sm @error('jenis_perkara') is-invalid @enderror"
+                                        wire:model="jenis_perkara"
+                                        placeholder="Contoh: Gugatan Wanprestasi / Permohonan Wali Adopsi">
+                                    @error('jenis_perkara')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label fw-semibold text-muted small mb-1">Alasan Pemberi Kuasa
+                                        Tidak Dapat Hadir</label>
+                                    <textarea wire:model="alasan_tidak_hadir"
+                                        class="form-control form-control-sm @error('alasan_tidak_hadir') is-invalid @enderror" rows="2"
+                                        placeholder="Contoh: dikarenakan Pemberi Kuasa sekarang bertempat tinggal di Sorong karena urusan pekerjaan yang tidak dapat ditinggalkan..."></textarea>
+                                    @error('alasan_tidak_hadir')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label class="form-label fw-semibold text-muted small mb-1">Tujuan / Kepentingan
+                                        Kuasa Diberikan</label>
+                                    <textarea wire:model="tujuan_kuasa" class="form-control form-control-sm @error('tujuan_kuasa') is-invalid @enderror"
+                                        rows="2"
+                                        placeholder="Contoh: demi mempertahankan hak atas sebidang tanah warisan dari orang tua kandung kedua belah pihak..."></textarea>
+                                    @error('tujuan_kuasa')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
