@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\FormWaarmeking;
 
 use Livewire\Component;
 use App\Models\SuratKuasaWaarmeking;
 use Livewire\Attributes\Layout;
 
-class FormPermohonanSuratKuasaWaarmeking extends Component
+class FormSuratKuasa extends Component
 {
     public $no_hp_pemohon;
     public $pemberi_kuasa = [];
@@ -104,9 +104,9 @@ class FormPermohonanSuratKuasaWaarmeking extends Component
         $this->dispatch('permohonan-sukses', nama: $this->pemberi_kuasa[0]['nama']);
     }
 
-    #[Layout('layouts.app_waarmeking')]
+    #[Layout('layouts.app')]
     public function render()
     {
-        return view('livewire.form-permohonan-surat-kuasa-waarmeking');
+        return view('livewire.form-waarmeking.form-surat-kuasa');
     }
 }

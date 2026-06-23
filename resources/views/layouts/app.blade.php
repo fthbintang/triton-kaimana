@@ -9,6 +9,20 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
         :root {
             --warna-court: #0A5C36;
             /* Hijau Tua Khas Mahkamah Agung */
@@ -59,6 +73,14 @@
 </head>
 
 <body class="bg-light">
+
+    <div id="global-loader" class="loading-overlay" style="display: none;">
+        <div class="spinner-border text-court" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <h5 class="fw-bold text-dark mt-3 mb-1">Memproses Halaman...</h5>
+        <p class="text-muted small">Mohon tunggu sebentar, sedang menyiapkan data</p>
+    </div>
 
     <div class="container py-4">
         <div class="row justify-content-center">
@@ -119,6 +141,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Ketika user mulai mengklik tombol rute (Proses muat dimulai)
+        document.addEventListener('livewire:navigate', () => {
+            document.getElementById('global-loader').style.display = 'flex';
+        });
+
+        // Ketika halaman baru selesai dimuat ke browser (Proses muat selesai)
+        document.addEventListener('livewire:navigated', () => {
+            document.getElementById('global-loader').style.display = 'none';
+        });
+    </script>
     @livewireScripts
 </body>
 

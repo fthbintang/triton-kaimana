@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\FormWaarmeking;
 
 use App\Models\Permohonan;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
-class FormPermohonanWaarmeking extends Component
+class FormPermohonan extends Component
 {
     // 1. Data Utama Pemohon
     public string $nama_pemohon = '';
@@ -208,9 +208,9 @@ class FormPermohonanWaarmeking extends Component
         $this->mount();
     }
 
-    #[Layout('layouts.app_waarmeking')]
+    #[Layout('layouts.app')]
     public function render()
     {
-        return view('livewire.form-permohonan-waarmeking');
+        return view('livewire.form-waarmeking.form-permohonan');
     }
 }

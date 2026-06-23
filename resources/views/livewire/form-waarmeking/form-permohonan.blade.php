@@ -324,7 +324,7 @@
             // Biasanya data dikirim dalam bentuk array pada indeks pertama, atau objek langsung
             let eventData = Array.isArray(event) ? event[0] : event;
             let namaPemohon = eventData.nama || (eventData.detail && eventData.detail.nama) ||
-            'Pemohon';
+                'Pemohon';
 
             Swal.fire({
                 title: "Pendaftaran Berhasil!",
