@@ -39,126 +39,264 @@
 
         <form wire:submit.prevent="simpan">
 
-            <!-- BAGIAN I: DATA UTAMA PEMOHON -->
+            <!-- BAGIAN I: DATA AHLI WARIS / PEMOHON -->
             <div class="mb-5">
-                <h5 class="text-court fw-bold border-bottom pb-2 mb-3">
-                    <span class="badge badge-court me-2">I</span> Data Utama Pemohon
-                </h5>
-                <p class="text-muted small mb-3 fst-italic">* Pemohon adalah perwakilan ahli waris/keluarga yang mengisi
-                    form ini dan yang akan datang ke pengadilan.</p>
-
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold text-muted small mb-1">Nama Lengkap Pemohon</label>
-                        <input type="text" wire:model="nama_pemohon"
-                            class="form-control @error('nama_pemohon') is-invalid @enderror" placeholder="Sesuai KTP">
-                        @error('nama_pemohon')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold text-muted small mb-1">NIK (16 Digit KTP)</label>
-                        <input type="text" wire:model="nik_pemohon" maxlength="16"
-                            class="form-control @error('nik_pemohon') is-invalid @enderror"
-                            placeholder="16 Digit Nomor Induk Kependudukan">
-                        <small class="text-danger d-block mt-1" style="font-size: 0.7rem; font-weight: 500;">* Lihat
-                            angka paling atas di KTP Anda</small>
-                        @error('nik_pemohon')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold text-muted small mb-1">No. HP / WhatsApp (Aktif)</label>
-                        <input type="text" wire:model="no_hp_pemohon"
-                            class="form-control @error('no_hp_pemohon') is-invalid @enderror"
-                            placeholder="Contoh: 081234xxxxxx">
-                        <small class="text-muted d-block mt-1" style="font-size: 0.7rem;">* Pastikan nomor aktif agar
-                            petugas bisa menghubungi Anda jika ada data yang keliru.</small>
-                        @error('no_hp_pemohon')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <h5 class="text-court fw-bold mb-0">
+                        <span class="badge badge-court me-2">I</span> Data Ahli Waris (Pemohon)
+                    </h5>
+                    <button type="button" wire:click="tambahPemohon"
+                        class="btn btn-sm btn-outline-success fw-semibold rounded-pill px-3">
+                        <i class="bi bi-plus-lg me-1"></i> Tambah Ahli Waris
+                    </button>
+                </div>
+                <div class="alert alert-warning border-0 shadow-sm rounded-3 mb-3 p-3">
+                    <p class="text-muted small mb-2 fst-italic">
+                        * Isi data Pemohon Utama (Perwakilan). Jika ada anggota ahli waris lain yang <strong
+                            class="text-court">juga ikut datang langsung ke Pengadilan Negeri Kaimana</strong>, silakan
+                        klik tombol <strong>+ Tambah Ahli Waris</strong> di bawah agar nama mereka tercantum di surat
+                        permohonan.
+                    </p>
+                    <p class="text-muted small mb-2 fst-italic">
+                        * <strong class="text-danger">PENTING:</strong> Seluruh nama ahli waris yang dimasukkan ke dalam
+                        form ini <strong class="text-danger">WAJIB HADIR FISIK</strong> ke Pengadilan Negeri Kaimana
+                        untuk tanda tangan di depan petugas. Jika ada ahli waris yang tidak bisa ikut datang, maka ia
+                        <strong class="text-danger">wajib membuat Surat Kuasa</strong> terlebih dahulu untuk diserahkan
+                        ke Bagian Hukum.
+                    </p>
+                    <div class="d-flex align-items-center gap-2 mt-2 pt-2 border-top border-warning-subtle">
+                        <i class="bi bi-file-earmark-text-fill text-warning" style="font-size: 1.1rem;"></i>
+                        <span class="small fw-medium text-dark">Ada ahli waris yang tidak bisa ikut hadir ke
+                            Pengadilan?</span>
+                        <a href="/layanan/surat-kuasa-waarmeking" target="_blank"
+                            class="btn btn-xs btn-primary py-0 px-2 fw-semibold text-decoration-none rounded"
+                            style="font-size: 0.75rem;">
+                            Isi Form Surat Kuasa Di Sini <i class="bi bi-box-arrow-up-right ms-1"
+                                style="font-size: 0.65rem;"></i>
+                        </a>
                     </div>
                 </div>
+
+                <!-- PEMOHON UTAMA (Seluruh data disatukan di sini) -->
+                <div class="card bg-white border-light shadow-sm rounded-3 mb-4">
+                    <div class="card-header bg-court text-white py-2 small fw-semibold">
+                        Ahli Waris Utama / Perwakilan
+                    </div>
+                    <div class="card-body row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-muted small mb-1">Nama Lengkap Pemohon</label>
+                            <input type="text" wire:model="nama_pemohon"
+                                class="form-control form-control-sm @error('nama_pemohon') is-invalid @enderror"
+                                placeholder="Sesuai KTP">
+                            @error('nama_pemohon')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-muted small mb-1">NIK (16 Digit KTP)</label>
+                            <input type="text" wire:model="nik_pemohon" maxlength="16"
+                                class="form-control form-control-sm @error('nik_pemohon') is-invalid @enderror"
+                                placeholder="16 Digit NIK KTP">
+                            @error('nik_pemohon')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-muted small mb-1">No. HP / WhatsApp
+                                (Aktif)</label>
+                            <input type="text" wire:model="no_hp_pemohon"
+                                class="form-control form-control-sm @error('no_hp_pemohon') is-invalid @enderror"
+                                placeholder="Contoh: 081234xxxxxx">
+                            @error('no_hp_pemohon')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold text-muted small mb-1">Tempat Lahir</label>
+                            <input type="text" wire:model="tempat_lahir"
+                                class="form-control form-control-sm @error('tempat_lahir') is-invalid @enderror"
+                                placeholder="Kota/Kabupaten">
+                            @error('tempat_lahir')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold text-muted small mb-1">Tanggal Lahir</label>
+                            <input type="date" wire:model="tanggal_lahir"
+                                class="form-control form-control-sm @error('tanggal_lahir') is-invalid @enderror">
+                            @error('tanggal_lahir')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold text-muted small mb-1">Jenis Kelamin</label>
+                            <select wire:model="jenis_kelamin"
+                                class="form-select form-select-sm @error('jenis_kelamin') is-invalid @enderror">
+                                <option value="">-- Pilih --</option>
+                                <option value="Laki-laki">Laki-laki</option>
+                                <option value="Perempuan">Perempuan</option>
+                            </select>
+                            @error('jenis_kelamin')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold text-muted small mb-1">Agama</label>
+                            <input type="text" wire:model="agama"
+                                class="form-control form-control-sm @error('agama') is-invalid @enderror"
+                                placeholder="Contoh: Islam">
+                            @error('agama')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold text-muted small mb-1">Pekerjaan</label>
+                            <input type="text" wire:model="pekerjaan"
+                                class="form-control form-control-sm @error('pekerjaan') is-invalid @enderror"
+                                placeholder="Pekerjaan">
+                            @error('pekerjaan')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-semibold text-muted small mb-1">Alamat Lengkap (Sesuai
+                                KTP/Domisili)</label>
+                            <textarea wire:model="alamat" rows="2"
+                                class="form-control form-control-sm @error('alamat') is-invalid @enderror"
+                                placeholder="Jalan, RT/RW, Kampung/Kelurahan, Kecamatan..."></textarea>
+                            @error('alamat')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PERULANGAN AHLI WARIS TAMBAHAN (Sama detailnya dengan di atas) -->
+                @foreach ($pemohon_tambahan as $index => $item)
+                    <div class="card bg-light border-0 mb-3 shadow-sm rounded-3 text-dark"
+                        wire:key="pemohon-tambahan-{{ $index }}">
+                        <div
+                            class="card-header bg-secondary text-white d-flex justify-content-between align-items-center py-2">
+                            <span class="fw-semibold small">Ahli Waris Tambahan #{{ $index + 1 }}</span>
+                            <button type="button" wire:click="hapusPemohon({{ $index }})"
+                                class="btn btn-sm btn-link text-white text-decoration-none p-0 small"
+                                style="font-size: 0.8rem;">
+                                <i class="bi bi-trash3-fill me-1"></i> Hapus
+                            </button>
+                        </div>
+                        <div class="card-body row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted small mb-1 fw-semibold">Nama Lengkap</label>
+                                <input type="text" wire:model="pemohon_tambahan.{{ $index }}.nama"
+                                    placeholder="Sesuai KTP"
+                                    class="form-control form-control-sm @error('pemohon_tambahan.' . $index . '.nama') is-invalid @enderror">
+                                @error('pemohon_tambahan.' . $index . '.nama')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-muted small mb-1 fw-semibold">NIK KTP</label>
+                                <input type="text" wire:model="pemohon_tambahan.{{ $index }}.nik"
+                                    maxlength="16" placeholder="16 Digit Angka"
+                                    class="form-control form-control-sm @error('pemohon_tambahan.' . $index . '.nik') is-invalid @enderror">
+                                @error('pemohon_tambahan.' . $index . '.nik')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label text-muted small mb-1 fw-semibold">Tempat Lahir</label>
+                                <input type="text" wire:model="pemohon_tambahan.{{ $index }}.tempat_lahir"
+                                    placeholder="Kabupaten/Kota"
+                                    class="form-control form-control-sm @error('pemohon_tambahan.' . $index . '.tempat_lahir') is-invalid @enderror">
+                                @error('pemohon_tambahan.' . $index . '.tempat_lahir')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label text-muted small mb-1 fw-semibold">Tanggal Lahir</label>
+                                <input type="date" wire:model="pemohon_tambahan.{{ $index }}.tanggal_lahir"
+                                    class="form-control form-control-sm @error('pemohon_tambahan.' . $index . '.tanggal_lahir') is-invalid @enderror">
+                                @error('pemohon_tambahan.' . $index . '.tanggal_lahir')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1 fw-semibold">Jenis Kelamin</label>
+                                <select wire:model="pemohon_tambahan.{{ $index }}.jenis_kelamin"
+                                    class="form-select form-select-sm @error('pemohon_tambahan.' . $index . '.jenis_kelamin') is-invalid @enderror">
+                                    <option value="">-- Pilih --</option>
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                                @error('pemohon_tambahan.' . $index . '.jenis_kelamin')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1 fw-semibold">Agama</label>
+                                <input type="text" wire:model="pemohon_tambahan.{{ $index }}.agama"
+                                    placeholder="Contoh: Islam"
+                                    class="form-control form-control-sm @error('pemohon_tambahan.' . $index . '.agama') is-invalid @enderror">
+                                @error('pemohon_tambahan.' . $index . '.agama')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1 fw-semibold">Pekerjaan</label>
+                                <input type="text" wire:model="pemohon_tambahan.{{ $index }}.pekerjaan"
+                                    placeholder="Pekerjaan"
+                                    class="form-control form-control-sm @error('pemohon_tambahan.' . $index . '.pekerjaan') is-invalid @enderror">
+                                @error('pemohon_tambahan.' . $index . '.pekerjaan')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label text-muted small mb-1 fw-semibold">Alamat Rumah
+                                    Lengkap</label>
+                                <textarea wire:model="pemohon_tambahan.{{ $index }}.alamat" rows="2"
+                                    placeholder="Jalan, Kelurahan, Kecamatan"
+                                    class="form-control form-control-sm @error('pemohon_tambahan.' . $index . '.alamat') is-invalid @enderror"></textarea>
+                                @error('pemohon_tambahan.' . $index . '.alamat')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
 
-            <!-- BAGIAN II: DATA DETAIL PEMOHON & PEWARIS -->
+            <!-- BAGIAN II: DATA PEWARIS (YANG MENINGGAL DUNIA) -->
             <div class="mb-5">
                 <h5 class="text-court fw-bold border-bottom pb-2 mb-3">
-                    <span class="badge badge-court me-2">II</span> Data Detail Pemohon & Pewaris
+                    <span class="badge badge-court me-2">II</span> Data Pewaris (Almarhum/ah)
                 </h5>
+                <p class="text-muted small mb-3 fst-italic">* Masukkan nama lengkap keluarga yang telah meninggal dunia
+                    selaku pemilik rekening asal.</p>
+
                 <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold text-muted small mb-1">Tempat Lahir Pemohon</label>
-                        <input type="text" wire:model="tempat_lahir"
-                            class="form-control @error('tempat_lahir') is-invalid @enderror"
-                            placeholder="Kota/Kabupaten tempat Anda lahir">
-                        @error('tempat_lahir')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold text-muted small mb-1">Tanggal Lahir Pemohon</label>
-                        <input type="date" wire:model="tanggal_lahir"
-                            class="form-control @error('tanggal_lahir') is-invalid @enderror">
-                        @error('tanggal_lahir')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold text-muted small mb-1">Jenis Kelamin</label>
-                        <select wire:model="jenis_kelamin"
-                            class="form-select @error('jenis_kelamin') is-invalid @enderror">
-                            <option value="">-- Pilih Jenis Kelamin --</option>
-                            <option value="Laki-laki">Laki-laki</option>
-                            <option value="Perempuan">Perempuan</option>
-                        </select>
-                        @error('jenis_kelamin')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold text-muted small mb-1">Agama</label>
-                        <input type="text" wire:model="agama"
-                            class="form-control @error('agama') is-invalid @enderror"
-                            placeholder="Contoh: Kristen, Islam, Katolik">
-                        @error('agama')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold text-muted small mb-1">Pekerjaan</label>
-                        <input type="text" wire:model="pekerjaan"
-                            class="form-control @error('pekerjaan') is-invalid @enderror"
-                            placeholder="Pekerjaan Anda sekarang">
-                        @error('pekerjaan')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <label class="form-label fw-semibold text-muted small mb-1">Nama Pewaris (Keluarga yang
                             Meninggal)</label>
-                        <input type="text" wire:model="nama_pewaris" placeholder="Contoh: Alm. John Doe"
+                        <input type="text" wire:model="nama_pewaris" placeholder="Contoh: Almarhum Budi Santoso"
                             class="form-control @error('nama_pewaris') is-invalid @enderror">
-                        <small class="text-danger d-block mt-1" style="font-size: 0.7rem; font-weight: 500;">* Tuliskan
-                            nama lengkap almarhum/almarhumah</small>
+                        <small class="text-danger d-block mt-1" style="font-size: 0.7rem; font-weight: 500;">*
+                            Tuliskan nama lengkap almarhum/almarhumah beserta gelar (jika ada)</small>
                         @error('nama_pewaris')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-12">
-                        <label class="form-label fw-semibold text-muted small mb-1">Alamat Lengkap Pemohon (Sesuai
-                            KTP/Domisili)</label>
-                        <textarea wire:model="alamat" rows="2" class="form-control @error('alamat') is-invalid @enderror"
-                            placeholder="Tuliskan nama jalan, RT/RW, kampung/kelurahan, dan kecamatan tempat tinggal saat ini..."></textarea>
-                        @error('alamat')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
