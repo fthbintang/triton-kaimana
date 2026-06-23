@@ -8,12 +8,15 @@ use Livewire\Attributes\Layout;
 
 class FormPermohonan extends Component
 {
-    // 1. Data Utama Pemohon
+    // 1. Data Utama Pemohon (Berperan sebagai Pemohon Utama / Perwakilan)
     public string $nama_pemohon = '';
     public string $nik_pemohon = '';
     public string $no_hp_pemohon = '';
 
-    // 2. Data Spesifik Waarmeking
+    // BARU: Array Dinamis untuk menampung data banyak pemohon/ahli waris tambahan
+    public array $pemohon_tambahan = [];
+
+    // 2. Data Spesifik Waarmeking (Detail Pemohon Utama)
     public string $tempat_lahir = '';
     public string $tanggal_lahir = '';
     public string $jenis_kelamin = '';
@@ -26,24 +29,49 @@ class FormPermohonan extends Component
     public array $daftar_rekening = [];
 
     // 4. Status Notifikasi Sukses
-    public ?string $pesan_sukses = null; // Tanda tanya (?) artinya boleh kosong/null
+    public ?string $pesan_sukses = null;
 
     // Fungsi bawaan Livewire yang otomatis berjalan saat form pertama kali dibuka
     public function mount(): void
     {
-        // Nilai awal diubah menjadi string kosong agar form bersih tidak ada angka 0
+        // BARU: Inisialisasi awal pemohon tambahan kosong (biar muncul jika user klik tombol tambah)
+        $this->pemohon_tambahan = [];
+
+        // Nilai awal daftar rekening
         $this->daftar_rekening = [
             [
                 'nama_bank' => '',
                 'cabang_bank' => '',
                 'nomor_rekening' => '',
-                'nominal_angka' => '', // <-- Ubah dari 0 menjadi ''
+                'nominal_angka' => '', 
                 'nominal_huruf' => ''
             ]
         ];
     }
 
-    // Fungsi untuk menambah baris bank baru (Dijalankan saat tombol "+ Tambah Bank" diklik)
+    // BARU: Fungsi untuk menambah baris pemohon tambahan (Dijalankan saat tombol "+ Tambah Ahli Waris" diklik)
+    public function tambahPemohon(): void
+    {
+        $this->pemohon_tambahan[] = [
+            'nama' => '',
+            'nik' => '',
+            'tempat_lahir' => '',
+            'tanggal_lahir' => '',
+            'jenis_kelamin' => '',
+            'agama' => '',
+            'pekerjaan' => '',
+            'alamat' => ''
+        ];
+    }
+
+    // BARU: Fungsi untuk menghapus baris pemohon tambahan jika kelebihan
+    public function hapusPemohon(int $index): void
+    {
+        unset($this->pemohon_tambahan[$index]);
+        $this->pemohon_tambahan = array_values($this->pemohon_tambahan); // Reset susunan index array
+    }
+
+    // Fungsi untuk menambah baris bank baru
     public function tambahBank(): void
     {
         $this->daftar_rekening[] = [
@@ -55,36 +83,32 @@ class FormPermohonan extends Component
         ];
     }
 
-    // Fungsi untuk menghapus baris bank jika pengguna salah klik atau kelebihan
+    // Fungsi untuk menghapus baris bank
     public function hapusBank(int $index): void
     {
         unset($this->daftar_rekening[$index]);
-        $this->daftar_rekening = array_values($this->daftar_rekening); // Reset susunan index array agar terurut kembali
+        $this->daftar_rekening = array_values($this->daftar_rekening);
     }
 
-    // Mengawasi perubahan ketikan angka secara real-time untuk diubah ke teks huruf terbilang
+    // Mengawasi perubahan ketikan angka secara real-time
     public function updatedDaftarRekening(mixed $value, string $key): void
     {
         if (str_contains($key, '.nominal_angka')) {
             $parts = explode('.', $key);
             $index = (int)$parts[0];
             
-            // JIKA USER MENGINPUT SESUATU
             if ($value !== '' && $value !== null) {
-                // Hilangkan semua tanda titik (.) yang diketik oleh javascript format uang
                 $angkaHanyaDigit = str_replace('.', '', $value);
                 $angkaClean = (int)$angkaHanyaDigit;
                 
-                // Set teks terbilang otomatis
                 $this->daftar_rekening[$index]['nominal_huruf'] = $this->terbilang($angkaClean) . ' Rupiah';
             } else {
-                // Jika dikosongkan total oleh user
                 $this->daftar_rekening[$index]['nominal_huruf'] = '';
             }
         }
     }
 
-    // Rumus Matematika Helper untuk mengubah Angka menjadi Teks Huruf Terbilang Indonesia
+    // Rumus Matematika Helper Terbilang
     private function terbilang(int $angka): string
     {
         $angka = abs((int)$angka);
@@ -116,12 +140,12 @@ class FormPermohonan extends Component
     {
         // 1. Definisikan Aturan Validasi untuk Semua Kolom
         $rules = [
-            // Validasi Data Utama Pemohon
+            // Validasi Data Utama Pemohon (Perwakilan)
             'nama_pemohon'   => 'required|string|min:3',
             'nik_pemohon'    => 'required|numeric|digits:16',
             'no_hp_pemohon'  => 'required|numeric|min_digits:10',
 
-            // Validasi Data Detail Pemohon & Pewaris
+            // Validasi Data Detail Pemohon Utama & Pewaris
             'tempat_lahir'   => 'required|string|min:3',
             'tanggal_lahir'  => 'required|date',
             'jenis_kelamin'  => 'required|in:Laki-laki,Perempuan',
@@ -129,6 +153,17 @@ class FormPermohonan extends Component
             'pekerjaan'      => 'required|string',
             'nama_pewaris'   => 'required|string|min:3',
             'alamat'         => 'required|string|min:10',
+
+            // BARU: Validasi Dinamis Pemohon Tambahan (Jika ada lebih dari 1 orang)
+            'pemohon_tambahan'                    => 'nullable|array',
+            'pemohon_tambahan.*.nama'             => 'required|string|min:3',
+            'pemohon_tambahan.*.nik'              => 'required|numeric|digits:16',
+            'pemohon_tambahan.*.tempat_lahir'     => 'required|string',
+            'pemohon_tambahan.*.tanggal_lahir'    => 'required|date',
+            'pemohon_tambahan.*.jenis_kelamin'    => 'required|in:Laki-laki,Perempuan',
+            'pemohon_tambahan.*.agama'            => 'required|string',
+            'pemohon_tambahan.*.pekerjaan'        => 'required|string',
+            'pemohon_tambahan.*.alamat'           => 'required|string',
 
             // Validasi Dinamis untuk Array Daftar Rekening Bank
             'daftar_rekening'                    => 'required|array|min:1',
@@ -138,18 +173,16 @@ class FormPermohonan extends Component
             'daftar_rekening.*.nominal_angka'    => 'required',
         ];
 
-        // 2. Kustomisasi Pesan Eror Bahasa Indonesia untuk Semua Kolom
+        // 2. Kustomisasi Pesan Eror Bahasa Indonesia
         $messages = [
-            // Pesan Data Utama
-            'nama_pemohon.required'   => 'Nama lengkap pemohon wajib diisi.',
+            'nama_pemohon.required'   => 'Nama lengkap pemohon utama wajib diisi.',
             'nama_pemohon.min'        => 'Nama lengkap minimal berisi 3 karakter.',
-            'nik_pemohon.required'    => 'NIK wajib diisi sesuai KTP.',
-            'nik_pemohon.digits'      => 'NIK harus tepat berjumlah 16 digit.',
+            'nik_pemohon.required'    => 'NIK pemohon utama wajib diisi.',
+            'nik_pemohon.digits'      => 'NIK pemohon utama harus tepat berjumlah 16 digit.',
             'nik_pemohon.numeric'     => 'NIK harus berupa angka.',
             'no_hp_pemohon.required'  => 'Nomor HP / WhatsApp wajib diisi.',
             'no_hp_pemohon.min_digits' => 'Nomor HP minimal berisi 10 digit.',
 
-            // Pesan Data Detail & Pewaris
             'tempat_lahir.required'   => 'Tempat lahir wajib diisi.',
             'tanggal_lahir.required'  => 'Tanggal lahir wajib diisi.',
             'jenis_kelamin.required'  => 'Silakan pilih jenis kelamin.',
@@ -159,7 +192,12 @@ class FormPermohonan extends Component
             'alamat.required'         => 'Alamat domisili lengkap wajib diisi.',
             'alamat.min'              => 'Alamat harus ditulis secara lengkap (minimal 10 karakter).',
 
-            // Pesan Validasi Rekening Bank (Dinamis memakai tanda bintang *)
+            // BARU: Pesan error untuk pemohon tambahan
+            'pemohon_tambahan.*.nama.required'   => 'Nama ahli waris tambahan wajib diisi.',
+            'pemohon_tambahan.*.nik.required'    => 'NIK ahli waris tambahan wajib diisi.',
+            'pemohon_tambahan.*.nik.digits'      => 'NIK ahli waris tambahan harus 16 digit.',
+
+            // Pesan Validasi Rekening Bank
             'daftar_rekening.*.nama_bank.required'      => 'Nama bank wajib diisi.',
             'daftar_rekening.*.cabang_bank.required'    => 'Cabang kantor bank wajib diisi.',
             'daftar_rekening.*.nomor_rekening.required' => 'Nomor rekening wajib diisi.',
@@ -170,7 +208,7 @@ class FormPermohonan extends Component
         // 3. Jalankan Validasi
         $this->validate($rules, $messages);
 
-        // 4. Bersihkan karakter titik (.) dari nominal_angka sebelum disimpan ke JSON database
+        // 4. Bersihkan karakter titik (.) dari nominal_angka
         $daftarRekeningCleaned = array_map(function ($rekening) {
             if (isset($rekening['nominal_angka'])) {
                 $rekening['nominal_angka'] = (int) str_replace('.', '', $rekening['nominal_angka']);
@@ -180,30 +218,30 @@ class FormPermohonan extends Component
 
         // 5. Gabungkan seluruh data spesifik menjadi satu struktur array data_spesifik
         $dataSpesifik = [
-            'tempat_lahir'    => $this->tempat_lahir,
-            'tanggal_lahir'   => $this->tanggal_lahir,
-            'jenis_kelamin'   => $this->jenis_kelamin,
-            'pekerjaan'       => $this->pekerjaan,
-            'agama'           => $this->agama,
-            'alamat'          => $this->alamat,
-            'nama_pewaris'    => $this->nama_pewaris,
-            'daftar_rekening' => $daftarRekeningCleaned
+            'tempat_lahir'     => $this->tempat_lahir,
+            'tanggal_lahir'    => $this->tanggal_lahir,
+            'jenis_kelamin'    => $this->jenis_kelamin,
+            'pekerjaan'        => $this->pekerjaan,
+            'agama'            => $this->agama,
+            'alamat'           => $this->alamat,
+            'nama_pewaris'     => $this->nama_pewaris,
+            'daftar_rekening'  => $daftarRekeningCleaned,
+            'pemohon_tambahan' => $this->pemohon_tambahan // BARU: Masuk ke JSON database
         ];
 
         // 6. Masukkan data ke Eloquent Model Permohonan
         Permohonan::create([
             'jenis_naskah'  => 'waarmeking',
-            'nama_pemohon'  => $this->nama_pemohon,
+            'nama_pemohon'  => $this->nama_pemohon, // Pemohon 1 / Perwakilan
             'nik_pemohon'   => $this->nik_pemohon,
             'no_hp_pemohon' => $this->no_hp_pemohon,
             'data_spesifik' => $dataSpesifik,
             'status'        => 'tunda'
         ]);
 
-        // 7. Tampilkan notifikasi sukses via SweetAlert2 (mengirim nama pemohon) dan reset form
+        // 7. Tampilkan notifikasi sukses dan reset form
         $this->dispatch('permohonan-sukses', nama: $this->nama_pemohon);
         
-        // Reset seluruh form ke kondisi kosong awal
         $this->reset(); 
         $this->mount();
     }

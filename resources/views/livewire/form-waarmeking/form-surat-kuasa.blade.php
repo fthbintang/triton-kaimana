@@ -54,7 +54,8 @@
             <div class="mb-5">
                 <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
                     <h5 class="text-court fw-bold m-0">
-                        <span class="badge badge-court me-2">II</span> Pihak I: Pemberi Kuasa (Para Ahli Waris)
+                        <span class="badge badge-court me-2">II</span> Pihak I: Pemberi Kuasa (Keluarga yang Tinggal di
+                        Rumah)
                     </h5>
                     <button type="button" wire:click="tambahPemberi"
                         class="btn btn-sm btn-outline-court fw-semibold rounded-pill px-3">
@@ -65,24 +66,22 @@
                 <!-- TAMBAHAN PENJELASAN ATURAN URUTAN AHLI WARIS -->
                 <div class="alert alert-warning border-0 bg-warning bg-opacity-10 text-dark small rounded-3 mb-3 p-3">
                     <p class="fw-bold mb-1 text-warning-dark">
-                        <i class="bi bi-exclamation-triangle-fill me-1"></i> PENTING: Aturan Urutan Pengisian Ahli Waris
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i> CARA ISI URUTAN NAMA (Sesuai Kartu Keluarga
+                        / KK):
                     </p>
-                    <p class="m-0 text-muted" style="font-size: 0.8rem;">
-                        Untuk mempermudah verifikasi dengan Kartu Keluarga (KK) oleh Petugas Pengadilan dan pihak Bank,
-                        mohon masukkan data dengan urutan berikut:
-                    </p>
-                    <ol class="ps-3 mb-0 mt-1 text-muted" style="font-size: 0.8rem;">
-                        <li><strong>Urutan Pertama (Ahli Waris 1):</strong> Masukkan data <strong>Ibu atau Ayah</strong>
-                            yang hidup terlama (pasangan dari almarhum/almarhumah).</li>
-                        <li><strong>Urutan Berikutnya (Ahli Waris 2, 3, dst):</strong> Masukkan data <strong>Anak
-                                Kandung</strong>, berurutan dimulai dari <strong>Anak yang Paling Tua hingga yang Paling
+                    <ol class="ps-3 mb-0 text-muted" style="font-size: 0.8rem;">
+                        <li>Isi data <strong>Orang Tua</strong> terlebih dahulu (Pasangan Almarhum/ah yang masih hidup).
+                        </li>
+                        <li>Isi data <strong>Anak Kandung</strong>, berurutan dari yang <strong>Paling Tua hingga Paling
                                 Muda</strong>.</li>
                     </ol>
                 </div>
 
-                <p class="text-muted small mb-3 fst-italic">
-                    * Pemberi Kuasa adalah semua anggota keluarga (ahli waris) yang menyerahkan urusan/haknya kepada
-                    satu orang kepercayaan. Klik "Tambah Orang" jika ahli waris lebih dari 1 orang.
+                <p class="text-muted small mb-3 fst-italic" style="font-size: 0.85rem; line-height: 1.4;">
+                    * <strong>Pemberi Kuasa</strong> adalah semua anggota keluarga yang <strong
+                        class="text-danger">TIDAK BISA IKUT PERGI</strong> ke pengadilan. Mereka memberikan mandat
+                    kepada saudara yang berangkat.
+                    <br>
                 </p>
 
                 @foreach ($pemberi_kuasa as $index => $pemberi)
@@ -157,8 +156,10 @@
                     </button>
                 </div>
                 <p class="text-muted small mb-3 fst-italic">
-                    * Penerima Kuasa adalah satu orang (bisa salah satu ahli waris atau orang lain) yang ditunjuk dan
-                    diberi kepercayaan untuk pergi mengurus dokumen ke bank/instansi terkait.
+                    * Penerima Kuasa adalah pihak (<strong class="text-court">bisa 1 orang atau lebih</strong>) yang
+                    ditunjuk dan diberi kepercayaan penuh untuk datang langsung mengurus dokumen ke Pengadilan Negeri
+                    Kaimana serta ke bank/instansi terkait. Jika perwakilan yang berangkat lebih dari 1 orang, silakan
+                    klik tombol <strong>Tambah Penerima</strong> di atas.
                 </p>
 
                 @foreach ($penerima_kuasa as $index => $penerima)
