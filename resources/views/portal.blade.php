@@ -179,7 +179,7 @@
 
             <!-- 3. Surat Keterangan Tidak Pernah Dipidana -->
             <div class="col-md-4 col-sm-6">
-                <a href="{{ route('layanan.tidak-dipidana') }}" class="text-decoration-none text-dark">
+                <a href="{{ route('layanan.tidak-dipidana') }}" wire:navigate class="text-decoration-none text-dark">
                     <div class="card h-100 p-4 text-center menu-card">
                         <div class="card-body">
                             <div class="icon-box">

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\FormWaarmeking\FormPermohonan as WaarmekingPermohonan;
 use App\Livewire\FormWaarmeking\FormSuratKuasa as WaarmekingSuratKuasa;
 use App\Livewire\FormKuasaInsidentil\FormPermohonan as KuasaInsidentilPermohonan;
+use App\Livewire\TidakPernahDipidana\FormPermohonan as TidakDipidanaPermohonan;
 
 Route::get('/', function () {
     return view('portal');
@@ -21,7 +22,5 @@ Route::livewire('/layanan/surat-kuasa-waarmeking', WaarmekingSuratKuasa::class)
 Route::livewire('/layanan/permohonan-surat-kuasa-insidentil', KuasaInsidentilPermohonan::class)
     ->name('layanan.permohononan-kuasa-insidentil');
 
-// Route placeholder untuk layanan lainnya
-Route::get('/layanan/tidak-dipidana', function() { 
-    return 'Halaman Surat Keterangan Tidak Pernah Dipidana (Sedang Dikembangkan)'; 
-})->name('layanan.tidak-dipidana');
+Route::livewire('/layanan/tidak-dipidana', TidakDipidanaPermohonan::class)
+    ->name('layanan.tidak-dipidana');
