@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-// 1. Import Class Livewire dari Sub-Folder Baru
 use App\Livewire\FormWaarmeking\FormPermohonan as WaarmekingPermohonan;
 use App\Livewire\FormWaarmeking\FormSuratKuasa as WaarmekingSuratKuasa;
 use App\Livewire\FormKuasaInsidentil\FormPermohonan as KuasaInsidentilPermohonan;
@@ -12,9 +11,11 @@ Route::get('/', function () {
     return view('portal');
 })->name('portal');
 
-// 2. Routing Menggunakan Standar Livewire 4.x & Nama Class Baru (Alias)
-Route::livewire('/layanan/permohonan-waarmeking', WaarmekingPermohonan::class)
-    ->name('layanan.waarmeking');
+Route::livewire('/permohonan/waarmeking', WaarmekingPermohonan::class)->name('waarmeking.index');
+Route::livewire('/permohonan/waarmeking/tambah', WaarmekingPermohonan::class)->name('waarmeking.create');
+Route::livewire('/permohonan/waarmeking/edit/{id}', WaarmekingPermohonan::class)->name('waarmeking.edit');
+Route::livewire('/permohonan/cetak-permohonan/waarmeking-pdf/{id}', WaarmekingPermohonan::class)->name('cetak.waarmeking.pdf');
+Route::get('/permohonan/cetak-permohonan/waarmeking-word/{id}', [WaarmekingPermohonan::class, 'bikinWordDownload'])->name('cetak.waarmeking.word');
 
 Route::livewire('/layanan/surat-kuasa-waarmeking', WaarmekingSuratKuasa::class)
     ->name('layanan.surat-kuasa');

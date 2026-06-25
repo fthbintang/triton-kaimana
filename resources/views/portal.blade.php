@@ -127,7 +127,7 @@
 
                             <div class="row g-3 justify-content-center">
                                 <div class="col-md-6">
-                                    <a href="{{ route('layanan.waarmeking') }}" wire:navigate
+                                    <a href="{{ route('waarmeking.index') }}" wire:navigate
                                         class="text-decoration-none text-dark">
                                         <div class="card p-4 h-100 menu-card border border-light-subtle">
                                             <div class="text-court mb-2"><i class="bi bi-file-earmark-text fs-3"></i>

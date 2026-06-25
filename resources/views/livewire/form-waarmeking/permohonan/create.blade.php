@@ -1,6 +1,13 @@
 <div class="card shadow-sm border-0 rounded-3">
     <!-- HEADER UTAMA FORM -->
-    <div class="card-header bg-court text-white p-4 text-center rounded-top-3">
+    <div class="card-header bg-court text-white p-4 text-center rounded-top-3 position-relative">
+
+        <a href="/permohonan/waarmeking" wire:navigate
+            class="btn btn-sm btn-outline-light position-absolute start-0 top-50 translate-middle-y ms-3 rounded-2 shadow-sm d-inline-flex align-items-center gap-1">
+            <i class="bi bi-arrow-left"></i>
+            <span class="d-none d-md-inline">Kembali</span>
+        </a>
+
         <h5 class="fw-bold m-0 text-uppercase" style="letter-spacing: 1px;">
             Formulir Surat Permohonan Waarmeking
         </h5>
@@ -14,30 +21,16 @@
         <!-- KOTAK ALUR PETUNJUK MASYARAKAT (PENJELASAN WAARMEKING) -->
         <div class="alert alert-success border-0 bg-success bg-opacity-10 rounded-3 mb-5 p-3 shadow-sm">
             <h6 class="fw-bold text-court mb-2">
-                <i class="bi bi-info-circle-fill me-2"></i> Apa itu Waarmeking & Bagaimana Prosesnya?
+                <i class="bi bi-info-circle-fill me-2"></i> Apa itu Waarmeking?
             </h6>
             <p class="small text-muted mb-3">
                 <strong>Waarmeking</strong> adalah proses pendaftaran/pengesahan surat kesepakatan ahli waris di
                 Pengadilan Negeri, biasanya digunakan sebagai syarat utama untuk <strong>mencairkan saldo tabungan
                     bank</strong> milik keluarga yang sudah meninggal dunia.
             </p>
-            <div class="row g-3 small text-muted border-top pt-2">
-                <div class="col-md-4">
-                    <span class="badge badge-court rounded-pill me-1">1</span> <strong>Isi Form:</strong> Masukkan data
-                    Anda, data almarhum, dan nomor rekening bank secara teliti.
-                </div>
-                <div class="col-md-4">
-                    <span class="badge badge-court rounded-pill me-1">2</span> <strong>Kirim:</strong> Periksa kembali
-                    saldo angka, lalu klik tombol kirim di bawah.
-                </div>
-                <div class="col-md-4">
-                    <span class="badge badge-court rounded-pill me-1">3</span> <strong>Ke Pengadilan:</strong> Bawa KTP
-                    Anda & Buku Tabungan asli almarhum ke Meja PTSP Hukum PN Kaimana.
-                </div>
-            </div>
         </div>
 
-        <form wire:submit.prevent="simpan">
+        <form wire:submit.prevent="save">
 
             <!-- BAGIAN I: DATA AHLI WARIS / PEMOHON -->
             <div class="mb-5">
@@ -398,7 +391,7 @@
             <!-- TOMBOL AKSI RESPONSIF -->
             <div class="row g-2 mt-4 pt-3 border-top">
                 <div class="col-6 col-md-3 order-1">
-                    <a href="/" wire:navigate
+                    <a href="{{ route('waarmeking.index') }}" wire:navigate
                         class="btn btn-light border text-secondary w-100 py-2 fw-semibold rounded-3 shadow-sm">
                         <i class="bi bi-arrow-left me-1"></i> Kembali
                     </a>
@@ -417,79 +410,24 @@
 </div>
 
 <!-- SCRIPT LISTENER SWEETALERT2 -->
-{{-- <script>
-    document.addEventListener('livewire:init', () => {
-        Livewire.on('permohonan-sukses', (event) => {
-            // Ambil nama dari event detail sesuai standar Livewire terbaru
-            const namaPemohon = event.nama || event[0].nama;
-
+@if (session()->has('cetak_id'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({
-                title: "Pendaftaran Berhasil!",
-                html: `
-                    <div class="text-start small">
-                        <p class="text-center fw-semibold text-success mb-3">Permohonan Waarmeking Anda berhasil dikirim ke sistem TRITON!</p>
-                        <hr>
-                        <ol class="ps-3 mb-0 text-muted">
-                            <li class="mb-2">Silakan kembali ke <strong>Meja PTSP Hukum</strong> untuk dibantu petugas mencetak Surat Permohonan Anda.</li>
-                            <li>Sampaikan kepada petugas bahwa permohonan diajukan atas nama: <br>
-                                <span class="badge bg-court text-white mt-1 px-3 py-2 fs-6 w-100 text-truncate">
-                                    <i class="bi bi-person-fill me-1"></i> ${namaPemohon}
-                                </span>
-                            </li>
-                        </ol>
-                    </div>
-                `,
-                icon: "success",
-                confirmButtonText: '<i class="bi bi-arrow-left-circle me-1"></i> Selesai & Kembali',
-                confirmButtonColor: '#2c3e50',
-                allowOutsideClick: false,
-                customClass: {
-                    popup: 'rounded-4 shadow'
-                }
+                title: 'Pendaftaran Berhasil!',
+                text: 'Data permohonan atas nama {{ session('cetak_nama') }} telah disimpan. Apakah Anda ingin langsung mencetak dokumen?',
+                icon: 'success',
+                showCancelButton: true,
+                confirmButtonColor: '#1e4620',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="bi bi-printer"></i> Cetak PDF Sekarang',
+                cancelButtonText: 'Nanti Saja'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Livewire.navigate('/');
+                    // Membuka tab baru untuk cetak PDF stream berdasarkan ID yang disimpan
+                    window.open('?id={{ session('cetak_id') }}', '_blank');
                 }
             });
         });
-    });
-</script> --}}
-
-<script>
-    document.addEventListener('livewire:init', () => {
-        Livewire.on('permohonan-sukses', (event) => {
-            // Ambil data event dengan aman untuk Livewire v3
-            // Biasanya data dikirim dalam bentuk array pada indeks pertama, atau objek langsung
-            let eventData = Array.isArray(event) ? event[0] : event;
-            let namaPemohon = eventData.nama || (eventData.detail && eventData.detail.nama) ||
-                'Pemohon';
-
-            Swal.fire({
-                title: "Pendaftaran Berhasil!",
-                html: '<div class="text-start small">' +
-                    '<p class="text-center fw-semibold text-success mb-3">Permohonan Waarmeking Anda berhasil dikirim ke sistem TRITON!</p>' +
-                    '<hr>' +
-                    '<ol class="ps-3 mb-0 text-muted">' +
-                    '<li class="mb-2">Silakan kembali ke <strong>Meja PTSP Hukum</strong> untuk dibantu petugas mencetak Surat Permohonan Anda.</li>' +
-                    '<li>Sampaikan kepada petugas bahwa permohonan diajukan atas nama: <br>' +
-                    '<span class="badge bg-court text-white mt-1 px-3 py-2 fs-6 w-100 text-truncate">' +
-                    '<i class="bi bi-person-fill me-1"></i> ' + namaPemohon +
-                    '</span>' +
-                    '</li>' +
-                    '</ol>' +
-                    '</div>',
-                icon: "success",
-                confirmButtonText: '<i class="bi bi-arrow-left-circle me-1"></i> Selesai & Kembali',
-                confirmButtonColor: '#2c3e50',
-                allowOutsideClick: false,
-                customClass: {
-                    popup: 'rounded-4 shadow'
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Livewire.navigate('/');
-                }
-            });
-        });
-    });
-</script>
+    </script>
+@endif
