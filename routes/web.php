@@ -13,8 +13,9 @@ Route::get('/', function () {
 
 Route::livewire('/permohonan/waarmeking', WaarmekingPermohonan::class)->name('waarmeking.index');
 Route::livewire('/permohonan/waarmeking/tambah', WaarmekingPermohonan::class)->name('waarmeking.create');
+Route::livewire('/permohonan/waarmeking/edit/{id}', WaarmekingPermohonan::class)->name('waarmeking.edit');
 Route::livewire('/permohonan/cetak-permohonan/waarmeking-pdf/{id}', WaarmekingPermohonan::class)->name('cetak.waarmeking.pdf');
-Route::get('/permohonan/cetak-permohonan/waarmeking-word/{id}', [WaarmekingPermohonan::class, 'bikinWordDownload'])->name('cetak.waarmeking.word');
+Route::livewire('/permohonan/cetak-permohonan/waarmeking-word/{id}', [WaarmekingPermohonan::class, 'bikinWordDownload'])->name('cetak.waarmeking.word');
 
 Route::livewire('/layanan/surat-kuasa-waarmeking', WaarmekingSuratKuasa::class)
     ->name('layanan.surat-kuasa');

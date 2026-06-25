@@ -80,8 +80,27 @@
                                             </ul>
                                         </div>
                                     </td>
+                                    {{-- <td class="pe-4 text-center">
+                                        <div class="d-inline-flex gap-1">
+                                            <a href="{{ route('cetak.waarmeking.pdf', ['id' => $item->id]) }}"
+                                                target="_blank" class="btn btn-danger btn-sm px-2 rounded-2 shadow-sm">
+                                                <i class="bi bi-file-earmark-pdf-fill"></i> PDF
+                                            </a>
+
+                                            <a href="{{ route('cetak.waarmeking.word', ['id' => $item->id]) }}"
+                                                class="btn btn-primary btn-sm px-2 rounded-2 shadow-sm">
+                                                <i class="bi bi-file-earmark-word-fill"></i> Word
+                                            </a>
+                                        </div>
+                                    </td> --}}
                                     <td class="pe-4 text-center">
                                         <div class="d-inline-flex gap-1">
+                                            <a href="{{ route('waarmeking.edit', ['id' => $item->id]) }}" wire:navigate
+                                                class="btn btn-warning btn-sm px-2 rounded-2 shadow-sm text-white"
+                                                title="Ubah Data">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </a>
+
                                             <a href="{{ route('cetak.waarmeking.pdf', ['id' => $item->id]) }}"
                                                 target="_blank" class="btn btn-danger btn-sm px-2 rounded-2 shadow-sm">
                                                 <i class="bi bi-file-earmark-pdf-fill"></i> PDF
