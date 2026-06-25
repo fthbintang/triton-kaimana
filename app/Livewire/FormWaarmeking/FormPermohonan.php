@@ -6,6 +6,9 @@ use App\Models\Permohonan;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Barryvdh\DomPDF\Facade\Pdf;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\Shared\Converter;
 
 class FormPermohonan extends Component
 {
@@ -362,6 +365,77 @@ class FormPermohonan extends Component
         ])->send();
 
         exit;
+    }
+
+    public function bikinWordDownload($id)
+    {
+        $permohonan = Permohonan::findOrFail($id);
+        $dataSpesifik = $permohonan->data_spesifik;
+
+        $daftarRekeningCleaned = array_map(function ($rekening) {
+            if (isset($rekening['nominal_angka'])) {
+                $rekening['nominal_huruf'] = $this->terbilang((int)$rekening['nominal_angka']) . " Rupiah";
+            }
+            return $rekening;
+        }, $dataSpesifik['daftar_rekening'] ?? []);
+
+        // 1. Ambil hitungan baris dinamis yang sama persis seperti versi PDF
+        $jumlahRekening = count($daftarRekeningCleaned);
+        $jumlahAhliWaris = count($dataSpesifik['pemohon_tambahan'] ?? []);
+        $totalBarisDinamis = $jumlahRekening + $jumlahAhliWaris;
+
+        $fontSize = '12pt';
+        $lineHeight = '1.5';
+        $tableSpacing = '15px';
+
+        if ($totalBarisDinamis >= 3 && $totalBarisDinamis <= 5) {
+            $fontSize = '11pt';
+            $lineHeight = '1.3';
+            $tableSpacing = '10px';
+        } elseif ($totalBarisDinamis > 5) {
+            $fontSize = '11.5pt';
+            $lineHeight = '1.4';
+            $tableSpacing = '12px';
+        }
+
+        // 2. Render view Blade PDF Anda menjadi string HTML murni (Gunakan file blade yang sama persis!)
+        $htmlContent = view('exports.pdf-permohonan-waarmeking', [
+            'nama_pemohon'     => $permohonan->nama_pemohon,
+            'tempat_lahir'     => $dataSpesifik['tempat_lahir'] ?? '',
+            'tanggal_lahir'    => $dataSpesifik['tanggal_lahir'] ?? '',
+            'jenis_kelamin'    => $dataSpesifik['jenis_kelamin'] ?? '',
+            'pekerjaan'        => $dataSpesifik['pekerjaan'] ?? '',
+            'agama'            => $dataSpesifik['agama'] ?? '',
+            'alamat'           => $dataSpesifik['alamat'] ?? '',
+            'nama_pewaris'     => $dataSpesifik['nama_pewaris'] ?? '',
+            'daftar_rekening'  => $daftarRekeningCleaned,
+            'pemohon_tambahan' => $dataSpesifik['pemohon_tambahan'] ?? [],
+            'fontSize'         => $fontSize,
+            'lineHeight'       => $lineHeight,
+            'tableSpacing'     => $tableSpacing
+        ])->render();
+
+        // 3. Bungkus HTML dengan XML dokumen Word agar dibaca resmi sebagai halaman Portrait A4 oleh MS Word
+        $wordDocument = "
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+            <title>Export Word</title>
+            </head>
+        <body>
+            <div class='Section1'>
+                {$htmlContent}
+            </div>
+        </body>
+        </html>";
+
+        // 4. Stream ke browser untuk langsung download berkas .doc/.docx
+        $filename = 'Permohonan_Waarmeking_' . $permohonan->nama_pemohon . '.doc';
+
+        return response($wordDocument, 200, [
+            'Content-Type' => 'application/msword',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Cache-Control' => 'private, max-age=0, must-revalidate',
+        ]);
     }
 
     #[Layout('layouts.app')]

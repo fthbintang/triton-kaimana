@@ -81,10 +81,17 @@
                                         </div>
                                     </td>
                                     <td class="pe-4 text-center">
-                                        <a href="{{ route('cetak.waarmeking.pdf', ['id' => $item->id]) }}"
-                                            target="_blank" class="btn btn-danger btn-sm px-3 rounded-2 shadow-sm">
-                                            <i class="bi bi-file-earmark-pdf-fill me-1"></i>Cetak PDF
-                                        </a>
+                                        <div class="d-inline-flex gap-1">
+                                            <a href="{{ route('cetak.waarmeking.pdf', ['id' => $item->id]) }}"
+                                                target="_blank" class="btn btn-danger btn-sm px-2 rounded-2 shadow-sm">
+                                                <i class="bi bi-file-earmark-pdf-fill"></i> PDF
+                                            </a>
+
+                                            <a href="{{ route('cetak.waarmeking.word', ['id' => $item->id]) }}"
+                                                class="btn btn-primary btn-sm px-2 rounded-2 shadow-sm">
+                                                <i class="bi bi-file-earmark-word-fill"></i> Word
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
