@@ -14,7 +14,7 @@
     @if (!$isCreating)
         <div class="card shadow-sm border-0 rounded-3">
             <div
-                class="card-header bg-white py-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 border-bottom-0">
+                class="card-header bg-white py-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4 border-bottom-0">
                 <div class="d-flex align-items-start gap-3">
                     <a href="{{ route('portal') }}" wire:navigate
                         class="btn btn-outline-secondary btn-sm p-2 rounded-2 shadow-sm d-inline-flex align-items-center"
@@ -31,8 +31,13 @@
                     </div>
                 </div>
 
-                <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2 w-100 w-md-auto">
-                    <div class="input-group shadow-sm" style="min-width: 260px;">
+                <div class="d-flex flex-column gap-2 w-100 ms-md-auto" style="max-width: 300px;">
+                    <a href="{{ route('waarmeking.create') }}" wire:navigate
+                        class="btn btn-primary py-2 rounded-2 shadow-sm d-inline-flex align-items-center justify-content-center gap-2 fw-semibold">
+                        <i class="bi bi-plus-circle-fill"></i>
+                        <span>Tambah Permohonan Baru</span>
+                    </a>
+                    <div class="input-group shadow-sm">
                         <span class="input-group-text bg-white border-end-0 text-muted py-2">
                             <i class="bi bi-search"></i>
                         </span>
@@ -40,12 +45,6 @@
                             class="form-control border-start-0 ps-0 text-sm py-2"
                             placeholder="Cari nama, NIK, atau HP...">
                     </div>
-
-                    <a href="{{ route('waarmeking.create') }}" wire:navigate
-                        class="btn btn-primary px-4 py-2 rounded-2 shadow-sm d-inline-flex align-items-center justify-content-center gap-2 fw-semibold text-nowrap">
-                        <i class="bi bi-plus-circle-fill"></i>
-                        <span>Tambah Permohonan Baru</span>
-                    </a>
                 </div>
             </div>
 

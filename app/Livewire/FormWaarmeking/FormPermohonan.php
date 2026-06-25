@@ -6,19 +6,14 @@ use App\Models\Permohonan;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Barryvdh\DomPDF\Facade\Pdf;
-use PhpOffice\PhpWord\PhpWord;
-use PhpOffice\PhpWord\IOFactory;
-use PhpOffice\PhpWord\Shared\Converter;
 use Livewire\WithPagination;
 
 class FormPermohonan extends Component
 {
-    use WithPagination; // 2. Gunakan Trait di dalam Class
-
-    // Properti khusus Pagination (Menggunakan styling Bootstrap)
+    use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
-    // 3. Properti untuk menampung kata kunci pencarian
+    // Properti untuk menampung kata kunci pencarian
     public string $search = '';
     
     // Pengontrol Tampilan Halaman (Tabel vs Form)
@@ -192,113 +187,6 @@ class FormPermohonan extends Component
         $this->pemohon_tambahan = $dataSpesifik['pemohon_tambahan'] ?? [];
         $this->daftar_rekening  = $dataSpesifik['daftar_rekening'] ?? [];
     }
-
-    // Fungsi Eksekusi ketika Form di-Submit oleh user
-    // public function save(): void
-    // {
-    //     // 1. Definisikan Aturan Validasi untuk Semua Kolom
-    //     $rules = [
-    //         'nama_pemohon'   => 'required|string|min:3',
-    //         'nik_pemohon'    => 'required|numeric|digits:16',
-    //         'no_hp_pemohon'  => 'required|numeric|min_digits:10',
-
-    //         'tempat_lahir'   => 'required|string|min:3',
-    //         'tanggal_lahir'  => 'required|date',
-    //         'jenis_kelamin'  => 'required|in:Laki-laki,Perempuan',
-    //         'agama'          => 'required|string',
-    //         'pekerjaan'      => 'required|string',
-    //         'nama_pewaris'   => 'required|string|min:3',
-    //         'alamat'         => 'required|string|min:10',
-
-    //         'pemohon_tambahan'                    => 'nullable|array',
-    //         'pemohon_tambahan.*.nama'             => 'required|string|min:3',
-    //         'pemohon_tambahan.*.nik'              => 'required|numeric|digits:16',
-    //         'pemohon_tambahan.*.tempat_lahir'     => 'required|string',
-    //         'pemohon_tambahan.*.tanggal_lahir'    => 'required|date',
-    //         'pemohon_tambahan.*.jenis_kelamin'    => 'required|in:Laki-laki,Perempuan',
-    //         'pemohon_tambahan.*.agama'            => 'required|string',
-    //         'pemohon_tambahan.*.pekerjaan'        => 'required|string',
-    //         'pemohon_tambahan.*.alamat'           => 'required|string',
-
-    //         'daftar_rekening'                    => 'required|array|min:1',
-    //         'daftar_rekening.*.nama_bank'        => 'required|string',
-    //         'daftar_rekening.*.cabang_bank'      => 'required|string',
-    //         'daftar_rekening.*.nomor_rekening'   => 'required|numeric',
-    //         'daftar_rekening.*.nominal_angka'    => 'required',
-    //     ];
-
-    //     // 2. Kustomisasi Pesan Eror Bahasa Indonesia
-    //     $messages = [
-    //         'nama_pemohon.required'   => 'Nama lengkap pemohon utama wajib diisi.',
-    //         'nama_pemohon.min'        => 'Nama lengkap minimal berisi 3 karakter.',
-    //         'nik_pemohon.required'    => 'NIK pemohon utama wajib diisi.',
-    //         'nik_pemohon.digits'      => 'NIK pemohon utama harus tepat berjumlah 16 digit.',
-    //         'nik_pemohon.numeric'     => 'NIK harus berupa angka.',
-    //         'no_hp_pemohon.required'  => 'Nomor HP / WhatsApp wajib diisi.',
-    //         'no_hp_pemohon.min_digits'=> 'Nomor HP minimal berisi 10 digit.',
-
-    //         'tempat_lahir.required'   => 'Tempat lahir wajib diisi.',
-    //         'tanggal_lahir.required'  => 'Tanggal lahir wajib diisi.',
-    //         'jenis_kelamin.required'  => 'Silakan pilih jenis kelamin.',
-    //         'agama.required'          => 'Agama wajib diisi.',
-    //         'pekerjaan.required'      => 'Pekerjaan wajib diisi.',
-    //         'nama_pewaris.required'   => 'Nama pewaris wajib diisi.',
-    //         'alamat.required'         => 'Alamat domisili lengkap wajib diisi.',
-    //         'alamat.min'              => 'Alamat harus ditulis secara lengkap (minimal 10 karakter).',
-
-    //         'pemohon_tambahan.*.nama.required'   => 'Nama ahli waris tambahan wajib diisi.',
-    //         'pemohon_tambahan.*.nik.required'    => 'NIK ahli waris tambahan wajib diisi.',
-    //         'pemohon_tambahan.*.nik.digits'      => 'NIK ahli waris tambahan harus 16 digit.',
-
-    //         'daftar_rekening.*.nama_bank.required'      => 'Nama bank wajib diisi.',
-    //         'daftar_rekening.*.cabang_bank.required'    => 'Cabang kantor bank wajib diisi.',
-    //         'daftar_rekening.*.nomor_rekening.required' => 'Nomor rekening wajib diisi.',
-    //         'daftar_rekening.*.nomor_rekening.numeric'  => 'Nomor rekening harus berupa angka murni.',
-    //         'daftar_rekening.*.nominal_angka.required'  => 'Nominal tabungan wajib diisi.',
-    //     ];
-
-    //     // 3. Jalankan Validasi
-    //     $this->validate($rules, $messages);
-
-    //     // 4. Bersihkan karakter titik (.) dari nominal_angka
-    //     $daftarRekeningCleaned = array_map(function ($rekening) {
-    //         if (isset($rekening['nominal_angka'])) {
-    //             $rekening['nominal_angka'] = (int) str_replace('.', '', $rekening['nominal_angka']);
-    //         }
-    //         return $rekening;
-    //     }, $this->daftar_rekening);
-
-    //     // 5. Gabungkan seluruh data spesifik menjadi satu struktur array data_spesifik
-    //     $dataSpesifik = [
-    //         'tempat_lahir'     => $this->tempat_lahir,
-    //         'tanggal_lahir'    => $this->tanggal_lahir,
-    //         'jenis_kelamin'    => $this->jenis_kelamin,
-    //         'pekerjaan'        => $this->pekerjaan,
-    //         'agama'            => $this->agama,
-    //         'alamat'           => $this->alamat,
-    //         'nama_pewaris'     => $this->nama_pewaris,
-    //         'daftar_rekening'  => $daftarRekeningCleaned,
-    //         'pemohon_tambahan' => $this->pemohon_tambahan 
-    //     ];
-
-    //     // 6. Masukkan data ke Eloquent Model Permohonan
-    //     $permohonan = Permohonan::create([
-    //         'jenis_naskah'  => 'waarmeking',
-    //         'nama_pemohon'  => $this->nama_pemohon, 
-    //         'nik_pemohon'   => $this->nik_pemohon,
-    //         'no_hp_pemohon' => $this->no_hp_pemohon,
-    //         'data_spesifik' => $dataSpesifik, 
-    //     ]);
-
-    //     // 7. MODIFIKASI: Gunakan Flash Session untuk membawa sinyal sukses + ID ke halaman Index
-    //     // (Karena halaman dialihkan, browser butuh mengingat ini setelah halaman termuat ulang)
-    //     session()->flash('success', 'Permohonan Waarmeking berhasil didaftarkan.');
-    //     session()->flash('cetak_id', $permohonan->id);
-    //     session()->flash('cetak_nama', $this->nama_pemohon);
-        
-    //     // 8. REDIRECT: Lempar user kembali ke halaman tabel index utama TRITON
-    //     $this->redirect('/permohonan/waarmeking', navigate: true);
-    // }
 
     public function save(): void
     {
@@ -530,18 +418,7 @@ class FormPermohonan extends Component
         $this->resetPage();
     }
 
-    // #[Layout('layouts.app')]
-    // public function render()
-    // {
-    //     $daftar_waarmeking = Permohonan::where('jenis_naskah', 'waarmeking')
-    //                                     ->latest()
-    //                                     ->get();
-
-    //     return view('livewire.form-waarmeking.permohonan.index', [
-    //         'daftar_waarmeking' => $daftar_waarmeking
-    //     ]);
-    // }
-
+    #[Layout('layouts.app')]
     public function render()
     {
         // 5. Modifikasi query untuk memfilter data berdasarkan pencarian dan membaginya per halaman
@@ -549,8 +426,8 @@ class FormPermohonan extends Component
             ->when($this->search, function($query) {
                 $query->where(function($q) {
                     $q->where('nama_pemohon', 'like', '%' . $this->search . '%')
-                      ->orWhere('nik_pemohon', 'like', '%' . $this->search . '%')
-                      ->orWhere('no_hp_pemohon', 'like', '%' . $this->search . '%');
+                        ->orWhere('nik_pemohon', 'like', '%' . $this->search . '%')
+                        ->orWhere('no_hp_pemohon', 'like', '%' . $this->search . '%');
                 });
             })
             ->latest()
