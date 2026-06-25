@@ -21,27 +21,13 @@
         <!-- KOTAK ALUR PETUNJUK MASYARAKAT (PENJELASAN WAARMEKING) -->
         <div class="alert alert-success border-0 bg-success bg-opacity-10 rounded-3 mb-5 p-3 shadow-sm">
             <h6 class="fw-bold text-court mb-2">
-                <i class="bi bi-info-circle-fill me-2"></i> Apa itu Waarmeking & Bagaimana Prosesnya?
+                <i class="bi bi-info-circle-fill me-2"></i> Apa itu Waarmeking?
             </h6>
             <p class="small text-muted mb-3">
                 <strong>Waarmeking</strong> adalah proses pendaftaran/pengesahan surat kesepakatan ahli waris di
                 Pengadilan Negeri, biasanya digunakan sebagai syarat utama untuk <strong>mencairkan saldo tabungan
                     bank</strong> milik keluarga yang sudah meninggal dunia.
             </p>
-            <div class="row g-3 small text-muted border-top pt-2">
-                <div class="col-md-4">
-                    <span class="badge badge-court rounded-pill me-1">1</span> <strong>Isi Form:</strong> Masukkan data
-                    Anda, data almarhum, dan nomor rekening bank secara teliti.
-                </div>
-                <div class="col-md-4">
-                    <span class="badge badge-court rounded-pill me-1">2</span> <strong>Kirim:</strong> Periksa kembali
-                    saldo angka, lalu klik tombol kirim di bawah.
-                </div>
-                <div class="col-md-4">
-                    <span class="badge badge-court rounded-pill me-1">3</span> <strong>Ke Pengadilan:</strong> Bawa KTP
-                    Anda & Buku Tabungan asli almarhum ke Meja PTSP Hukum PN Kaimana.
-                </div>
-            </div>
         </div>
 
         <form wire:submit.prevent="save">

@@ -80,36 +80,73 @@
                                             </ul>
                                         </div>
                                     </td>
-                                    {{-- <td class="pe-4 text-center">
-                                        <div class="d-inline-flex gap-1">
-                                            <a href="{{ route('cetak.waarmeking.pdf', ['id' => $item->id]) }}"
-                                                target="_blank" class="btn btn-danger btn-sm px-2 rounded-2 shadow-sm">
-                                                <i class="bi bi-file-earmark-pdf-fill"></i> PDF
-                                            </a>
-
-                                            <a href="{{ route('cetak.waarmeking.word', ['id' => $item->id]) }}"
-                                                class="btn btn-primary btn-sm px-2 rounded-2 shadow-sm">
-                                                <i class="bi bi-file-earmark-word-fill"></i> Word
-                                            </a>
-                                        </div>
-                                    </td> --}}
                                     <td class="pe-4 text-center">
-                                        <div class="d-inline-flex gap-1">
+                                        <div class="d-inline-flex gap-1 align-items-center">
                                             <a href="{{ route('waarmeking.edit', ['id' => $item->id]) }}" wire:navigate
                                                 class="btn btn-warning btn-sm px-2 rounded-2 shadow-sm text-white"
                                                 title="Ubah Data">
                                                 <i class="bi bi-pencil-square"></i> Edit
                                             </a>
 
-                                            <a href="{{ route('cetak.waarmeking.pdf', ['id' => $item->id]) }}"
-                                                target="_blank" class="btn btn-danger btn-sm px-2 rounded-2 shadow-sm">
-                                                <i class="bi bi-file-earmark-pdf-fill"></i> PDF
-                                            </a>
+                                            <button type="button"
+                                                onclick="konfirmasiHapus({{ $item->id }}, '{{ $item->nama_pemohon }}')"
+                                                class="btn btn-danger btn-sm px-2 rounded-2 shadow-sm"
+                                                title="Hapus Data">
+                                                <i class="bi bi-trash-fill"></i> Hapus
+                                            </button>
 
-                                            <a href="{{ route('cetak.waarmeking.word', ['id' => $item->id]) }}"
-                                                class="btn btn-primary btn-sm px-2 rounded-2 shadow-sm">
-                                                <i class="bi bi-file-earmark-word-fill"></i> Word
-                                            </a>
+                                            <button type="button"
+                                                class="btn btn-primary btn-sm px-2 rounded-2 shadow-sm d-inline-flex align-items-center gap-1"
+                                                data-bs-toggle="modal" data-bs-target="#modalCetak{{ $item->id }}">
+                                                <i class="bi bi-printer-fill"></i> Cetak
+                                            </button>
+
+                                            <div class="modal fade" id="modalCetak{{ $item->id }}" tabindex="-1"
+                                                aria-labelledby="labelModal{{ $item->id }}" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-sm">
+                                                    <div class="modal-content border-0 shadow rounded-3">
+                                                        <div class="modal-header bg-light border-bottom-0 py-3">
+                                                            <h6 class="modal-title fw-bold text-dark"
+                                                                id="labelModal{{ $item->id }}">
+                                                                <i class="bi bi-download text-primary me-2"></i>Format
+                                                                Unduhan
+                                                            </h6>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-submit="modal" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+
+                                                        <div class="modal-body text-center p-4">
+                                                            <p class="text-muted small mb-4">Silakan pilih format
+                                                                dokumen hukum Waarmeking atas nama
+                                                                <strong>{{ $item->nama_pemohon }}</strong> :
+                                                            </p>
+
+                                                            <div class="d-grid gap-2">
+                                                                <a href="{{ route('cetak.waarmeking.pdf', ['id' => $item->id]) }}"
+                                                                    target="_blank"
+                                                                    class="btn btn-danger py-2.5 rounded-2 d-flex align-items-center justify-content-center gap-2 fw-semibold shadow-sm">
+                                                                    <i class="bi bi-file-earmark-pdf-fill fs-5"></i>
+                                                                    <span>Unduh Dokumen PDF</span>
+                                                                </a>
+
+                                                                <a href="{{ route('cetak.waarmeking.word', ['id' => $item->id]) }}"
+                                                                    class="btn btn-primary py-2.5 rounded-2 d-flex align-items-center justify-content-center gap-2 fw-semibold shadow-sm">
+                                                                    <i class="bi bi-file-earmark-word-fill fs-5"></i>
+                                                                    <span>Unduh Dokumen Word</span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+
+                                                        <div
+                                                            class="modal-footer bg-light border-top-0 justify-content-center py-2">
+                                                            <button type="button"
+                                                                class="btn btn-link text-decoration-none text-muted btn-sm"
+                                                                data-bs-dismiss="modal">Batal</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -118,7 +155,8 @@
                                     <td colspan="6" class="text-center py-5 text-muted">
                                         <div class="mb-2 fs-1">📂</div>
                                         <h6 class="fw-semibold mb-1">Belum Ada Data</h6>
-                                        <p class="small text-muted mb-0">Permohonan dokumen Waarmeking masih kosong.</p>
+                                        <p class="small text-muted mb-0">Permohonan dokumen Waarmeking masih kosong.
+                                        </p>
                                     </td>
                                 </tr>
                             @endforelse
@@ -134,3 +172,24 @@
     @endif
 
 </div>
+
+<script>
+    function konfirmasiHapus(id, nama) {
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Data permohonan atas nama " + nama + " akan dihapus permanen dari sistem TRITON!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545', // Warna merah untuk aksi hapus (danger)
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<i class="bi bi-trash"></i> Ya, Hapus Data!',
+            cancelButtonText: 'Batal',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Panggil fungsi destroy() yang ada di dalam class Livewire PHP
+                @this.call('destroy', id);
+            }
+        });
+    }
+</script>

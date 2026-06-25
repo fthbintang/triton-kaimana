@@ -501,6 +501,21 @@ class FormPermohonan extends Component
         ]);
     }
 
+    public function destroy($id): void
+    {
+        // Cari data permohonan berdasarkan ID
+        $permohonan = Permohonan::findOrFail($id);
+        
+        // Hapus data dari database
+        $permohonan->delete();
+
+        // Kirim notifikasi sukses menggunakan Flash Session bawaan Laravel
+        session()->flash('success', 'Permohonan Waarmeking berhasil dihapus dari sistem.');
+
+        // Refresh halaman secara halus agar tabel langsung ter-update otomatis
+        $this->redirect('/permohonan/waarmeking', navigate: true);
+    }
+
     #[Layout('layouts.app')]
     public function render()
     {
