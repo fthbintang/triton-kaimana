@@ -9,9 +9,18 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Shared\Converter;
+use Livewire\WithPagination;
 
 class FormPermohonan extends Component
 {
+    use WithPagination; // 2. Gunakan Trait di dalam Class
+
+    // Properti khusus Pagination (Menggunakan styling Bootstrap)
+    protected $paginationTheme = 'bootstrap';
+
+    // 3. Properti untuk menampung kata kunci pencarian
+    public string $search = '';
+    
     // Pengontrol Tampilan Halaman (Tabel vs Form)
     public bool $isCreating = false;
 
@@ -516,12 +525,36 @@ class FormPermohonan extends Component
         $this->redirect('/permohonan/waarmeking', navigate: true);
     }
 
-    #[Layout('layouts.app')]
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    // #[Layout('layouts.app')]
+    // public function render()
+    // {
+    //     $daftar_waarmeking = Permohonan::where('jenis_naskah', 'waarmeking')
+    //                                     ->latest()
+    //                                     ->get();
+
+    //     return view('livewire.form-waarmeking.permohonan.index', [
+    //         'daftar_waarmeking' => $daftar_waarmeking
+    //     ]);
+    // }
+
     public function render()
     {
+        // 5. Modifikasi query untuk memfilter data berdasarkan pencarian dan membaginya per halaman
         $daftar_waarmeking = Permohonan::where('jenis_naskah', 'waarmeking')
-                                        ->latest()
-                                        ->get();
+            ->when($this->search, function($query) {
+                $query->where(function($q) {
+                    $q->where('nama_pemohon', 'like', '%' . $this->search . '%')
+                      ->orWhere('nik_pemohon', 'like', '%' . $this->search . '%')
+                      ->orWhere('no_hp_pemohon', 'like', '%' . $this->search . '%');
+                });
+            })
+            ->latest()
+            ->paginate(10); // Menampilkan 10 data per halaman (bisa diubah sesuai kebutuhan)
 
         return view('livewire.form-waarmeking.permohonan.index', [
             'daftar_waarmeking' => $daftar_waarmeking

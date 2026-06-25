@@ -31,11 +31,22 @@
                     </div>
                 </div>
 
-                <a href="{{ route('waarmeking.create') }}" wire:navigate
-                    class="btn btn-primary px-4 py-2 rounded-2 shadow-sm d-inline-flex align-items-center gap-2 fw-semibold">
-                    <i class="bi bi-plus-circle-fill"></i>
-                    <span>Tambah Permohonan Baru</span>
-                </a>
+                <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2 w-100 w-md-auto">
+                    <div class="input-group shadow-sm" style="min-width: 260px;">
+                        <span class="input-group-text bg-white border-end-0 text-muted py-2">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" wire:model.live.debounce.300ms="search"
+                            class="form-control border-start-0 ps-0 text-sm py-2"
+                            placeholder="Cari nama, NIK, atau HP...">
+                    </div>
+
+                    <a href="{{ route('waarmeking.create') }}" wire:navigate
+                        class="btn btn-primary px-4 py-2 rounded-2 shadow-sm d-inline-flex align-items-center justify-content-center gap-2 fw-semibold text-nowrap">
+                        <i class="bi bi-plus-circle-fill"></i>
+                        <span>Tambah Permohonan Baru</span>
+                    </a>
+                </div>
             </div>
 
             <div class="card-body p-0">
@@ -54,7 +65,9 @@
                         <tbody>
                             @forelse($daftar_waarmeking as $index => $item)
                                 <tr>
-                                    <td class="ps-4 text-muted fw-medium">{{ $index + 1 }}</td>
+                                    <td class="ps-4 text-muted fw-medium">
+                                        {{ ($daftar_waarmeking->currentPage() - 1) * $daftar_waarmeking->perPage() + $index + 1 }}
+                                    </td>
                                     <td>
                                         <div class="fw-bold text-dark mb-1">{{ $item->nama_pemohon }}</div>
                                         <div class="text-muted small mb-1"><i
@@ -162,6 +175,18 @@
                             @endforelse
                         </tbody>
                     </table>
+                    <!-- Bagian Bawah Tabel untuk Navigasi Halaman -->
+                    <div class="mt-3 d-flex justify-content-between align-items-center flex-wrap gap-2 px-2">
+                        <div class="text-muted small">
+                            Menampilkan {{ $daftar_waarmeking->firstItem() ?? 0 }} sampai
+                            {{ $daftar_waarmeking->lastItem() ?? 0 }} dari {{ $daftar_waarmeking->total() }} data
+                            permohonan.
+                        </div>
+                        <div>
+                            <!-- Link Tombol Angka Pagination Otomatis dari Livewire -->
+                            {{ $daftar_waarmeking->links() }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
