@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('agama');
             $table->string('pekerjaan');
             $table->text('alamat');
-            $table->string('status_penerima'); // Otomatis terisi: "Penerima Kuasa 1", "Penerima Kuasa 2", dst.
+            $table->string('urutan_ahli_waris');
             $table->timestamps();
         });
     }

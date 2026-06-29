@@ -17,8 +17,11 @@ Route::livewire('/permohonan/waarmeking/edit/{id}', WaarmekingPermohonan::class)
 Route::livewire('/permohonan/cetak-permohonan/waarmeking-pdf/{id}', WaarmekingPermohonan::class)->name('cetak.waarmeking.pdf');
 Route::get('/permohonan/cetak-permohonan/waarmeking-word/{id}', [WaarmekingPermohonan::class, 'bikinWordDownload'])->name('cetak.waarmeking.word');
 
-Route::livewire('/layanan/surat-kuasa-waarmeking', WaarmekingSuratKuasa::class)
-    ->name('layanan.surat-kuasa');
+Route::livewire('/surat-kuasa/waarmeking', WaarmekingSuratKuasa::class)->name('waarmeking.surat-kuasa.index');
+Route::livewire('/surat-kuasa/waarmeking/tambah', WaarmekingSuratKuasa::class)->name('waarmeking.surat-kuasa.create');
+Route::livewire('/surat-kuasa/waarmeking/edit/{id}', WaarmekingSuratKuasa::class)->name('waarmeking.surat-kuasa.edit');
+Route::livewire('/surat-kuasa/cetak-surat-kuasa/waarmeking-pdf/{id}', WaarmekingSuratKuasa::class)->name('cetak.surat-kuasa.waarmeking.pdf');
+Route::get('/surat-kuasa/cetak-surat-kuasa/waarmeking-word/{id}', [WaarmekingSuratKuasa::class, 'bikinWordDownload'])->name('cetak.surat-kuasa.waarmeking.word');
 
 Route::livewire('/layanan/permohonan-surat-kuasa-insidentil', KuasaInsidentilPermohonan::class)
     ->name('layanan.permohononan-kuasa-insidentil');

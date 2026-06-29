@@ -22,9 +22,7 @@ return new class extends Migration
             
             // Data Spesifik (Tempat/tgl lahir, Agama, Pekerjaan dll)
             $table->json('data_spesifik')->nullable(); 
-            
-            // Status awal otomatis 'tunda' ketika masyarakat selesai mengisi form
-            $table->string('status')->default('tunda'); 
+        
             
             $table->timestamps();
         });
