@@ -31,6 +31,9 @@ class PermohonanFactory extends Factory
             ];
         }
 
+        // Array pemetaan angka romawi untuk urutan anak (ahli waris tambahan)
+        $romawiAhliWaris = ['I', 'II', 'III', 'IV', 'V'];
+
         // Buat array dinamis untuk pemohon_tambahan (opsional, 0 sampai 2 orang)
         $pemohonTambahan = [];
         $jumlahTambahan = fake()->numberBetween(0, 2);
@@ -38,6 +41,7 @@ class PermohonanFactory extends Factory
             $pemohonTambahan[] = [
                 'nama' => fake()->name(),
                 'nik' => fake()->numerify('9102############'), // Pola NIK Papua Barat
+                'urutan_ahli_waris' => 'Ahli Waris ' . ($romawiAhliWaris[$j] ?? 'I'), // <--- TAMBAHAN: Otomatis Ahli Waris I, II, dst.
                 'tempat_lahir' => fake()->city(),
                 'tanggal_lahir' => fake()->date('Y-m-d', '-20 years'),
                 'jenis_kelamin' => fake()->randomElement(['Laki-laki', 'Perempuan']),
@@ -49,6 +53,7 @@ class PermohonanFactory extends Factory
 
         // Struktur JSON data_spesifik
         $dataSpesifik = [
+            'urutan_ahli_waris' => fake()->randomElement(['Istri Pewaris', 'Suami Pewaris']), // <--- TAMBAHAN: Untuk Pemohon Utama
             'tempat_lahir' => fake()->city(),
             'tanggal_lahir' => fake()->date('Y-m-d', '-30 years'),
             'jenis_kelamin' => fake()->randomElement(['Laki-laki', 'Perempuan']),
