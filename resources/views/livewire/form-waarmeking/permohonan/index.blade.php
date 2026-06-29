@@ -86,9 +86,13 @@
                                                 <li class="mb-1"><span class="text-muted">Rekening:</span> <span
                                                         class="badge bg-secondary-subtle text-secondary-emphasis">{{ isset($item->data_spesifik['daftar_rekening']) ? count($item->data_spesifik['daftar_rekening']) : 0 }}
                                                         Bank</span></li>
-                                                <li><span class="text-muted">Ahli Waris:</span> <span
-                                                        class="badge bg-info-subtle text-info-emphasis">{{ isset($item->data_spesifik['pemohon_tambahan']) ? count($item->data_spesifik['pemohon_tambahan']) : 0 }}
-                                                        Jiwa</span></li>
+                                                <li>
+                                                    <span class="text-muted">Ahli Waris:</span>
+                                                    <span class="badge bg-info-subtle text-info-emphasis">
+                                                        {{ 1 + (isset($item->data_spesifik['pemohon_tambahan']) ? count($item->data_spesifik['pemohon_tambahan']) : 0) }}
+                                                        Jiwa
+                                                    </span>
+                                                </li>
                                             </ul>
                                         </div>
                                     </td>

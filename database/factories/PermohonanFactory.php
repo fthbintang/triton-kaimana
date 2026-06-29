@@ -65,8 +65,7 @@ class PermohonanFactory extends Factory
             'nama_pemohon' => fake()->name(),
             'nik_pemohon' => fake()->numerify('9102############'),
             'no_hp_pemohon' => fake()->numerify('081###########'),
-            'data_spesifik' => $dataSpesifik, // Laravel otomatis mengubah array ini ke JSON saat save
-            'status' => fake()->randomElement(['tunda', 'setuju', 'tolak']),
+            'data_spesifik' => $dataSpesifik, // Laravel otomatis mengubah array ini ke JSON saat saves
             'created_at' => fake()->dateTimeBetween('-1 months', 'now'),
         ];
     }

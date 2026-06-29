@@ -1,7 +1,15 @@
 <div class="card shadow-sm border-0 rounded-3">
-    <div class="card-header bg-court text-white p-4 text-center rounded-top-3">
+    <!-- HEADER UTAMA FORM -->
+    <div class="card-header bg-court text-white p-4 text-center rounded-top-3 position-relative">
+
+        <a href="{{ route('waarmeking.surat-kuasa.index') }}" wire:navigate
+            class="btn btn-sm btn-outline-light position-absolute start-0 top-50 translate-middle-y ms-3 rounded-2 shadow-sm d-inline-flex align-items-center gap-1">
+            <i class="bi bi-arrow-left"></i>
+            <span class="d-none d-md-inline">Kembali</span>
+        </a>
+
         <h5 class="fw-bold m-0 text-uppercase" style="letter-spacing: 1px;">
-            Formulir Surat Permohonan Registrasi Surat Kuasa Waarmeking
+            Formulir Surat Kuasa Waarmeking
         </h5>
         <p class="text-white-50 small m-0 mt-1">
             Isilah data di bawah ini secara lengkap dan benar sesuai dengan dokumen asli
@@ -11,7 +19,8 @@
     <div class="card-body p-4 p-md-5">
 
         <div class="alert alert-success border-0 bg-success bg-opacity-10 rounded-3 mb-5 p-3 shadow-sm">
-            <h6 class="fw-bold text-court mb-2"><i class="bi bi-info-circle-fill me-2"></i> 3 Langkah Mudah Mengurus Surat
+            <h6 class="fw-bold text-court mb-2"><i class="bi bi-info-circle-fill me-2"></i> 3 Langkah Mudah Mengurus
+                Surat
                 Kuasa:</h6>
             <div class="row g-3 small text-muted">
                 <div class="col-md-4">
@@ -29,7 +38,7 @@
             </div>
         </div>
 
-        <form wire:submit.prevent="simpan">
+        <form wire:submit.prevent="save">
 
             <div class="mb-5">
                 <h5 class="text-court fw-bold border-bottom pb-2 mb-3">
@@ -54,8 +63,8 @@
             <div class="mb-5">
                 <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
                     <h5 class="text-court fw-bold m-0">
-                        <span class="badge badge-court me-2">II</span> Pihak I: Pemberi Kuasa (Keluarga yang Tinggal di
-                        Rumah)
+                        <span class="badge badge-court me-2">II</span> Pihak I: Pemberi Kuasa (Keluarga yang Tidak
+                        Hadir)
                     </h5>
                     <button type="button" wire:click="tambahPemberi"
                         class="btn btn-sm btn-outline-court fw-semibold rounded-pill px-3">
@@ -66,30 +75,40 @@
                 <!-- TAMBAHAN PENJELASAN ATURAN URUTAN AHLI WARIS -->
                 <div class="alert alert-warning border-0 bg-warning bg-opacity-10 text-dark small rounded-3 mb-3 p-3">
                     <p class="fw-bold mb-1 text-warning-dark">
-                        <i class="bi bi-exclamation-triangle-fill me-1"></i> CARA ISI URUTAN NAMA (Sesuai Kartu Keluarga
-                        / KK):
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i> CARA ISI URUTAN STATUS (Sesuai Silsilah
+                        Keluarga):
                     </p>
                     <ol class="ps-3 mb-0 text-muted" style="font-size: 0.8rem;">
-                        <li>Isi data <strong>Orang Tua</strong> terlebih dahulu (Pasangan Almarhum/ah yang masih hidup).
-                        </li>
-                        <li>Isi data <strong>Anak Kandung</strong>, berurutan dari yang <strong>Paling Tua hingga Paling
-                                Muda</strong>.</li>
+                        <li>Sesuaikan urutan dengan silsilah asli (contoh: <strong>Istri Pewaris</strong>, <strong>Ahli
+                                Waris I</strong>, <strong>Ahli Waris III</strong>).</li>
+                        <li>Status ini dapat Anda edit manual pada kotak input abu-abu di setiap kartu data jika
+                            urutannya melompat.</li>
                     </ol>
                 </div>
-
-                <p class="text-muted small mb-3 fst-italic" style="font-size: 0.85rem; line-height: 1.4;">
-                    * <strong>Pemberi Kuasa</strong> adalah semua anggota keluarga yang <strong
-                        class="text-danger">TIDAK BISA IKUT PERGI</strong> ke pengadilan. Mereka memberikan mandat
-                    kepada saudara yang berangkat.
-                    <br>
-                </p>
 
                 @foreach ($pemberi_kuasa as $index => $pemberi)
                     <div class="card bg-light border-0 mb-3 shadow-sm rounded-3" wire:key="pemberi-{{ $index }}">
                         <div class="card-body p-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span
-                                    class="badge bg-secondary rounded-pill px-3">{{ $pemberi['urutan_ahli_waris'] }}</span>
+                                <!-- STATUS SEKARANG MENGGUNAKAN INPUT AGAR BISA DIEDIT MANUAl -->
+                                <div class="d-flex align-items-center" style="max-width: 250px;">
+                                    <span
+                                        class="input-group-text bg-secondary text-white border-0 small rounded-start-pill py-1 px-3"
+                                        style="font-size: 0.8rem;">Status:</span>
+                                    <select wire:model="pemberi_kuasa.{{ $index }}.urutan_ahli_waris"
+                                        class="form-select form-select-sm bg-white border-0 rounded-end-pill fw-bold text-dark @error('pemberi_kuasa.' . $index . '.urutan_ahli_waris') is-invalid @enderror">
+                                        <option value="">-- Pilih Status Silsilah --</option>
+                                        <option value="Istri Pewaris">Istri Pewaris (Jika Suami Meninggal)</option>
+                                        <option value="Suami Pewaris">Suami Pewaris (Jika Istri Meninggal)</option>
+
+                                        <option value="Ahli Waris I">Ahli Waris I (Anak Kandung ke-1)</option>
+                                        <option value="Ahli Waris II">Ahli Waris II (Anak Kandung ke-2)</option>
+                                        <option value="Ahli Waris III">Ahli Waris III (Anak Kandung ke-3)</option>
+                                        <option value="Ahli Waris IV">Ahli Waris IV (Anak Kandung ke-4)</option>
+                                        <option value="Ahli Waris V">Ahli Waris V (Anak Kandung ke-5)</option>
+                                    </select>
+                                </div>
+
                                 @if (count($pemberi_kuasa) > 1)
                                     <button type="button" wire:click="hapusPemberi({{ $index }})"
                                         class="btn btn-sm btn-link text-danger text-decoration-none p-0 fw-medium">
@@ -116,11 +135,15 @@
                                 <div class="col-md-4">
                                     <label class="form-label text-muted small mb-1 fw-semibold">Jenis Kelamin</label>
                                     <select wire:model="pemberi_kuasa.{{ $index }}.jenis_kelamin"
-                                        class="form-select form-select-sm">
+                                        class="form-select form-select-sm @error('pemberi_kuasa.' . $index . '.jenis_kelamin') is-invalid @enderror">
                                         <option value="">-- Pilih --</option>
                                         <option value="Laki-laki">Laki-laki</option>
                                         <option value="Perempuan">Perempuan</option>
                                     </select>
+                                    @error('pemberi_kuasa.' . $index . '.jenis_kelamin')
+                                        <div class="invalid-feedback small" style="font-size: 11px;">{{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label text-muted small mb-1 fw-semibold">Agama</label>
@@ -131,7 +154,8 @@
                                 <div class="col-md-4">
                                     <label class="form-label text-muted small mb-1 fw-semibold">Pekerjaan</label>
                                     <input type="text" wire:model="pemberi_kuasa.{{ $index }}.pekerjaan"
-                                        class="form-control form-control-sm" placeholder="Contoh: Petani, PNS, Swasta">
+                                        class="form-control form-control-sm"
+                                        placeholder="Contoh: Petani, PNS, Swasta">
                                 </div>
                                 <div class="col-md-12">
                                     <label class="form-label text-muted small mb-1 fw-semibold">Alamat Lengkap (Sesuai
@@ -148,7 +172,8 @@
             <div class="mb-5">
                 <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
                     <h5 class="text-court fw-bold m-0">
-                        <span class="badge badge-court me-2">III</span> Pihak II: Penerima Kuasa
+                        <span class="badge badge-court me-2">III</span> Pihak II: Penerima Kuasa (Yang Hadir di
+                        Pengadilan)
                     </h5>
                     <button type="button" wire:click="tambahPenerima"
                         class="btn btn-sm btn-outline-court fw-semibold rounded-pill px-3">
@@ -156,10 +181,7 @@
                     </button>
                 </div>
                 <p class="text-muted small mb-3 fst-italic">
-                    * Penerima Kuasa adalah pihak (<strong class="text-court">bisa 1 orang atau lebih</strong>) yang
-                    ditunjuk dan diberi kepercayaan penuh untuk datang langsung mengurus dokumen ke Pengadilan Negeri
-                    Kaimana serta ke bank/instansi terkait. Jika perwakilan yang berangkat lebih dari 1 orang, silakan
-                    klik tombol <strong>Tambah Penerima</strong> di atas.
+                    * Penerima Kuasa adalah pihak yang ditunjuk untuk mengurus dokumen ke Pengadilan Negeri Kaimana.
                 </p>
 
                 @foreach ($penerima_kuasa as $index => $penerima)
@@ -167,8 +189,28 @@
                         wire:key="penerima-{{ $index }}">
                         <div class="card-body p-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span
-                                    class="badge bg-dark rounded-pill px-3">{{ $penerima['status_penerima'] }}</span>
+                                <!-- MENYESUAIKAN KEY MENJADI urutan_ahli_waris DAN BISA DIINPUT MANUAL -->
+                                <div class="d-flex align-items-center" style="max-width: 250px;">
+                                    <span
+                                        class="input-group-text bg-dark text-white border-0 small rounded-start-pill py-1 px-3"
+                                        style="font-size: 0.8rem;">Status:</span>
+                                    <select wire:model="penerima_kuasa.{{ $index }}.urutan_ahli_waris"
+                                        class="form-select form-select-sm bg-white border-0 rounded-end-pill fw-bold text-dark @error('penerima_kuasa.' . $index . '.urutan_ahli_waris') is-invalid @enderror">
+                                        <option value="">-- Pilih Status Silsilah --</option>
+
+                                        <!-- Opsi untuk Pasangan yang Ditinggalkan -->
+                                        <option value="Istri Pewaris">Istri Pewaris (Jika Suami Meninggal)</option>
+                                        <option value="Suami Pewaris">Suami Pewaris (Jika Istri Meninggal)</option>
+
+                                        <!-- Opsi Garis Keturunan Anak (Dari Tertua ke Muda) -->
+                                        <option value="Ahli Waris I">Ahli Waris I (Anak Kandung ke-1)</option>
+                                        <option value="Ahli Waris II">Ahli Waris II (Anak Kandung ke-2)</option>
+                                        <option value="Ahli Waris III">Ahli Waris III (Anak Kandung ke-3)</option>
+                                        <option value="Ahli Waris IV">Ahli Waris IV (Anak Kandung ke-4)</option>
+                                        <option value="Ahli Waris V">Ahli Waris V (Anak Kandung ke-5)</option>
+                                    </select>
+                                </div>
+
                                 @if (count($penerima_kuasa) > 1)
                                     <button type="button" wire:click="hapusPenerima({{ $index }})"
                                         class="btn btn-sm btn-link text-danger text-decoration-none p-0 fw-medium">
@@ -195,11 +237,15 @@
                                 <div class="col-md-4">
                                     <label class="form-label text-muted small mb-1 fw-semibold">Jenis Kelamin</label>
                                     <select wire:model="penerima_kuasa.{{ $index }}.jenis_kelamin"
-                                        class="form-select form-select-sm">
+                                        class="form-select form-select-sm @error('penerima_kuasa.' . $index . '.jenis_kelamin') is-invalid @enderror">
                                         <option value="">-- Pilih --</option>
                                         <option value="Laki-laki">Laki-laki</option>
                                         <option value="Perempuan">Perempuan</option>
                                     </select>
+                                    @error('penerima_kuasa.' . $index . '.jenis_kelamin')
+                                        <div class="invalid-feedback small" style="font-size: 11px;">{{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label text-muted small mb-1 fw-semibold">Agama</label>
@@ -227,7 +273,7 @@
 
             <div class="row g-2 mt-4 pt-3 border-top">
                 <div class="col-6 col-md-3 order-1">
-                    <a href="/" wire:navigate
+                    <a href="{{ route('waarmeking.surat-kuasa.index') }}" wire:navigate
                         class="btn btn-light border text-secondary w-100 py-2 fw-semibold rounded-3 shadow-sm">
                         <i class="bi bi-arrow-left me-1"></i> Kembali
                     </a>

@@ -250,7 +250,6 @@ class FormPermohonan extends Component
                 'nik_pemohon'   => $this->nik_pemohon,
                 'no_hp_pemohon' => $this->no_hp_pemohon,
                 'data_spesifik' => $dataSpesifik, 
-                'status'        => 'tunda'
             ]);
             session()->flash('success', 'Permohonan Waarmeking berhasil didaftarkan.');
             session()->flash('cetak_id', $permohonan->id);
