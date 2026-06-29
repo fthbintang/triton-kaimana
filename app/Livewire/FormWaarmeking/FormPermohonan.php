@@ -29,6 +29,7 @@ class FormPermohonan extends Component
 
     // Array Dinamis untuk menampung data banyak pemohon/ahli waris tambahan
     public array $pemohon_tambahan = [];
+    public string $urutan_ahli_waris = '';
 
     // 2. Data Spesifik Waarmeking (Detail Pemohon Utama)
     public string $tempat_lahir = '';
@@ -183,6 +184,8 @@ class FormPermohonan extends Component
         $this->pekerjaan      = $dataSpesifik['pekerjaan'] ?? '';
         $this->nama_pewaris   = $dataSpesifik['nama_pewaris'] ?? '';
         $this->alamat         = $dataSpesifik['alamat'] ?? '';
+
+        $this->urutan_ahli_waris = $dataSpesifik['urutan_ahli_waris'] ?? '';
         
         $this->pemohon_tambahan = $dataSpesifik['pemohon_tambahan'] ?? [];
         $this->daftar_rekening  = $dataSpesifik['daftar_rekening'] ?? [];
@@ -219,16 +222,18 @@ class FormPermohonan extends Component
             return $rekening;
         }, $this->daftar_rekening);
 
+        // DISESUAIKAN: Menyusun data spesifik dengan menyertakan urutan_ahli_waris untuk Pemohon Utama
         $dataSpesifik = [
-            'tempat_lahir'     => $this->tempat_lahir,
-            'tanggal_lahir'    => $this->tanggal_lahir,
-            'jenis_kelamin'    => $this->jenis_kelamin,
-            'pekerjaan'        => $this->pekerjaan,
-            'agama'            => $this->agama,
-            'alamat'           => $this->alamat,
-            'nama_pewaris'     => $this->nama_pewaris,
-            'daftar_rekening'  => $daftarRekeningCleaned,
-            'pemohon_tambahan' => $this->pemohon_tambahan 
+            'urutan_ahli_waris' => $this->urutan_ahli_waris, // <--- TAMBAHAN: Untuk Pemohon Utama (Luar pemohon tambahan)
+            'tempat_lahir'      => $this->tempat_lahir,
+            'tanggal_lahir'     => $this->tanggal_lahir,
+            'jenis_kelamin'     => $this->jenis_kelamin,
+            'pekerjaan'         => $this->pekerjaan,
+            'agama'             => $this->agama,
+            'alamat'            => $this->alamat,
+            'nama_pewaris'      => $this->nama_pewaris,
+            'daftar_rekening'   => $daftarRekeningCleaned,
+            'pemohon_tambahan'  => $this->pemohon_tambahan 
         ];
 
         // LOGIKA PINDAH CABANG: UPDATE ATAU CREATE
@@ -306,6 +311,7 @@ class FormPermohonan extends Component
             'agama'            => $dataSpesifik['agama'] ?? '',
             'alamat'           => $dataSpesifik['alamat'] ?? '',
             'nama_pewaris'     => $dataSpesifik['nama_pewaris'] ?? '',
+            'urutan_ahli_waris'     => $dataSpesifik['urutan_ahli_waris'] ?? '',
             'daftar_rekening'  => $daftarRekeningCleaned,
             'pemohon_tambahan' => $dataSpesifik['pemohon_tambahan'] ?? [],
             
@@ -360,6 +366,7 @@ class FormPermohonan extends Component
         // 2. Render view Blade PDF Anda menjadi string HTML murni (Gunakan file blade yang sama persis!)
         $htmlContent = view('exports.pdf-permohonan-waarmeking', [
             'nama_pemohon'     => $permohonan->nama_pemohon,
+            'urutan_ahli_waris'=> $dataSpesifik['urutan_ahli_waris'] ?? '',
             'tempat_lahir'     => $dataSpesifik['tempat_lahir'] ?? '',
             'tanggal_lahir'    => $dataSpesifik['tanggal_lahir'] ?? '',
             'jenis_kelamin'    => $dataSpesifik['jenis_kelamin'] ?? '',

@@ -180,6 +180,11 @@
     @endif
     <table class="table-biodata" width="100%">
         <tr>
+            <td>Hubungan Silsilah</td>
+            <td>:</td>
+            <td style="font-weight: bold;">{{ $urutan_ahli_waris ?? '-' }}</td>
+        </tr>
+        <tr>
             <td width="25%">Nama</td>
             <td width="3%">:</td>
             <td>{{ $nama_pemohon }}</td>
@@ -217,6 +222,12 @@
             <div class="label-pemohon" style="margin-top: 3px; margin-bottom: 2px;">PEMOHON {{ $index + 2 }}:</div>
 
             <table class="table-biodata" width="100%" style="margin-bottom: 5px; line-height: 1.2;">
+                <tr>
+                    <td style="vertical-align: top; padding-top: 1px; padding-bottom: 1px;">Hubungan Silsilah</td>
+                    <td style="vertical-align: top; padding-top: 1px; padding-bottom: 1px;">:</td>
+                    <td style="vertical-align: top; padding-top: 1px; padding-bottom: 1px; font-weight: bold;">
+                        {{ $pt['urutan_ahli_waris'] ?? '-' }}</td>
+                </tr>
                 <tr>
                     <td width="25%" style="vertical-align: top; padding-top: 1px; padding-bottom: 1px;">Nama</td>
                     <td width="3%" style="vertical-align: top; padding-top: 1px; padding-bottom: 1px;">:</td>

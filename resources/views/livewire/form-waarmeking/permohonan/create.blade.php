@@ -61,7 +61,7 @@
                         <i class="bi bi-file-earmark-text-fill text-warning" style="font-size: 1.1rem;"></i>
                         <span class="small fw-medium text-dark">Ada ahli waris yang tidak bisa ikut hadir ke
                             Pengadilan?</span>
-                        <a href="/layanan/surat-kuasa-waarmeking" target="_blank"
+                        <a href="{{ route('waarmeking.surat-kuasa.create') }}" target="_blank"
                             class="btn btn-xs btn-primary py-0 px-2 fw-semibold text-decoration-none rounded"
                             style="font-size: 0.75rem;">
                             Isi Form Surat Kuasa Di Sini <i class="bi bi-box-arrow-up-right ms-1"
@@ -70,7 +70,6 @@
                     </div>
                 </div>
 
-                <!-- PEMOHON UTAMA (Seluruh data disatukan di sini) -->
                 <div class="card bg-white border-light shadow-sm rounded-3 mb-4">
                     <div class="card-header bg-court text-white py-2 small fw-semibold">
                         Ahli Waris Utama / Perwakilan
@@ -92,6 +91,26 @@
                                 class="form-control form-control-sm @error('nik_pemohon') is-invalid @enderror"
                                 placeholder="16 Digit NIK KTP">
                             @error('nik_pemohon')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-muted small mb-1">Hubungan Silsilah Ahli
+                                Waris</label>
+                            <select wire:model="urutan_ahli_waris"
+                                class="form-select form-select-sm @error('urutan_ahli_waris') is-invalid @enderror">
+                                <option value="">-- Pilih Status Silsilah --</option>
+                                <option value="Istri Pewaris">Istri Pewaris (Jika Suami Meninggal)</option>
+                                <option value="Suami Pewaris">Suami Pewaris (Jika Istri Meninggal)</option>
+
+                                <option value="Ahli Waris I">Ahli Waris I (Anak Kandung ke-1)</option>
+                                <option value="Ahli Waris II">Ahli Waris II (Anak Kandung ke-2)</option>
+                                <option value="Ahli Waris III">Ahli Waris III (Anak Kandung ke-3)</option>
+                                <option value="Ahli Waris IV">Ahli Waris IV (Anak Kandung ke-4)</option>
+                                <option value="Ahli Waris V">Ahli Waris V (Anak Kandung ke-5)</option>
+                            </select>
+                            @error('urutan_ahli_waris')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -172,7 +191,6 @@
                     </div>
                 </div>
 
-                <!-- PERULANGAN AHLI WARIS TAMBAHAN (Sama detailnya dengan di atas) -->
                 @foreach ($pemohon_tambahan as $index => $item)
                     <div class="card bg-light border-0 mb-3 shadow-sm rounded-3 text-dark"
                         wire:key="pemohon-tambahan-{{ $index }}">
@@ -202,6 +220,26 @@
                                     maxlength="16" placeholder="16 Digit Angka"
                                     class="form-control form-control-sm @error('pemohon_tambahan.' . $index . '.nik') is-invalid @enderror">
                                 @error('pemohon_tambahan.' . $index . '.nik')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label text-muted small mb-1 fw-semibold">Hubungan Silsilah Ahli
+                                    Waris</label>
+                                <select wire:model="pemohon_tambahan.{{ $index }}.urutan_ahli_waris"
+                                    class="form-select form-select-sm @error('pemohon_tambahan.' . $index . '.urutan_ahli_waris') is-invalid @enderror">
+                                    <option value="">-- Pilih Status Silsilah --</option>
+                                    <option value="Istri Pewaris">Istri Pewaris (Jika Suami Meninggal)</option>
+                                    <option value="Suami Pewaris">Suami Pewaris (Jika Istri Meninggal)</option>
+
+                                    <option value="Ahli Waris I">Ahli Waris I (Anak Kandung ke-1)</option>
+                                    <option value="Ahli Waris II">Ahli Waris II (Anak Kandung ke-2)</option>
+                                    <option value="Ahli Waris III">Ahli Waris III (Anak Kandung ke-3)</option>
+                                    <option value="Ahli Waris IV">Ahli Waris IV (Anak Kandung ke-4)</option>
+                                    <option value="Ahli Waris V">Ahli Waris V (Anak Kandung ke-5)</option>
+                                </select>
+                                @error('pemohon_tambahan.' . $index . '.urutan_ahli_waris')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
