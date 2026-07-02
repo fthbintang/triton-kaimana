@@ -14,6 +14,8 @@ class PermohonanSeeder extends Seeder
     public function run(): void
     {
         // Membuat 50 data tiruan permohonan waarmeking sekaligus
-        Permohonan::factory()->count(50)->create();
+        Permohonan::factory()->count(40)->create();
+
+        Permohonan::factory(40)->kuasaInsidentil()->create();
     }
 }

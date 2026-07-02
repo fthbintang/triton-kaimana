@@ -11,6 +11,9 @@ Route::get('/', function () {
     return view('portal');
 })->name('portal');
 
+// =========================================================================
+// 1. MODUL WAARMEKING
+// =========================================================================
 Route::livewire('/permohonan/waarmeking', WaarmekingPermohonan::class)->name('waarmeking.index');
 Route::livewire('/permohonan/waarmeking/tambah', WaarmekingPermohonan::class)->name('waarmeking.create');
 Route::livewire('/permohonan/waarmeking/edit/{id}', WaarmekingPermohonan::class)->name('waarmeking.edit');
@@ -23,8 +26,22 @@ Route::livewire('/surat-kuasa/waarmeking/edit/{id}', WaarmekingSuratKuasa::class
 Route::livewire('/surat-kuasa/cetak-surat-kuasa/waarmeking-pdf/{id}', WaarmekingSuratKuasa::class)->name('cetak.surat-kuasa.waarmeking.pdf');
 Route::get('/surat-kuasa/cetak-surat-kuasa/waarmeking-word/{id}', [WaarmekingSuratKuasa::class, 'bikinWordDownload'])->name('cetak.surat-kuasa.waarmeking.word');
 
-Route::livewire('/layanan/permohonan-surat-kuasa-insidentil', KuasaInsidentilPermohonan::class)
-    ->name('layanan.permohononan-kuasa-insidentil');
+
+// =========================================================================
+// 2. MODUL KUASA INSIDENTIL
+// =========================================================================
+Route::livewire('/permohonan/kuasa-insidentil', KuasaInsidentilPermohonan::class)->name('permohonan.kuasa-insidentil.index');
+Route::livewire('/permohonan/kuasa-insidentil/tambah', KuasaInsidentilPermohonan::class)->name('permohonan.kuasa-insidentil.create');
+Route::livewire('/permohonan/kuasa-insidentil/edit/{id}', KuasaInsidentilPermohonan::class)->name('permohonan.kuasa-insidentil.edit');
+Route::get('/permohonan/cetak-permohonan/kuasa-insidentil-pdf/{id}', KuasaInsidentilPermohonan::class)->name('cetak.kuasa-insidentil.pdf');
+Route::get('/permohonan/cetak-permohonan/kuasa-insidentil-word/{id}', [KuasaInsidentilPermohonan::class, 'bikinWordDownload'])->name('cetak.kuasa-insidentil.word');
+
+// Route::livewire('/surat-kuasa/kuasa-insidentil', KuasaInsidentilSuratKuasa::class)->name('kuasa-insidentil.surat-kuasa.index');
+// Route::livewire('/surat-kuasa/kuasa-insidentil/tambah', KuasaInsidentilSuratKuasa::class)->name('kuasa-insidentil.surat-kuasa.create');
+// Route::livewire('/surat-kuasa/kuasa-insidentil/edit/{id}', KuasaInsidentilSuratKuasa::class)->name('kuasa-insidentil.surat-kuasa.edit');
+// Route::livewire('/surat-kuasa/cetak-surat-kuasa/kuasa-insidentil-pdf/{id}', KuasaInsidentilSuratKuasa::class)->name('cetak.surat-kuasa.kuasa-insidentil.pdf');
+// Route::get('/surat-kuasa/cetak-surat-kuasa/kuasa-insidentil-word/{id}', [KuasaInsidentilSuratKuasa::class, 'bikinWordDownload'])->name('cetak.surat-kuasa.kuasa-insidentil.word');
+
 
 Route::livewire('/layanan/tidak-dipidana', TidakDipidanaPermohonan::class)
     ->name('layanan.tidak-dipidana');

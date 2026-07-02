@@ -74,9 +74,9 @@
         <div class="text-center mb-5">
             <img src="{{ asset('img/logo-pn-kaimana.png') }}" alt="Logo PN Kaimana" class="img-fluid mb-3"
                 style="max-height: 110px;">
-            <h2 class="fw-bold text-dark m-0">APLIKASI TRITON</h2>
+            <h2 class="fw-bold text-dark m-0">TRITON - HUKUM</h2>
             <p class="fw-semibold text-court my-1" style="font-size: 0.95rem; letter-spacing: 0.5px;">
-                (Template Registrasi Informasi, Tatacara, dan Output Naskah Hukum Kaimana)
+                (Template Registrasi Informasi, Tatacara, dan Output Naskah - Hukum)
             </p>
             <p class="text-secondary lead fs-6 m-0">Sistem Pelayanan Hukum Mandiri — Pengadilan Negeri Kaimana</p>
             <p class="text-muted fw-medium small text-uppercase pt-3" style="letter-spacing: 1px; font-size: 0.8rem;">
@@ -163,19 +163,69 @@
 
             <!-- 2. Surat Kuasa Insidentil -->
             <div class="col-md-4 col-sm-6">
-                <a href="{{ route('layanan.permohononan-kuasa-insidentil') }}" wire:navigate
-                    class="text-decoration-none text-dark">
-                    <div class="card h-100 p-4 text-center menu-card">
-                        <div class="card-body">
-                            <div class="icon-box">
-                                <i class="bi bi-person-vcard-fill fs-2"></i>
+                <div class="card h-100 p-4 text-center menu-card" data-bs-toggle="modal"
+                    data-bs-target="#modalKuasaInsidentil" style="cursor: pointer;">
+                    <div class="card-body">
+                        <div class="icon-box">
+                            <i class="bi bi-person-vcard-fill fs-2"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Kuasa Insidentil</h5>
+                        <p class="small text-muted mb-0">Pembuatan surat permohonan izin beracara sebagai kuasa
+                            hukum insidentil khusus untuk keluarga dekat.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalKuasaInsidentil" tabindex="-1" aria-labelledby="modalKuasaInsidentilLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content" style="border-radius: 16px; border: none;">
+                        <div class="modal-header border-0 pb-0">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body pt-0 text-center">
+                            <i class="bi bi-folder2-open text-court" style="font-size: 3.5rem;"></i>
+                            <h4 class="fw-bold mt-2 text-dark">Pilih Dokumen Kuasa Insidentil</h4>
+                            <p class="text-muted small mb-4">Silakan pilih jenis dokumen kelengkapan Kuasa Insidentil
+                                yang
+                                ingin Anda buat</p>
+
+                            <div class="row g-3 justify-content-center">
+                                <div class="col-md-6">
+                                    <a href="{{ route('permohonan.kuasa-insidentil.index') }}" wire:navigate
+                                        class="text-decoration-none text-dark">
+                                        <div class="card p-4 h-100 menu-card border border-light-subtle">
+                                            <div class="text-court mb-2"><i class="bi bi-file-earmark-text fs-3"></i>
+                                            </div>
+                                            <h6 class="fw-bold mb-1">1. Surat Permohonan</h6>
+                                            <p class="text-muted m-0" style="font-size: 0.75rem;">Formulir permohonan
+                                                izin
+                                                kuasa insidentil untuk diajukan kepada Ketua Pengadilan Negeri.</p>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <a href="#" wire:navigate class="text-decoration-none text-dark">
+                                        <div class="card p-4 h-100 menu-card border border-light-subtle">
+                                            <div class="text-warning mb-2"><i
+                                                    class="bi bi-file-earmark-person fs-3"></i></div>
+                                            <h6 class="fw-bold mb-1">2. Surat Kuasa</h6>
+                                            <p class="text-muted m-0" style="font-size: 0.75rem;">Surat pemberian
+                                                kuasa khusus
+                                                antara pemberi kuasa (prinsipal) dan penerima kuasa (keluarga).</p>
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
-                            <h5 class="fw-bold mb-2">Kuasa Insidentil</h5>
-                            <p class="small text-muted mb-0">Pembuatan surat permohonan izin beracara sebagai kuasa
-                                hukum insidentil khusus untuk keluarga dekat.</p>
+                        </div>
+                        <div class="modal-footer border-0 justify-content-center pb-4">
+                            <button type="button" class="btn btn-sm btn-secondary rounded-pill px-3"
+                                data-bs-dismiss="modal">Batal</button>
                         </div>
                     </div>
-                </a>
+                </div>
             </div>
 
             <!-- 3. Surat Keterangan Tidak Pernah Dipidana -->

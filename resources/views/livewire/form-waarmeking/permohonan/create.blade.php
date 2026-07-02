@@ -23,7 +23,7 @@
             <h6 class="fw-bold text-court mb-2">
                 <i class="bi bi-info-circle-fill me-2"></i> Apa itu Waarmeking?
             </h6>
-            <p class="small text-muted mb-3">
+            <p class="small text-muted mb-1">
                 <strong>Waarmeking</strong> adalah proses pendaftaran/pengesahan surat kesepakatan ahli waris di
                 Pengadilan Negeri, biasanya digunakan sebagai syarat utama untuk <strong>mencairkan saldo tabungan
                     bank</strong> milik keluarga yang sudah meninggal dunia.
@@ -31,6 +31,21 @@
         </div>
 
         <form wire:submit.prevent="save">
+
+            <div class="col-md-12 mb-4">
+                <label class="form-label fw-semibold text-muted small mb-1">Tujuan Permohonan Surat
+                    (Kepada Yth.)</label>
+                <select wire:model="tujuan_pimpinan"
+                    class="form-select form-select-sm @error('tujuan_pimpinan') is-invalid @enderror">
+                    <option value="Ketua">Ketua Pengadilan Negeri Kaimana</option>
+                    <option value="Wakil Ketua">Wakil Ketua Pengadilan Negeri Kaimana</option>
+                    <option value="Plh. Ketua">Plh. Ketua Pengadilan Negeri Kaimana</option>
+                    <option value="Plt. Ketua">Plt. Ketua Pengadilan Negeri Kaimana</option>
+                </select>
+                @error('tujuan_pimpinan')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
 
             <!-- BAGIAN I: DATA AHLI WARIS / PEMOHON -->
             <div class="mb-5">

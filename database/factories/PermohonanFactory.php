@@ -14,12 +14,13 @@ class PermohonanFactory extends Factory
 
     public function definition(): array
     {
-        // Menyusun daftar bank tiruan
+        // ==========================================
+        // DATA BAWAAN (DEFAULT): WAARMEKING
+        // ==========================================
         $daftarBank = ['Bank Mandiri', 'BRI', 'BNI', 'BCA', 'Bank Papua'];
         $pekerjaan = ['PNS', 'Karyawan Swasta', 'Wiraswasta', 'Petani', 'Nelayan'];
         $agama = ['Islam', 'Kristen Protestan', 'Katolik', 'Hindu', 'Buddha'];
 
-        // Buat array dinamis untuk daftar_rekening (1 sampai 3 rekening acak)
         $daftarRekening = [];
         $jumlahRekening = fake()->numberBetween(1, 3);
         for ($i = 0; $i < $jumlahRekening; $i++) {
@@ -27,21 +28,18 @@ class PermohonanFactory extends Factory
                 'nama_bank' => fake()->randomElement($daftarBank),
                 'cabang_bank' => 'KCP Kaimana ' . fake()->city(),
                 'nomor_rekening' => fake()->numerify('##########'),
-                'nominal_angka' => fake()->numberBetween(5000000, 75000000), // Angka murni sesuai validasi
+                'nominal_angka' => fake()->numberBetween(5000000, 75000000),
             ];
         }
 
-        // Array pemetaan angka romawi untuk urutan anak (ahli waris tambahan)
         $romawiAhliWaris = ['I', 'II', 'III', 'IV', 'V'];
-
-        // Buat array dinamis untuk pemohon_tambahan (opsional, 0 sampai 2 orang)
         $pemohonTambahan = [];
         $jumlahTambahan = fake()->numberBetween(0, 2);
         for ($j = 0; $j < $jumlahTambahan; $j++) {
             $pemohonTambahan[] = [
                 'nama' => fake()->name(),
-                'nik' => fake()->numerify('9102############'), // Pola NIK Papua Barat
-                'urutan_ahli_waris' => 'Ahli Waris ' . ($romawiAhliWaris[$j] ?? 'I'), // <--- TAMBAHAN: Otomatis Ahli Waris I, II, dst.
+                'nik' => fake()->numerify('9102############'),
+                'urutan_ahli_waris' => 'Ahli Waris ' . ($romawiAhliWaris[$j] ?? 'I'),
                 'tempat_lahir' => fake()->city(),
                 'tanggal_lahir' => fake()->date('Y-m-d', '-20 years'),
                 'jenis_kelamin' => fake()->randomElement(['Laki-laki', 'Perempuan']),
@@ -51,9 +49,8 @@ class PermohonanFactory extends Factory
             ];
         }
 
-        // Struktur JSON data_spesifik
-        $dataSpesifik = [
-            'urutan_ahli_waris' => fake()->randomElement(['Istri Pewaris', 'Suami Pewaris']), // <--- TAMBAHAN: Untuk Pemohon Utama
+        $dataSpesifikWaarmeking = [
+            'urutan_ahli_waris' => fake()->randomElement(['Istri Pewaris', 'Suami Pewaris']),
             'tempat_lahir' => fake()->city(),
             'tanggal_lahir' => fake()->date('Y-m-d', '-30 years'),
             'jenis_kelamin' => fake()->randomElement(['Laki-laki', 'Perempuan']),
@@ -70,8 +67,57 @@ class PermohonanFactory extends Factory
             'nama_pemohon' => fake()->name(),
             'nik_pemohon' => fake()->numerify('9102############'),
             'no_hp_pemohon' => fake()->numerify('081###########'),
-            'data_spesifik' => $dataSpesifik, // Laravel otomatis mengubah array ini ke JSON saat saves
+            'data_spesifik' => $dataSpesifikWaarmeking,
             'created_at' => fake()->dateTimeBetween('-1 months', 'now'),
         ];
+    }
+
+    /**
+     * State Khusus untuk Kuasa Insidentil
+     */
+    public function kuasaInsidentil(): static
+    {
+        return $this->state(function (array $attributes) {
+            $pekerjaan = ['PNS', 'Karyawan Swasta', 'Wiraswasta', 'Petani', 'Nelayan'];
+            $agama = ['Islam', 'Kristen Protestan', 'Katolik', 'Hindu', 'Buddha'];
+            $kedudukan = ['Penggugat', 'Tergugat', 'Pemohon', 'Termohon'];
+            $hubungan = ['Anak Kandung', 'Istri Kandung', 'Suami Kandung', 'Saudara Kandung'];
+
+            // Menyusun data spesifik sesuai struktur Array Save Kuasa Insidentil Anda
+            $dataSpesifikKuasa = [
+                'penerima' => [
+                    'tempat_lahir'      => fake()->city(),
+                    'tanggal_lahir'     => fake()->date('Y-m-d', '-25 years'),
+                    'jenis_kelamin'     => fake()->randomElement(['Laki-laki', 'Perempuan']),
+                    'agama'             => fake()->randomElement($agama),
+                    'pekerjaan'         => fake()->randomElement($pekerjaan),
+                    'alamat'            => fake()->address(),
+                    'hubungan_keluarga' => fake()->randomElement($hubungan),
+                ],
+                'pemberi' => [
+                    'nama'              => fake()->name(),
+                    'nik'               => fake()->numerify('9102############'),
+                    'tempat_lahir'      => fake()->city(),
+                    'tanggal_lahir'     => fake()->date('Y-m-d', '-50 years'),
+                    'jenis_kelamin'     => fake()->randomElement(['Laki-laki', 'Perempuan']),
+                    'agama'             => fake()->randomElement($agama),
+                    'pekerjaan'         => fake()->randomElement($pekerjaan),
+                    'alamat'            => fake()->address(),
+                    'hubungan_keluarga' => fake()->randomElement($hubungan),
+                ],
+                'perkara' => [
+                    'tujuan_pimpinan'    => 'Ketua Pengadilan Negeri Kaimana',
+                    'kedudukan_pemberi'  => fake()->randomElement($kedudukan),
+                    'jenis_perkara'      => 'Gugatan Perdata Wanprestasi Nomor ' . fake()->numerify('##/Pdt.G/2026/PN Kmn'),
+                    'alasan_tidak_hadir' => 'Sedang sakit keras dan menjalani perawatan intensif diluar kota',
+                    'tujuan_kuasa'       => 'Mendampingi, menghadiri persidangan, membela hak-hak pemberi kuasa, menyerahkan bukti, dan menandatangani surat-surat terkait perkara',
+                ]
+            ];
+
+            return [
+                'jenis_naskah' => 'kuasa_insidentil',
+                'data_spesifik' => $dataSpesifikKuasa,
+            ];
+        });
     }
 }
