@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             PermohonanSeeder::class,
-            SuratKuasaWaarmekingSeeder::class,
+            SuratKuasaSeeder::class,
         ]);
     }
 }

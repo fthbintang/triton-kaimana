@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('surat_kuasa', function (Blueprint $table) {
             $table->id();
+            $table->string('jenis_kuasa');
             $table->string('no_hp_pemohon'); // Kontak utama pengisi formulir
             $table->timestamps(); // Mencatat pendaftar terbaru secara otomatis
         });

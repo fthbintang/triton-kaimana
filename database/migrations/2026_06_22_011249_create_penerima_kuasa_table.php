@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('agama');
             $table->string('pekerjaan');
             $table->text('alamat');
-            $table->string('urutan_ahli_waris');
+            $table->string('urutan_ahli_waris')->nullable();
             $table->timestamps();
         });
     }

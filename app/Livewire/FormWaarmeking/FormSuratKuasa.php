@@ -2,7 +2,7 @@
 
 namespace App\Livewire\FormWaarmeking;
 
-use App\Models\SuratKuasaWaarmeking;
+use App\Models\SuratKuasa;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -21,6 +21,7 @@ class FormSuratKuasa extends Component
     public string $search = '';
     
     public $no_hp_pemohon;
+    public $jenis_kuasa = 'waarmeking';
     public $pemberi_kuasa = [];
     public $penerima_kuasa = [];
 
@@ -92,8 +93,11 @@ class FormSuratKuasa extends Component
      */
     public function isiDataKeForm($id)
     {
-        $suratKuasa = SuratKuasaWaarmeking::with(['pemberiKuasa', 'penerimaKuasa'])->findOrFail($id);
+        $suratKuasa = SuratKuasa::with(['pemberiKuasa', 'penerimaKuasa'])
+            ->where('jenis_kuasa', 'waarmeking')
+            ->findOrFail($id);
         
+        $this->jenis_kuasa = $suratKuasa->jenis_kuasa;
         $this->no_hp_pemohon = $suratKuasa->no_hp_pemohon;
         $this->pemberi_kuasa = [];
         $this->penerima_kuasa = [];
@@ -135,7 +139,7 @@ class FormSuratKuasa extends Component
             'agama' => '', 
             'pekerjaan' => '', 
             'alamat' => '',
-            'urutan_ahli_waris' => '' // Dikosongkan agar user memilih langsung dari dropdown silsilah
+            'urutan_ahli_waris' => ''
         ];
     }
 
@@ -172,6 +176,73 @@ class FormSuratKuasa extends Component
         }
     }
 
+    // public function save()
+    // {
+    //     // 1. JALANKAN VALIDASI
+    //     $this->validate([
+    //         'no_hp_pemohon' => 'required|numeric',
+            
+    //         // Validasi Pemberi Kuasa
+    //         'pemberi_kuasa.*.nama' => 'required',
+    //         'pemberi_kuasa.*.nik' => 'required|numeric|digits:16',
+    //         'pemberi_kuasa.*.jenis_kelamin' => 'required',
+    //         'pemberi_kuasa.*.urutan_ahli_waris' => 'required',
+            
+    //         // Validasi Penerima Kuasa
+    //         'penerima_kuasa.*.nama' => 'required',
+    //         'penerima_kuasa.*.nik' => 'required|numeric|digits:16',
+    //         'penerima_kuasa.*.urutan_ahli_waris' => 'required',
+    //     ], [
+    //         'no_hp_pemohon.required' => 'Nomor HP wajib diisi.',
+            
+    //         'pemberi_kuasa.*.nama.required' => 'Nama ahli waris wajib diisi.',
+    //         'pemberi_kuasa.*.nik.required' => 'NIK wajib diisi.',
+    //         'pemberi_kuasa.*.nik.digits' => 'NIK harus 16 digit.',
+    //         'pemberi_kuasa.*.jenis_kelamin.required' => 'Jenis kelamin ahli waris wajib dipilih.',
+    //         // TAMBAHKAN PESAN CUSTOM INI:
+    //         'pemberi_kuasa.*.urutan_ahli_waris.required' => 'Status silsilah pemberi kuasa wajib ditentukan.', 
+            
+    //         'penerima_kuasa.*.nama.required' => 'Nama penerima kuasa wajib diisi.',
+    //         'penerima_kuasa.*.nik.required' => 'NIK wajib diisi.',
+    //         'penerima_kuasa.*.nik.digits' => 'NIK harus 16 digit.',
+    //         'penerima_kuasa.*.urutan_ahli_waris.required' => 'Status urutan ahli waris penerima wajib ditentukan.',
+    //     ]);
+        
+    //     // 2. LOGIKA PINDAH CABANG: UPDATE ATAU CREATE INDUK
+    //     if ($this->suratKuasaId) {
+    //         $suratKuasa = SuratKuasa::findOrFail($this->suratKuasaId);
+    //         $suratKuasa->update([
+    //             'no_hp_pemohon' => $this->no_hp_pemohon
+    //         ]);
+
+    //         $suratKuasa->pemberiKuasa()->delete();
+    //         $suratKuasa->penerimaKuasa()->delete();
+
+    //         session()->flash('success', 'Data Surat Kuasa Waarmeking berhasil diperbarui.');
+    //     } else {
+    //         $suratKuasa = SuratKuasa::create([
+    //             'no_hp_pemohon' => $this->no_hp_pemohon
+    //         ]);
+
+    //         session()->flash('success', 'Data Surat Kuasa Waarmeking berhasil didaftarkan.');
+    //         session()->flash('cetak_id', $suratKuasa->id);
+    //         session()->flash('cetak_nama', $this->pemberi_kuasa[0]['nama']);
+    //     }
+
+    //     // 3. SIMPAN DATA ANAK (Otomatis menggunakan key 'urutan_ahli_waris' yang baru)
+    //     foreach ($this->pemberi_kuasa as $pemberi) {
+    //         $suratKuasa->pemberiKuasa()->create($pemberi);
+    //     }
+
+    //     foreach ($this->penerima_kuasa as $penerima) {
+    //         $suratKuasa->penerimaKuasa()->create($penerima);
+    //     }
+
+    //     // 4. DISPATCH EVENT SUKSES & REDIRECT
+    //     $this->dispatch('permohonan-sukses', nama: $this->pemberi_kuasa[0]['nama']);
+    //     $this->redirect('/surat-kuasa/waarmeking', navigate: true);
+    // }
+
     public function save()
     {
         // 1. JALANKAN VALIDASI
@@ -195,7 +266,6 @@ class FormSuratKuasa extends Component
             'pemberi_kuasa.*.nik.required' => 'NIK wajib diisi.',
             'pemberi_kuasa.*.nik.digits' => 'NIK harus 16 digit.',
             'pemberi_kuasa.*.jenis_kelamin.required' => 'Jenis kelamin ahli waris wajib dipilih.',
-            // TAMBAHKAN PESAN CUSTOM INI:
             'pemberi_kuasa.*.urutan_ahli_waris.required' => 'Status silsilah pemberi kuasa wajib ditentukan.', 
             
             'penerima_kuasa.*.nama.required' => 'Nama penerima kuasa wajib diisi.',
@@ -206,26 +276,27 @@ class FormSuratKuasa extends Component
         
         // 2. LOGIKA PINDAH CABANG: UPDATE ATAU CREATE INDUK
         if ($this->suratKuasaId) {
-            $suratKuasa = SuratKuasaWaarmeking::findOrFail($this->suratKuasaId);
+            $suratKuasa = SuratKuasa::findOrFail($this->suratKuasaId);
             $suratKuasa->update([
+                'jenis_kuasa'   => $this->jenis_kuasa,
                 'no_hp_pemohon' => $this->no_hp_pemohon
             ]);
 
+            // Bersihkan data relasi lama sebelum disimpan ulang
             $suratKuasa->pemberiKuasa()->delete();
             $suratKuasa->penerimaKuasa()->delete();
 
             session()->flash('success', 'Data Surat Kuasa Waarmeking berhasil diperbarui.');
         } else {
-            $suratKuasa = SuratKuasaWaarmeking::create([
+            $suratKuasa = SuratKuasa::create([
+                'jenis_kuasa'   => $this->jenis_kuasa, // <-- WAJIB: Menyimpan string 'waarmeking' ke database induk
                 'no_hp_pemohon' => $this->no_hp_pemohon
             ]);
 
             session()->flash('success', 'Data Surat Kuasa Waarmeking berhasil didaftarkan.');
-            session()->flash('cetak_id', $suratKuasa->id);
-            session()->flash('cetak_nama', $this->pemberi_kuasa[0]['nama']);
         }
 
-        // 3. SIMPAN DATA ANAK (Otomatis menggunakan key 'urutan_ahli_waris' yang baru)
+        // 3. SIMPAN DATA ANAK
         foreach ($this->pemberi_kuasa as $pemberi) {
             $suratKuasa->pemberiKuasa()->create($pemberi);
         }
@@ -245,12 +316,12 @@ class FormSuratKuasa extends Component
     private function bikinPdfStream($id)
     {
         // Ambil data dari database
-        $suratKuasa = SuratKuasaWaarmeking::with(['pemberiKuasa', 'penerimaKuasa'])->findOrFail($id);
+        $suratKuasa = SuratKuasa::with(['pemberiKuasa', 'penerimaKuasa'])->findOrFail($id);
         
         $namaPemohon = $suratKuasa->pemberiKuasa->first()?->nama ?? 'Surat_Kuasa';
 
         // 1. Buat instance DomPDF secara manual
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('exports.pdf-surat-kuasa-waarmeking', [
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('exports.pdf-surat-kuasa', [
             'data'         => $suratKuasa,
             'fontSize'     => '12pt',
             'lineHeight'   => '1.5',
@@ -274,7 +345,7 @@ class FormSuratKuasa extends Component
     public function bikinWordDownload($id)
     {
         // 1. Ambil data dari database beserta relasinya
-        $suratKuasa = SuratKuasaWaarmeking::with(['pemberiKuasa', 'penerimaKuasa'])->findOrFail($id);
+        $suratKuasa = SuratKuasa::with(['pemberiKuasa', 'penerimaKuasa'])->findOrFail($id);
         
         $namaPemohon = $suratKuasa->pemberiKuasa->first()?->nama ?? 'Surat_Kuasa';
 
@@ -304,7 +375,7 @@ class FormSuratKuasa extends Component
         }
 
         // 2. Render view Blade PDF menjadi string HTML murni (Menggunakan file blade yang sama)
-        $htmlContent = view('exports.pdf-surat-kuasa-waarmeking', [
+        $htmlContent = view('exports.pdf-surat-kuasa', [
             'data'         => $suratKuasa,
             'fontSize'     => $fontSize,
             'lineHeight'   => $lineHeight,
@@ -357,7 +428,7 @@ class FormSuratKuasa extends Component
     public function destroy($id): void
     {
         // Cari data surat kuasa berdasarkan ID
-        $suratKuasa = SuratKuasaWaarmeking::findOrFail($id);
+        $suratKuasa = SuratKuasa::findOrFail($id);
         
         // Hapus data dari database (Otomatis menghapus data anak karena DB Cascade)
         $suratKuasa->delete();
@@ -373,7 +444,7 @@ class FormSuratKuasa extends Component
     public function render()
     {
         // Modifikasi query untuk memfilter data berdasarkan pencarian dan membaginya per halaman
-        $daftar_surat_kuasa = SuratKuasaWaarmeking::with(['pemberiKuasa', 'penerimaKuasa'])
+        $daftar_surat_kuasa = SuratKuasa::with(['pemberiKuasa', 'penerimaKuasa'])
             ->when($this->search, function($query) {
                 $query->where(function($q) {
                     $q->where('no_hp_pemohon', 'like', '%' . $this->search . '%')
