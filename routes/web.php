@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\FormWaarmeking\FormPermohonan as WaarmekingPermohonan;
 use App\Livewire\FormWaarmeking\FormSuratKuasa as WaarmekingSuratKuasa;
 use App\Livewire\FormKuasaInsidentil\FormPermohonan as KuasaInsidentilPermohonan;
+use App\Livewire\FormKuasaInsidentil\FormSuratKuasa as KuasaInsidentilSuratKuasa;
 use App\Livewire\TidakPernahDipidana\FormPermohonan as TidakDipidanaPermohonan;
 
 Route::get('/', function () {
@@ -36,10 +37,10 @@ Route::livewire('/permohonan/kuasa-insidentil/edit/{id}', KuasaInsidentilPermoho
 Route::get('/permohonan/cetak-permohonan/kuasa-insidentil-pdf/{id}', KuasaInsidentilPermohonan::class)->name('cetak.kuasa-insidentil.pdf');
 Route::get('/permohonan/cetak-permohonan/kuasa-insidentil-word/{id}', [KuasaInsidentilPermohonan::class, 'bikinWordDownload'])->name('cetak.kuasa-insidentil.word');
 
-// Route::livewire('/surat-kuasa/kuasa-insidentil', KuasaInsidentilSuratKuasa::class)->name('kuasa-insidentil.surat-kuasa.index');
-// Route::livewire('/surat-kuasa/kuasa-insidentil/tambah', KuasaInsidentilSuratKuasa::class)->name('kuasa-insidentil.surat-kuasa.create');
-// Route::livewire('/surat-kuasa/kuasa-insidentil/edit/{id}', KuasaInsidentilSuratKuasa::class)->name('kuasa-insidentil.surat-kuasa.edit');
-// Route::livewire('/surat-kuasa/cetak-surat-kuasa/kuasa-insidentil-pdf/{id}', KuasaInsidentilSuratKuasa::class)->name('cetak.surat-kuasa.kuasa-insidentil.pdf');
+Route::livewire('/surat-kuasa/kuasa-insidentil', KuasaInsidentilSuratKuasa::class)->name('kuasa-insidentil.surat-kuasa.index');
+Route::livewire('/surat-kuasa/kuasa-insidentil/tambah', KuasaInsidentilSuratKuasa::class)->name('kuasa-insidentil.surat-kuasa.create');
+Route::livewire('/surat-kuasa/kuasa-insidentil/edit/{id}', KuasaInsidentilSuratKuasa::class)->name('kuasa-insidentil.surat-kuasa.edit');
+Route::livewire('/surat-kuasa/cetak-surat-kuasa/kuasa-insidentil-pdf/{id}', KuasaInsidentilSuratKuasa::class)->name('cetak.surat-kuasa.kuasa-insidentil.pdf');
 // Route::get('/surat-kuasa/cetak-surat-kuasa/kuasa-insidentil-word/{id}', [KuasaInsidentilSuratKuasa::class, 'bikinWordDownload'])->name('cetak.surat-kuasa.kuasa-insidentil.word');
 
 

@@ -453,54 +453,6 @@
     <!-- ========================================================================= -->
     <!-- AREA SIGNATURE / TANDA TANGAN (PAS DIATUR OTOMATIS)                        -->
     <!-- ========================================================================= -->
-    {{-- <div class="ttd-container">
-        <!-- Tanggal Surat Format Resmi Indonesia -->
-        <div style="text-align: right; margin-right: 2cm; margin-bottom: 25px;">
-            Kaimana, {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}
-        </div>
-
-        <!-- AREA TANDA TANGAN HUBUNGAN KEDUA PIHAK -->
-        <div style="position: relative; width: 100%;">
-
-            <!-- AREA METERAI KECIL DI TENGAH (LEBIH RAPAT KARENA JARAK KOLOM MENDEKAT) -->
-            <div style="position: absolute; left: 44%; width: 12%; top: 35px; text-align: center; z-index: 10;">
-                <div
-                    style="border: 1px dashed #bbb; padding: 6px 2px; font-size: 7pt; color: #666; background-color: #fff; border-radius: 2px;">
-                    MATERAI<br>10.000
-                </div>
-                <div style="font-size: 6pt; color: #888; margin-top: 2px; line-height: 1;">
-                    Kena Ttd
-                </div>
-            </div>
-
-            <!-- KOLOM KIRI (PENERIMA KUASA) - Diperlebar ke tengah -->
-            <div class="ttd-box-penerima" style="width: 44%; float: left; text-align: center;">
-                <div style="margin-bottom: 90px;">Penerima Kuasa,</div>
-
-                @foreach ($data->penerimaKuasa as $penerima)
-                    <div class="fw-bold" style="text-decoration: underline; margin-bottom: 90px;">
-                        {{ $penerima->nama }}
-                    </div>
-                @endforeach
-            </div>
-
-            <!-- KOLOM KANAN (PEMBERI KUASA) - Diperlebar ke tengah -->
-            <div class="ttd-box-pemberi" style="width: 44%; float: right; text-align: center;">
-                <div style="margin-bottom: 90px;">Pemberi Kuasa,</div>
-
-                @foreach ($data->pemberiKuasa as $pemberi)
-                    <div class="list-pemberi-ttd" style="margin-bottom: 90px;">
-                        <div class="fw-bold" style="text-decoration: underline;">
-                            {{ $pemberi->nama }}
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-            <div class="clear"></div>
-        </div>
-    </div> --}}
-
     <div class="ttd-container" style="margin-top: 30px;">
         <table style="width: 100%; border: none;" border="0" cellspacing="0" cellpadding="0">
             <tr>

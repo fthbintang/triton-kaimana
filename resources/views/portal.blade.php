@@ -207,7 +207,8 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <a href="#" wire:navigate class="text-decoration-none text-dark">
+                                    <a href="{{ route('kuasa-insidentil.surat-kuasa.index') }}" wire:navigate
+                                        class="text-decoration-none text-dark">
                                         <div class="card p-4 h-100 menu-card border border-light-subtle">
                                             <div class="text-warning mb-2"><i
                                                     class="bi bi-file-earmark-person fs-3"></i></div>
