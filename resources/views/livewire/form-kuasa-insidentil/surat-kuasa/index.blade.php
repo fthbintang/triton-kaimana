@@ -149,7 +149,7 @@
                                                                         Format
                                                                     </a>
 
-                                                                    <a href="{{ route('cetak.surat-kuasa.waarmeking.word', ['id' => $item->id]) }}"
+                                                                    <a href="{{ route('cetak.surat-kuasa.kuasa-insidentil.word', ['id' => $item->id]) }}"
                                                                         class="btn btn-primary py-2 rounded-2 d-flex align-items-center justify-content-center gap-2 fw-semibold shadow-sm">
                                                                         <i class="bi bi-file-earmark-word-fill"></i>
                                                                         Word Format

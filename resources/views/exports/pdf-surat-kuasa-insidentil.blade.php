@@ -215,7 +215,9 @@
 
 <body>
 
-    <div class="text-center fw-bold judul-surat">SURAT KUASA</div>
+    <div class="judul-surat" style="text-align: center;">
+        <b>SURAT KUASA</b>
+    </div>
 
     <!-- PEMBERI KUASA -->
     <p style="text-indent: 1cm;" class="text-justify">
@@ -253,7 +255,10 @@
             <tr>
                 <td>Alamat</td>
                 <td>:</td>
-                <td style="text-align: justify">{{ $pemberi->alamat }}</td>
+                <!-- Ganti baris alamat Anda menjadi seperti ini -->
+                <td style="text-align: justify; width: 75%; word-break: break-word; white-space: normal;">
+                    {{ $pemberi->alamat }}
+                </td>
             </tr>
             <tr>
                 <td>Agama</td>
@@ -301,7 +306,9 @@
             <tr>
                 <td>Alamat</td>
                 <td>:</td>
-                <td style="text-align: justify">{{ $penerima->alamat }}</td>
+                <td style="text-align: justify; width: 75%; word-break: break-word; white-space: normal;">
+                    {{ $penerima->alamat }}
+                </td>
             </tr>
             <tr>
                 <td>Agama</td>

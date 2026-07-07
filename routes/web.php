@@ -41,7 +41,7 @@ Route::livewire('/surat-kuasa/kuasa-insidentil', KuasaInsidentilSuratKuasa::clas
 Route::livewire('/surat-kuasa/kuasa-insidentil/tambah', KuasaInsidentilSuratKuasa::class)->name('kuasa-insidentil.surat-kuasa.create');
 Route::livewire('/surat-kuasa/kuasa-insidentil/edit/{id}', KuasaInsidentilSuratKuasa::class)->name('kuasa-insidentil.surat-kuasa.edit');
 Route::livewire('/surat-kuasa/cetak-surat-kuasa/kuasa-insidentil-pdf/{id}', KuasaInsidentilSuratKuasa::class)->name('cetak.surat-kuasa.kuasa-insidentil.pdf');
-// Route::get('/surat-kuasa/cetak-surat-kuasa/kuasa-insidentil-word/{id}', [KuasaInsidentilSuratKuasa::class, 'bikinWordDownload'])->name('cetak.surat-kuasa.kuasa-insidentil.word');
+Route::get('/surat-kuasa/cetak-surat-kuasa/kuasa-insidentil-word/{id}', [KuasaInsidentilSuratKuasa::class, 'bikinWordDownload'])->name('cetak.surat-kuasa.kuasa-insidentil.word');
 
 
 Route::livewire('/layanan/tidak-dipidana', TidakDipidanaPermohonan::class)

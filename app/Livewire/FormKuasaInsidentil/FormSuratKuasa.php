@@ -304,7 +304,7 @@ class FormSuratKuasa extends Component
         }
 
         // 2. Render view Blade PDF menjadi string HTML murni (Menggunakan file blade yang sama)
-        $htmlContent = view('exports.pdf-surat-kuasa', [
+        $htmlContent = view('exports.pdf-surat-kuasa-insidentil', [
             'data'         => $suratKuasa,
             'fontSize'     => $fontSize,
             'lineHeight'   => $lineHeight,
