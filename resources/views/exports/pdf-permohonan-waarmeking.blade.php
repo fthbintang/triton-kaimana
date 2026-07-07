@@ -4,66 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Surat Permohonan Waarmeking</title>
-    {{-- <style>
-        @page {
-            margin: 1.5cm 2cm 1.5cm 2cm;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 11pt;
-            line-height: 1.4;
-            color: #000;
-        }
-
-        p {
-            margin-top: 0;
-            margin-bottom: 10px;
-            text-align: justify;
-        }
-
-        .table-biodata {
-            margin-left: 20px;
-            margin-bottom: 12px;
-        }
-
-        .table-biodata td {
-            vertical-align: top;
-            padding-top: 2px;
-            padding-bottom: 2px;
-        }
-
-        .label-pemohon {
-            font-weight: bold;
-            text-decoration: underline;
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-
-        ul {
-            margin-top: 5px;
-            margin-bottom: 5px;
-            padding-left: 20px;
-        }
-
-        li {
-            margin-bottom: 3px;
-            text-align: justify;
-        }
-
-        /* Wrap tanda tangan agar rapi & tidak pecah berantakan */
-        .signature-section {
-            margin-top: 30px;
-            width: 100%;
-        }
-
-        .signature-box {
-            text-align: center;
-            vertical-align: top;
-            padding-bottom: 15px;
-        }
-    </style> --}}
-
     <style>
         @page {
             margin: 1.5cm 2cm 1.5cm 2cm;
@@ -160,7 +100,11 @@
                 </p>
                 <p style="margin: 0; line-height: 1.4;">
                     Yth. <br>
-                    Ketua Pengadilan Negeri Kaimana<br>
+                    @if (in_array($tujuan_pimpinan, ['Plh. Ketua', 'Plt. Ketua']))
+                        {{ $tujuan_pimpinan }} Pengadilan Negeri Kaimana<br>
+                    @else
+                        {{ $tujuan_pimpinan ?? 'Ketua' }} Pengadilan Negeri Kaimana<br>
+                    @endif
                     di – <br>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T E M P A T
                 </p>
@@ -179,11 +123,6 @@
         <div class="label-pemohon">PEMOHON I:</div>
     @endif
     <table class="table-biodata" width="100%">
-        <tr>
-            <td>Hubungan Silsilah</td>
-            <td>:</td>
-            <td style="font-weight: bold;">{{ $urutan_ahli_waris ?? '-' }}</td>
-        </tr>
         <tr>
             <td width="25%">Nama</td>
             <td width="3%">:</td>
@@ -215,6 +154,11 @@
             <td>:</td>
             <td style="text-align: justify;">{{ $alamat }}</td>
         </tr>
+        <tr>
+            <td>Hubungan Silsilah</td>
+            <td>:</td>
+            <td>{{ $urutan_ahli_waris ?? '-' }}</td>
+        </tr>
     </table>
 
     @if (is_array($pemohon_tambahan) && count($pemohon_tambahan) > 0)
@@ -222,12 +166,6 @@
             <div class="label-pemohon" style="margin-top: 3px; margin-bottom: 2px;">PEMOHON {{ $index + 2 }}:</div>
 
             <table class="table-biodata" width="100%" style="margin-bottom: 5px; line-height: 1.2;">
-                <tr>
-                    <td style="vertical-align: top; padding-top: 1px; padding-bottom: 1px;">Hubungan Silsilah</td>
-                    <td style="vertical-align: top; padding-top: 1px; padding-bottom: 1px;">:</td>
-                    <td style="vertical-align: top; padding-top: 1px; padding-bottom: 1px; font-weight: bold;">
-                        {{ $pt['urutan_ahli_waris'] ?? '-' }}</td>
-                </tr>
                 <tr>
                     <td width="25%" style="vertical-align: top; padding-top: 1px; padding-bottom: 1px;">Nama</td>
                     <td width="3%" style="vertical-align: top; padding-top: 1px; padding-bottom: 1px;">:</td>
@@ -267,12 +205,23 @@
                     <td style="text-align: justify; vertical-align: top; padding-top: 1px; padding-bottom: 1px;">
                         {{ $pt['alamat'] ?? '-' }}</td>
                 </tr>
+                <tr>
+                    <td style="vertical-align: top; padding-top: 1px; padding-bottom: 1px;">Hubungan Silsilah</td>
+                    <td style="vertical-align: top; padding-top: 1px; padding-bottom: 1px;">:</td>
+                    <td style="vertical-align: top; padding-top: 1px; padding-bottom: 1px;">
+                        {{ $pt['urutan_ahli_waris'] ?? '-' }}</td>
+                </tr>
             </table>
         @endforeach
     @endif
 
     <p style="margin-top: 15px;">
-        Dengan ini datang menghadap Bapak Ketua Pengadilan Negeri Kaimana untuk mohon disahkan sebagai ahli waris dari
+        Dengan ini datang menghadap Bapak @if (in_array($tujuan_pimpinan, ['Plh. Ketua', 'Plt. Ketua']))
+            {{ $tujuan_pimpinan }} Pengadilan Negeri Kaimana
+        @else
+            {{ $tujuan_pimpinan ?? 'Ketua' }} Pengadilan Negeri Kaimana
+        @endif
+        untuk mohon disahkan sebagai ahli waris dari
         Almarhum {{ $nama_pewaris }} yang berhak mengambil tabungan/deposito di Bank atas nama
         Almarhum
         {{ $nama_pewaris }}
@@ -341,10 +290,18 @@
         @endif
     </p>
 
-    <p>Sebagai bahan pertimbangan Bapak Ketua Pengadilan Negeri Kaimana, {{ $sebutanPemohon }} telah melampirkan
+    <p>Sebagai bahan pertimbangan Bapak @if (in_array($tujuan_pimpinan, ['Plh. Ketua', 'Plt. Ketua']))
+            {{ $tujuan_pimpinan }} Pengadilan Negeri Kaimana
+        @else
+            {{ $tujuan_pimpinan ?? 'Ketua' }} Pengadilan Negeri Kaimana
+        @endif, {{ $sebutanPemohon }} telah melampirkan
         pula surat-surat lain yang berhubungan dengan perihal diatas sebagai persyaratan (surat-surat terlampir).</p>
 
-    <p>Demikian permohonan {{ $sebutanPemohon }}, atas perhatian dan bantuan Bapak Ketua Pengadilan Negeri Kaimana
+    <p>Demikian permohonan {{ $sebutanPemohon }}, atas perhatian dan bantuan Bapak @if (in_array($tujuan_pimpinan, ['Plh. Ketua', 'Plt. Ketua']))
+            {{ $tujuan_pimpinan }} Pengadilan Negeri Kaimana
+        @else
+            {{ $tujuan_pimpinan ?? 'Ketua' }} Pengadilan Negeri Kaimana
+        @endif
         {{ $sebutanPemohon }} ucapkan terima kasih.</p>
 
     <table class="signature-section" width="100%">

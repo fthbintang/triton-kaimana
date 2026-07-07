@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\PemberiKuasaWaarmeking;
+use App\Models\PemberiKuasa;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<PemberiKuasaWaarmeking>
+ * @extends Factory<PemberiKuasa>
  */
-class PemberiKuasaWaarmekingFactory extends Factory
+class PemberiKuasaFactory extends Factory
 {
     /**
      * Define the model's default state.

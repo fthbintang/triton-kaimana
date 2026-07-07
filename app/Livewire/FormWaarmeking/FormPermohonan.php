@@ -22,6 +22,8 @@ class FormPermohonan extends Component
     // Properti baru untuk menyimpan ID saat mode EDIT
     public ?int $permohonanId = null;
 
+    public string $tujuan_pimpinan = '';
+
     // 1. Data Utama Pemohon (Berperan sebagai Pemohon Utama / Perwakilan)
     public string $nama_pemohon = '';
     public string $nik_pemohon = '';
@@ -177,6 +179,7 @@ class FormPermohonan extends Component
         $this->nik_pemohon    = $permohonan->nik_pemohon;
         $this->no_hp_pemohon  = $permohonan->no_hp_pemohon;
         
+        $this->tujuan_pimpinan= $dataSpesifik['tujuan_pimpinan'] ?? '';
         $this->tempat_lahir   = $dataSpesifik['tempat_lahir'] ?? '';
         $this->tanggal_lahir  = $dataSpesifik['tanggal_lahir'] ?? '';
         $this->jenis_kelamin  = $dataSpesifik['jenis_kelamin'] ?? 'Laki-laki';
@@ -195,6 +198,7 @@ class FormPermohonan extends Component
     {
         // ATURAN VALIDASI (Sama persis seperti kode validasi Anda yang kemarin)
         $rules = [
+            'tujuan_pimpinan'=> 'required|string',
             'nama_pemohon'   => 'required|string|min:3',
             'nik_pemohon'    => 'required|numeric|digits:16',
             'no_hp_pemohon'  => 'required|numeric|min_digits:10',
@@ -224,6 +228,7 @@ class FormPermohonan extends Component
 
         // DISESUAIKAN: Menyusun data spesifik dengan menyertakan urutan_ahli_waris untuk Pemohon Utama
         $dataSpesifik = [
+            'tujuan_pimpinan'   => $this->tujuan_pimpinan,
             'urutan_ahli_waris' => $this->urutan_ahli_waris, // <--- TAMBAHAN: Untuk Pemohon Utama (Luar pemohon tambahan)
             'tempat_lahir'      => $this->tempat_lahir,
             'tanggal_lahir'     => $this->tanggal_lahir,
@@ -304,6 +309,7 @@ class FormPermohonan extends Component
         // PASTIKAN SEMUA DATA DI BAWAH INI TERKIRIM KE BLADE PDF
         $pdf = Pdf::loadView('exports.pdf-permohonan-waarmeking', [
             'nama_pemohon'     => $permohonan->nama_pemohon,
+            'tujuan_pimpinan'  => $dataSpesifik['tujuan_pimpinan'] ?? '',
             'tempat_lahir'     => $dataSpesifik['tempat_lahir'] ?? '',
             'tanggal_lahir'    => $dataSpesifik['tanggal_lahir'] ?? '',
             'jenis_kelamin'    => $dataSpesifik['jenis_kelamin'] ?? '',
@@ -366,6 +372,7 @@ class FormPermohonan extends Component
         // 2. Render view Blade PDF Anda menjadi string HTML murni (Gunakan file blade yang sama persis!)
         $htmlContent = view('exports.pdf-permohonan-waarmeking', [
             'nama_pemohon'     => $permohonan->nama_pemohon,
+            'tujuan_pimpinan'  => $dataSpesifik['tujuan_pimpinan'] ?? '',
             'urutan_ahli_waris'=> $dataSpesifik['urutan_ahli_waris'] ?? '',
             'tempat_lahir'     => $dataSpesifik['tempat_lahir'] ?? '',
             'tanggal_lahir'    => $dataSpesifik['tanggal_lahir'] ?? '',

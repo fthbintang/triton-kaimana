@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\SuratKuasaWaarmeking;
+use App\Models\SuratKuasa;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class SuratKuasaWaarmekingSeeder extends Seeder
+class SuratKuasaSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -20,7 +20,8 @@ class SuratKuasaWaarmekingSeeder extends Seeder
         for ($i = 0; $i < 25; $i++) {
             
             // 1. Buat data Induk Surat Kuasa
-            $suratKuasa = SuratKuasaWaarmeking::create([
+            $suratKuasa = SuratKuasa::create([
+                'jenis_kuasa'   => 'waarmeking',
                 'no_hp_pemohon' => '08' . fake()->numerify('##########'),
             ]);
 
