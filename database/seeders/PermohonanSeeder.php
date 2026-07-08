@@ -15,7 +15,7 @@ class PermohonanSeeder extends Seeder
     {
         // Membuat 50 data tiruan permohonan waarmeking sekaligus
         Permohonan::factory()->count(40)->create();
-
         Permohonan::factory(40)->kuasaInsidentil()->create();
+        Permohonan::factory()->count(40)->pernyataanTidakDihukum()->create();
     }
 }

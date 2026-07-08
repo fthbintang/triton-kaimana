@@ -1,35 +1,33 @@
-<div class="container py-4">
-    <!-- NOTIFIKASI SUKSES / GAGAL -->
-    @if (session()->has('success'))
-        <div class="alert alert-success border-0 shadow-sm rounded-3 mb-4 d-flex align-items-center" role="alert">
-            <i class="bi bi-check-circle-fill me-2 fs-5"></i>
-            <div>{{ session('success') }}</div>
-        </div>
-    @endif
+<div class="card shadow-sm border-0 rounded-3">
+    <div class="card-header bg-court text-white p-4 text-center rounded-top-3 position-relative">
 
-    @if (session()->has('error'))
-        <div class="alert alert-danger border-0 shadow-sm rounded-3 mb-4 d-flex align-items-center" role="alert">
-            <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
-            <div>{{ session('error') }}</div>
-        </div>
-    @endif
+        <a href="{{ route('tidak-dipidana.surat-pernyataan-tidak-dihukum') }}" wire:navigate
+            class="btn btn-sm btn-outline-light position-absolute start-0 top-50 translate-middle-y ms-3 rounded-2 shadow-sm d-inline-flex align-items-center gap-1">
+            <i class="bi bi-arrow-left"></i>
+            <span class="d-none d-md-inline">Kembali</span>
+        </a>
 
-    <!-- CARD FORM INPUT -->
-    <div class="card bg-white border-light shadow-sm rounded-3">
-        <div class="card-header bg-court text-white py-2 fw-semibold">
-            Form Dokumen Surat Keterangan Tidak Pernah Dipidana & Surat Pernyataan
-        </div>
+        <h5 class="fw-bold m-0 text-uppercase" style="letter-spacing: 1px;">
+            Formulir Surat Pernyataan Tidak Pernah Dihukum
+        </h5>
+        <p class="text-white-50 small m-0 mt-1">
+            Isilah data di bawah ini secara lengkap dan benar
+        </p>
+    </div>
 
-        <div class="card-body">
-            <form wire:submit.prevent="simpanPermohonan" class="row g-3">
+    <div class="card-body p-4 p-md-5">
+        <form wire:submit.prevent="save">
+            <div class="row g-3">
 
                 <!-- IDENTITAS UTAMA -->
-                <div class="col-12 border-bottom pb-1 mb-1">
-                    <span class="fw-bold text-court small"><i class="bi bi-person-fill me-1"></i> Identitas Diri
-                        Pemohon</span>
+                <div class="col-12 border-bottom pb-2 mb-2">
+                    <span class="fw-bold text-court small">
+                        <i class="bi bi-person-fill me-1"></i> Identitas Diri Pemohon
+                    </span>
                 </div>
 
-                <div class="col-md-6">
+                {{-- Baris 1: Nama Lengkap (Full di mobile, mengambil 8 grid di desktop) & Jenis Kelamin (4 grid) --}}
+                <div class="col-md-8">
                     <label class="form-label fw-semibold text-muted small mb-1">Nama Lengkap</label>
                     <input type="text" wire:model="nama_pemohon"
                         class="form-control form-control-sm @error('nama_pemohon') is-invalid @enderror"
@@ -39,36 +37,7 @@
                     @enderror
                 </div>
 
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold text-muted small mb-1">NIK (16 Digit KTP)</label>
-                    <input type="text" wire:model="nik_pemohon" maxlength="16"
-                        class="form-control form-control-sm @error('nik_pemohon') is-invalid @enderror"
-                        placeholder="Contoh: 9102................">
-                    @error('nik_pemohon')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label fw-semibold text-muted small mb-1">Tempat Lahir</label>
-                    <input type="text" wire:model="tempat_lahir"
-                        class="form-control form-control-sm @error('tempat_lahir') is-invalid @enderror"
-                        placeholder="Kota / Kabupaten">
-                    @error('tempat_lahir')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label fw-semibold text-muted small mb-1">Tanggal Lahir</label>
-                    <input type="date" wire:model="tanggal_lahir"
-                        class="form-control form-control-sm @error('tanggal_lahir') is-invalid @enderror">
-                    @error('tanggal_lahir')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class="form-label fw-semibold text-muted small mb-1">Jenis Kelamin</label>
                     <select wire:model="jenis_kelamin"
                         class="form-select form-select-sm @error('jenis_kelamin') is-invalid @enderror">
@@ -81,7 +50,27 @@
                     @enderror
                 </div>
 
-                <div class="col-md-3">
+                {{-- Baris 2: Tempat Lahir, Tanggal Lahir, & Agama (Simetris: 4 - 4 - 4 grid) --}}
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold text-muted small mb-1">Tempat Lahir</label>
+                    <input type="text" wire:model="tempat_lahir"
+                        class="form-control form-control-sm @error('tempat_lahir') is-invalid @enderror"
+                        placeholder="Kota / Kabupaten">
+                    @error('tempat_lahir')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold text-muted small mb-1">Tanggal Lahir</label>
+                    <input type="date" wire:model="tanggal_lahir"
+                        class="form-control form-control-sm @error('tanggal_lahir') is-invalid @enderror">
+                    @error('tanggal_lahir')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-md-4">
                     <label class="form-label fw-semibold text-muted small mb-1">Agama</label>
                     <input type="text" wire:model="agama"
                         class="form-control form-control-sm @error('agama') is-invalid @enderror"
@@ -91,6 +80,7 @@
                     @enderror
                 </div>
 
+                {{-- Baris 3: Pekerjaan, Jabatan, & No HP (Simetris: 4 - 4 - 4 grid) --}}
                 <div class="col-md-4">
                     <label class="form-label fw-semibold text-muted small mb-1">Pekerjaan</label>
                     <input type="text" wire:model="pekerjaan"
@@ -106,8 +96,9 @@
                     <input type="text" wire:model="jabatan"
                         class="form-control form-control-sm @error('jabatan') is-invalid @enderror"
                         placeholder="Contoh: Staf / Kepala Kampung / -">
-                    <small class="text-muted d-block" style="font-size: 0.7rem; margin-top: 2px;">* Isi tanda (-) jika
-                        tidak ada jabatan spesifik.</small>
+                    <small class="text-muted d-block" style="font-size: 0.65rem; margin-top: 2px;">
+                        * Isi tanda (-) jika tidak ada jabatan spesifik.
+                    </small>
                     @error('jabatan')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -123,37 +114,36 @@
                     @enderror
                 </div>
 
+                {{-- Baris 4: Alamat Lengkap (Full 12 grid) --}}
                 <div class="col-12">
                     <label class="form-label fw-semibold text-muted small mb-1">Alamat Lengkap (Sesuai KTP)</label>
-                    <input type="text" wire:model="alamat"
-                        class="form-control form-control-sm @error('alamat') is-invalid @enderror"
-                        placeholder="Nama Jalan, RT/RW, Kampung / Kelurahan">
+                    <textarea wire:model="alamat" rows="3" class="form-control form-control-sm @error('alamat') is-invalid @enderror"
+                        placeholder="Contoh: Jl. Cenderawasih, RT 04/RW 02, Kelurahan Kaimana Kota, Distrik Kaimana"></textarea>
                     @error('alamat')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <!-- TOMBOL AKSI RESPONSIF -->
-                <div class="row g-2 mt-4 pt-3 border-top">
-                    <div class="col-6 col-md-3 order-1">
-                        <a href="/" wire:navigate
-                            class="btn btn-light border text-secondary w-100 py-2 fw-semibold rounded-3 shadow-sm">
+                <div class="col-12 mt-4 pt-3 border-top">
+                    <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                        <a href="{{ route('tidak-dipidana.surat-pernyataan-tidak-dihukum') }}" wire:navigate
+                            class="btn btn-light border text-secondary px-4 py-2 fw-semibold rounded-3 shadow-sm order-2 order-md-1">
                             <i class="bi bi-arrow-left me-1"></i> Kembali
                         </a>
-                    </div>
-                    <div class="col-12 col-md-6 order-3 order-md-2">
-                    </div>
-                    <div class="col-6 col-md-3 order-2 order-md-3">
+
                         <button type="submit" wire:loading.attr="disabled"
-                            class="btn btn-court rounded-pill fw-semibold px-4">
+                            class="btn btn-court rounded-pill fw-semibold px-4 py-2 order-1 order-md-2">
                             <span wire:loading.remove><i class="bi bi-send-fill me-1"></i> Kirim Form</span>
-                            <span wire:loading><span class="spinner-border spinner-border-sm me-2" role="status"
-                                    aria-hidden="true"></span>Menyimpan...</span>
+                            <span wire:loading>
+                                <span class="spinner-border spinner-border-sm me-2" role="status"
+                                    aria-hidden="true"></span>Menyimpan...
+                            </span>
                         </button>
                     </div>
                 </div>
 
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>

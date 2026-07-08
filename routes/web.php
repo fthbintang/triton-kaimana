@@ -6,7 +6,7 @@ use App\Livewire\FormWaarmeking\FormPermohonan as WaarmekingPermohonan;
 use App\Livewire\FormWaarmeking\FormSuratKuasa as WaarmekingSuratKuasa;
 use App\Livewire\FormKuasaInsidentil\FormPermohonan as KuasaInsidentilPermohonan;
 use App\Livewire\FormKuasaInsidentil\FormSuratKuasa as KuasaInsidentilSuratKuasa;
-use App\Livewire\TidakPernahDipidana\FormPermohonan as TidakDipidanaPermohonan;
+use App\Livewire\TidakPernahDipidana\FormKeteranganTidakDihukum as TidakDipidanaPernyataan;
 
 Route::get('/', function () {
     return view('portal');
@@ -43,6 +43,11 @@ Route::livewire('/surat-kuasa/kuasa-insidentil/edit/{id}', KuasaInsidentilSuratK
 Route::livewire('/surat-kuasa/cetak-surat-kuasa/kuasa-insidentil-pdf/{id}', KuasaInsidentilSuratKuasa::class)->name('cetak.surat-kuasa.kuasa-insidentil.pdf');
 Route::get('/surat-kuasa/cetak-surat-kuasa/kuasa-insidentil-word/{id}', [KuasaInsidentilSuratKuasa::class, 'bikinWordDownload'])->name('cetak.surat-kuasa.kuasa-insidentil.word');
 
-
-Route::livewire('/layanan/tidak-dipidana', TidakDipidanaPermohonan::class)
-    ->name('layanan.tidak-dipidana');
+// =========================================================================
+// 3. MODUL TIDAK PERNAH DIHUKUM
+// =========================================================================
+Route::livewire('/surat-pernyataan/tidak-dipidana', TidakDipidanaPernyataan::class)->name('tidak-dipidana.surat-pernyataan-tidak-dihukum');
+Route::livewire('/surat-pernyataan/tidak-dipidana/tambah', TidakDipidanaPernyataan::class)->name('tidak-dipidana.surat-pernyataan-tidak-dihukum.create');
+Route::livewire('/surat-pernyataan/tidak-dipidana/edit/{id}', TidakDipidanaPernyataan::class)->name('tidak-dipidana.surat-pernyataan-tidak-dihukum.edit');
+Route::livewire('/surat-pernyataan/tidak-dipidana/pernyataan-tidak-dihukum-pdf/{id}', TidakDipidanaPernyataan::class)->name('cetak.surat-pernyataan-tidak-dihukum.pdf');
+Route::get('/surat-pernyataan/tidak-dipidana/pernyataan-tidak-dihukum-word/{id}', [TidakDipidanaPernyataan::class, 'bikinWordDownload'])->name('cetak.surat-pernyataan-tidak-dihukum.word');

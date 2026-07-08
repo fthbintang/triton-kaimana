@@ -230,7 +230,7 @@
             </div>
 
             <!-- 3. Surat Keterangan Tidak Pernah Dipidana -->
-            <div class="col-md-4 col-sm-6">
+            {{-- <div class="col-md-4 col-sm-6">
                 <a href="{{ route('layanan.tidak-dipidana') }}" wire:navigate class="text-decoration-none text-dark">
                     <div class="card h-100 p-4 text-center menu-card">
                         <div class="card-body">
@@ -243,6 +243,79 @@
                         </div>
                     </div>
                 </a>
+            </div> --}}
+
+            <!-- 1. KARTU MENU UTAMA (TRIGGER MODAL) -->
+            <div class="col-md-4 col-sm-6">
+                <!-- Mengganti tag <a> dengan target modal -->
+                <div class="card h-100 p-4 text-center menu-card" data-bs-toggle="modal"
+                    data-bs-target="#modalTidakDipidana" style="cursor: pointer;">
+                    <div class="card-body">
+                        <div class="icon-box">
+                            <i class="bi bi-shield-exclamation fs-2"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Keterangan Tidak Dipidana</h5>
+                        <p class="small text-muted mb-0">Pengisian data permohonan surat keterangan resmi tidak
+                            pernah dihukum sebagai syarat kelengkapan administrasi.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. MODAL PILIHAN DOKUMEN KETERANGAN TIDAK DIPIDANA -->
+            <div class="modal fade" id="modalTidakDipidana" tabindex="-1" aria-labelledby="modalTidakDipidanaLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content" style="border-radius: 16px; border: none;">
+                        <div class="modal-header border-0 pb-0">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body pt-0 text-center">
+                            <i class="bi bi-folder2-open text-court" style="font-size: 3.5rem;"></i>
+                            <h4 class="fw-bold mt-2 text-dark">Pilih Dokumen yang Diperlukan</h4>
+                            <p class="text-muted small mb-4">Silakan tentukan jenis berkas administrasi Surat
+                                Keterangan Tidak Dipidana yang ingin Anda buat</p>
+
+                            <div class="row g-3 justify-content-center">
+                                <!-- PILIHAN 1: SURAT PERNYATAAN MANDIRI -->
+                                <div class="col-md-6">
+                                    <a href="{{ route('tidak-dipidana.surat-pernyataan-tidak-dihukum') }}"
+                                        wire:navigate class="text-decoration-none text-dark">
+                                        <div class="card p-4 h-100 menu-card border border-light-subtle">
+                                            <div class="text-court mb-2">
+                                                <i class="bi bi-file-earmark-check fs-3"></i>
+                                            </div>
+                                            <h6 class="fw-bold mb-1">1. Surat Pernyataan</h6>
+                                            <p class="text-muted m-0" style="font-size: 0.75rem;">Surat pernyataan
+                                                mandiri tidak pernah dihukum penjara dan/atau tidak sedang menjalani
+                                                proses hukum.</p>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- PILIHAN 2: SURAT KUASA (PENGURUSAN DIWAKILKAN) -->
+                                <div class="col-md-6">
+                                    <!-- Silakan sesuaikan nama route surat kuasa tidak dipidana Anda di sini -->
+                                    <a href="#" wire:navigate class="text-decoration-none text-dark">
+                                        <div class="card p-4 h-100 menu-card border border-light-subtle">
+                                            <div class="text-warning mb-2">
+                                                <i class="bi bi-file-earmark-person fs-3"></i>
+                                            </div>
+                                            <h6 class="fw-bold mb-1">2. Surat Kuasa</h6>
+                                            <p class="text-muted m-0" style="font-size: 0.75rem;">Wajib dibuat jika
+                                                pengurusan administrasi Surat Keterangan Tidak Dipidana dikuasakan
+                                                kepada orang lain.</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0 justify-content-center pb-4">
+                            <button type="button" class="btn btn-sm btn-secondary rounded-pill px-3"
+                                data-bs-dismiss="modal">Batal</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>

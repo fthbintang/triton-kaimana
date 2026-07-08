@@ -281,7 +281,8 @@
     </p>
 
     <p class="text-justify" style="margin-bottom: 2px;">
-        Sebagai bahan pertimbangan Ketua Pengadilan Negeri Kaimana, bersama ini saya lampirkan:
+        Sebagai bahan pertimbangan Bapak {{ $permohonan->data_spesifik['perkara']['tujuan_pimpinan'] ?? 'Ketua' }}
+        Pengadilan Negeri Kaimana, bersama ini saya lampirkan:
     </p>
 
     <ol class="lampiran">

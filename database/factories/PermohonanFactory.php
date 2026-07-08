@@ -5,9 +5,6 @@ namespace Database\Factories;
 use App\Models\Permohonan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends Factory<Permohonan>
- */
 class PermohonanFactory extends Factory
 {
     protected $model = Permohonan::class;
@@ -50,6 +47,7 @@ class PermohonanFactory extends Factory
         }
 
         $dataSpesifikWaarmeking = [
+            'tujuan_pimpinan' => fake()->randomElement(['Ketua', 'Wakil Ketua']),
             'urutan_ahli_waris' => fake()->randomElement(['Istri Pewaris', 'Suami Pewaris']),
             'tempat_lahir' => fake()->city(),
             'tanggal_lahir' => fake()->date('Y-m-d', '-30 years'),
@@ -83,7 +81,6 @@ class PermohonanFactory extends Factory
             $kedudukan = ['Penggugat', 'Tergugat', 'Pemohon', 'Termohon'];
             $hubungan = ['Anak Kandung', 'Istri Kandung', 'Suami Kandung', 'Saudara Kandung'];
 
-            // Menyusun data spesifik sesuai struktur Array Save Kuasa Insidentil Anda
             $dataSpesifikKuasa = [
                 'penerima' => [
                     'tempat_lahir'      => fake()->city(),
@@ -106,9 +103,9 @@ class PermohonanFactory extends Factory
                     'hubungan_keluarga' => fake()->randomElement($hubungan),
                 ],
                 'perkara' => [
-                    'tujuan_pimpinan'    => 'Ketua Pengadilan Negeri Kaimana',
+                    'tujuan_pimpinan'    => 'Ketua',
                     'kedudukan_pemberi'  => fake()->randomElement($kedudukan),
-                    'jenis_perkara'      => 'Gugatan Perdata Wanprestasi Nomor ' . fake()->numerify('##/Pdt.G/2026/PN Kmn'),
+                    'jenis_perkara'      => 'Gugatan Perdata Wanprestasi',
                     'alasan_tidak_hadir' => 'Sedang sakit keras dan menjalani perawatan intensif diluar kota',
                     'tujuan_kuasa'       => 'Mendampingi, menghadiri persidangan, membela hak-hak pemberi kuasa, menyerahkan bukti, dan menandatangani surat-surat terkait perkara',
                 ]
@@ -117,6 +114,33 @@ class PermohonanFactory extends Factory
             return [
                 'jenis_naskah' => 'kuasa_insidentil',
                 'data_spesifik' => $dataSpesifikKuasa,
+            ];
+        });
+    }
+
+    /**
+     * State Khusus untuk Pernyataan Tidak Dihukum
+     */
+    public function pernyataanTidakDihukum(): static
+    {
+        return $this->state(function (array $attributes) {
+            $pekerjaan = ['PNS', 'Karyawan Swasta', 'Wiraswasta', 'Petani', 'Nelayan'];
+
+            // Struktur array disesuaikan dengan template blade: $permohonan->data_spesifik['pemohon'][...]
+            $dataSpesifikPernyataan = [
+                'pemohon' => [
+                    'tempat_lahir'  => fake()->city(),
+                    'tanggal_lahir' => fake()->date('Y-m-d', '-23 years'),
+                    'jenis_kelamin' => fake()->randomElement(['Laki-laki', 'Perempuan']),
+                    'pekerjaan'     => fake()->randomElement($pekerjaan),
+                    'jabatan'       => fake()->randomElement(['Staff', 'Kepala Seksi', 'Manajer', '-']),
+                    'alamat'        => fake()->address(),
+                ]
+            ];
+
+            return [
+                'jenis_naskah' => 'pernyataan_tidak_dihukum',
+                'data_spesifik' => $dataSpesifikPernyataan,
             ];
         });
     }
