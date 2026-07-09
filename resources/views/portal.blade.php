@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TRITON - Pengadilan Negeri Kaimana</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-icons.css') }}">
 
     <style>
         :root {
@@ -98,16 +98,22 @@
 
             <!-- 1. Waarmeking (Membuka Pilihan Dokumen via Pop-up) -->
             <div class="col-md-4 col-sm-6">
+                <!-- Ditambahkan data-bs-focus="false" agar Bootstrap tidak bingung mengelola fokus saat modal ditutup -->
                 <div class="card h-100 p-4 text-center menu-card" data-bs-toggle="modal"
-                    data-bs-target="#modalWaarmeking">
+                    data-bs-target="#modalWaarmeking" data-bs-focus="false" style="cursor: pointer;">
+                    <!-- Opsional: Menegaskan bahwa card ini bisa diklik -->
+
                     <div class="card-body">
                         <div class="icon-box">
                             <i class="bi bi-file-earmark-check-fill fs-2"></i>
                         </div>
                         <h5 class="fw-bold mb-2">Permohonan Waarmeking</h5>
-                        <p class="small text-muted mb-0">Pembuatan surat permohonan pengesahan surat keterangan ahli
-                            waris di bawah tangan beserta rincian tabungan.</p>
+                        <p class="small text-muted mb-0">
+                            Pembuatan surat permohonan pengesahan surat keterangan ahli waris di bawah tangan beserta
+                            rincian tabungan.
+                        </p>
                     </div>
+
                 </div>
             </div>
 
@@ -230,7 +236,7 @@
             </div>
 
             <!-- 3. Surat Keterangan Tidak Pernah Dipidana -->
-            <div class="col-md-4 col-sm-6">
+            {{-- <div class="col-md-4 col-sm-6">
                 <a href="{{ route('layanan.tidak-dipidana') }}" wire:navigate class="text-decoration-none text-dark">
                     <div class="card h-100 p-4 text-center menu-card">
                         <div class="card-body">
@@ -243,6 +249,80 @@
                         </div>
                     </div>
                 </a>
+            </div> --}}
+
+            <!-- 1. KARTU MENU UTAMA (TRIGGER MODAL) -->
+            <div class="col-md-4 col-sm-6">
+                <!-- Mengganti tag <a> dengan target modal -->
+                <div class="card h-100 p-4 text-center menu-card" data-bs-toggle="modal"
+                    data-bs-target="#modalTidakDipidana" style="cursor: pointer;">
+                    <div class="card-body">
+                        <div class="icon-box">
+                            <i class="bi bi-shield-exclamation fs-2"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Keterangan Tidak Dipidana</h5>
+                        <p class="small text-muted mb-0">Pengisian data permohonan surat keterangan resmi tidak
+                            pernah dihukum sebagai syarat kelengkapan administrasi.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. MODAL PILIHAN DOKUMEN KETERANGAN TIDAK DIPIDANA -->
+            <div class="modal fade" id="modalTidakDipidana" tabindex="-1" aria-labelledby="modalTidakDipidanaLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content" style="border-radius: 16px; border: none;">
+                        <div class="modal-header border-0 pb-0">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body pt-0 text-center">
+                            <i class="bi bi-folder2-open text-court" style="font-size: 3.5rem;"></i>
+                            <h4 class="fw-bold mt-2 text-dark">Pilih Dokumen yang Diperlukan</h4>
+                            <p class="text-muted small mb-4">Silakan tentukan jenis berkas administrasi Surat
+                                Keterangan Tidak Dipidana yang ingin Anda buat</p>
+
+                            <div class="row g-3 justify-content-center">
+                                <!-- PILIHAN 1: SURAT PERNYATAAN MANDIRI -->
+                                <div class="col-md-6">
+                                    <a href="{{ route('tidak-dipidana.surat-pernyataan-tidak-dihukum') }}"
+                                        wire:navigate class="text-decoration-none text-dark">
+                                        <div class="card p-4 h-100 menu-card border border-light-subtle">
+                                            <div class="text-court mb-2">
+                                                <i class="bi bi-file-earmark-check fs-3"></i>
+                                            </div>
+                                            <h6 class="fw-bold mb-1">1. Surat Pernyataan</h6>
+                                            <p class="text-muted m-0" style="font-size: 0.75rem;">Surat pernyataan
+                                                mandiri tidak pernah dihukum penjara dan/atau tidak sedang menjalani
+                                                proses hukum.</p>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- PILIHAN 2: SURAT KUASA (PENGURUSAN DIWAKILKAN) -->
+                                <div class="col-md-6">
+                                    <!-- Silakan sesuaikan nama route surat kuasa tidak dipidana Anda di sini -->
+                                    <a href="{{ route('tidak-dipidana.surat-kuasa-tidak-dihukum') }}" wire:navigate
+                                        class="text-decoration-none text-dark">
+                                        <div class="card p-4 h-100 menu-card border border-light-subtle">
+                                            <div class="text-warning mb-2">
+                                                <i class="bi bi-file-earmark-person fs-3"></i>
+                                            </div>
+                                            <h6 class="fw-bold mb-1">2. Surat Kuasa</h6>
+                                            <p class="text-muted m-0" style="font-size: 0.75rem;">Wajib dibuat jika
+                                                pengurusan administrasi Surat Keterangan Tidak Dipidana dikuasakan
+                                                kepada orang lain.</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0 justify-content-center pb-4">
+                            <button type="button" class="btn btn-sm btn-secondary rounded-pill px-3"
+                                data-bs-dismiss="modal">Batal</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -255,7 +335,71 @@
         </p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+
+    <script>
+        (function() {
+            const handleModalBlur = () => {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(function(modal) {
+                    modal.removeEventListener('hide.bs.modal', removeFocus);
+                    modal.addEventListener('hide.bs.modal', removeFocus);
+                });
+            };
+
+            function removeFocus(event) {
+                if (document.activeElement && event.currentTarget.contains(document.activeElement)) {
+                    document.activeElement.blur();
+                }
+            }
+
+            // Sebelum Livewire membersihkan/mengganti isi halaman untuk navigasi:
+            document.addEventListener('livewire:navigating', () => {
+                // 1. Cari modal yang masih terbuka/aktif
+                const activeModalEl = document.querySelector('.modal.show');
+                if (activeModalEl) {
+                    const modalInstance = bootstrap.Modal.getInstance(activeModalEl);
+                    if (modalInstance) {
+                        modalInstance.hide(); // Paksa tutup lewat instance Bootstrap resmi
+                    }
+                }
+
+                // 2. Hapus paksa elemen backdrop hitam (.modal-backdrop) yang sering tertinggal di memori
+                const backdrops = document.querySelectorAll('.modal-backdrop');
+                backdrops.forEach(backdrop => backdrop.remove());
+
+                // 3. Kembalikan scrollbar body yang sering terkunci (style="overflow: hidden") oleh Bootstrap
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+            });
+
+            // Jalankan saat pertama kali halaman selesai dimuat
+            document.addEventListener('DOMContentLoaded', handleModalBlur);
+
+            // Jalankan ulang setiap kali Livewire selesai melakukan update/render DOM
+            document.addEventListener('livewire:navigated', handleModalBlur);
+            document.addEventListener('livewire:load', handleModalBlur);
+
+            // Hook cadangan global jika struktur HTML berubah dinamis
+            if (window.Livewire) {
+                Livewire.hook('morph.updated', handleModalBlur);
+            }
+        })();
+    </script>
+
+    <script>
+        // Mencegah eror null pointer akibat sisa skrip halaman sebelumnya yang tertinggal
+        window.onerror = function(message, source, lineno, colno, error) {
+            // Jika eror mengandung kata kunci pembacaan properti dari objek null (seperti .style)
+            if (message.indexOf("Cannot read properties of null") > -1 || message.indexOf("reading 'style'") > -1) {
+                // Sembunyikan eror secara senyap dari console browser
+                return true;
+            }
+            // Biarkan eror lain yang penting tetap muncul
+            return false;
+        };
+    </script>
+
 </body>
 
 </html>

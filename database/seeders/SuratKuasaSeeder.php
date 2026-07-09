@@ -3,57 +3,60 @@
 namespace Database\Seeders;
 
 use App\Models\SuratKuasa;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\PemberiKuasa;
+use App\Models\PenerimaKuasa;
 use Illuminate\Database\Seeder;
 
 class SuratKuasaSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Kumpulan opsi status silsilah standar aplikasi
+        // Kumpulan opsi status silsilah standar aplikasi (hanya untuk waarmeking)
         $opsiSilsilah = ['Istri Pewaris', 'Ahli Waris I', 'Ahli Waris II', 'Ahli Waris III', 'Ahli Waris IV', 'Ahli Waris V'];
 
-        // Membuat 25 data Surat Kuasa Tiruan dengan kombinasi acak
-        for ($i = 0; $i < 25; $i++) {
+        // Membuat total 45 data tiruan agar sebaran 3 jenis dokumen ini merata
+        for ($i = 0; $i < 45; $i++) {
             
+            // Sekarang mengacak 3 pilihan jenis kuasa sekaligus
+            $jenisKuasa = fake()->randomElement(['waarmeking', 'kuasa_insidentil', 'tidak_pernah_dipidana']);
+
             // 1. Buat data Induk Surat Kuasa
             $suratKuasa = SuratKuasa::create([
-                'jenis_kuasa'   => 'waarmeking',
+                'jenis_kuasa'   => $jenisKuasa,
                 'no_hp_pemohon' => '08' . fake()->numerify('##########'),
             ]);
 
-            // 2. ACAK JUMLAH PEMBERI KUASA (1 sampai 3 orang)
+            // 2. Buat Data Pemberi Kuasa (1 sampai 3 orang)
             $jumlahPemberi = rand(1, 3);
             for ($j = 0; $j < $jumlahPemberi; $j++) {
-                $suratKuasa->pemberiKuasa()->create([
-                    'nama'              => fake()->name(),
-                    'nik'               => fake()->numerify('9102############'),
-                    'jenis_kelamin'     => fake()->randomElement(['Laki-laki', 'Perempuan']),
-                    'agama'             => fake()->randomElement(['Islam', 'Kristen Protestan', 'Katolik']),
-                    'pekerjaan'         => fake()->randomElement(['Wiraswasta', 'Petani', 'Ibu Rumah Tangga']),
-                    'alamat'            => fake()->address(),
-                    'urutan_ahli_waris' => $opsiSilsilah[$j] ?? 'Ahli Waris V',
-                ]);
+                
+                // Urutan ahli waris hanya berlaku untuk waarmeking, selain itu null
+                $urutanPemberi = ($jenisKuasa === 'waarmeking') 
+                    ? ($opsiSilsilah[$j] ?? 'Ahli Waris V')
+                    : null;
+
+                $suratKuasa->pemberiKuasa()->create(
+                    PemberiKuasa::factory()->make([
+                        'urutan_ahli_waris' => $urutanPemberi
+                    ])->toArray()
+                );
             }
 
-            // 3. ACAK JUMLAH PENERIMA KUASA (1 sampai 3 orang)
+            // 3. Buat Data Penerima Kuasa (1 sampai 3 orang)
             $jumlahPenerima = rand(1, 3);
             for ($k = 0; $k < $jumlahPenerima; $k++) {
-                // Agar simulasi logis, penerima kuasa biasanya mengambil silsilah sisa dari yang belum dipakai pemberi
                 $indexSilsilahPenerima = $jumlahPemberi + $k;
+                
+                // Urutan ahli waris hanya berlaku untuk waarmeking, selain itu null
+                $urutanPenerima = ($jenisKuasa === 'waarmeking') 
+                    ? ($opsiSilsilah[$indexSilsilahPenerima] ?? 'Ahli Waris V')
+                    : null;
 
-                $suratKuasa->penerimaKuasa()->create([
-                    'nama'              => fake()->name(),
-                    'nik'               => fake()->numerify('9102############'),
-                    'jenis_kelamin'     => fake()->randomElement(['Laki-laki', 'Perempuan']),
-                    'agama'             => fake()->randomElement(['Islam', 'Kristen Protestan', 'Katolik']),
-                    'pekerjaan'         => fake()->randomElement(['PNS', 'Wiraswasta', 'Karyawan Swasta']),
-                    'alamat'            => fake()->address(),
-                    'urutan_ahli_waris' => $opsiSilsilah[$indexSilsilahPenerima] ?? 'Ahli Waris V',
-                ]);
+                $suratKuasa->penerimaKuasa()->create(
+                    PenerimaKuasa::factory()->make([
+                        'urutan_ahli_waris' => $urutanPenerima
+                    ])->toArray()
+                );
             }
         }
     }

@@ -17,7 +17,7 @@ return new class extends Migration
             // Data Utama Pemohon (Diinput masyarakat dari HP)
             $table->string('jenis_naskah');
             $table->string('nama_pemohon');
-            $table->string('nik_pemohon', 16);
+            $table->string('nik_pemohon', 16)->nullable();
             $table->string('no_hp_pemohon');
             
             // Data Spesifik (Tempat/tgl lahir, Agama, Pekerjaan dll)

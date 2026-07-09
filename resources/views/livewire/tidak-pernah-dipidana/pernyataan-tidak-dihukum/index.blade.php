@@ -1,15 +1,14 @@
 <div class="container-fluid py-4">
 
     {{-- Alert Notifikasi Sukses --}}
-    @if (session()->has('success') || $pesan_sukses)
-        <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4 border-0 border-start border-success border-4"
+    @if (session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center rounded-3 border-0 shadow-sm p-3 mb-4"
             role="alert">
-            <div class="d-flex align-items-center">
-                <i class="bi bi-check-circle-fill me-2 fs-5 text-success"></i>
-                <div>{{ session('success') ?? $pesan_sukses }}</div>
+            <i class="bi bi-check-circle-fill fs-5 me-2"></i>
+            <div>
+                <span class="fw-bold">Berhasil!</span> {{ session('success') }}
             </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
-                wire:click="$set('pesan_sukses', null)"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
 
@@ -28,26 +27,26 @@
 
                     <div>
                         <h4 class="card-title mb-1 fw-bold text-dark">
-                            <i class="bi bi-person-vcard-fill me-2 text-primary"></i>Permohonan Kuasa Insidentil
+                            <i class="bi bi-file-earmark-person-fill me-2 text-primary"></i>Surat Pernyataan Tidak
+                            Pernah Dihukum
                         </h4>
-                        <p class="text-muted small mb-0">Daftar berkas permohonan izin beracara insidentil keluarga yang
-                            tercatat di sistem TRITON</p>
+                        <p class="text-muted small mb-0">Daftar Surat Pernyataan Tidak Dihukum yang tercatat di sistem
+                            TRITON</p>
                     </div>
                 </div>
 
                 <div class="d-flex flex-column gap-2 w-100 ms-md-auto" style="max-width: 300px;">
-                    <a href="{{ route('permohonan.kuasa-insidentil.create') }}" wire:navigate
+                    <a href="{{ route('tidak-dipidana.surat-pernyataan-tidak-dihukum.create') }}" wire:navigate
                         class="btn btn-primary py-2 rounded-2 shadow-sm d-inline-flex align-items-center justify-content-center gap-2 fw-semibold text-decoration-none">
                         <i class="bi bi-plus-circle-fill"></i>
-                        <span>Tambah Permohonan Baru</span>
+                        <span>Tambah Surat pernyataan Baru</span>
                     </a>
                     <div class="input-group shadow-sm">
                         <span class="input-group-text bg-white border-end-0 text-muted py-2">
                             <i class="bi bi-search"></i>
                         </span>
                         <input type="text" wire:model.live.debounce.300ms="search"
-                            class="form-control border-start-0 ps-0 text-sm py-2"
-                            placeholder="Cari nama penerima, NIK...">
+                            class="form-control border-start-0 ps-0 text-sm py-2" placeholder="Cari nama pemohon...">
                     </div>
                 </div>
             </div>
@@ -59,131 +58,126 @@
                         <thead class="table-light text-secondary text-uppercase font-monospace"
                             style="font-size: 0.8rem; letter-spacing: 0.5px;">
                             <tr>
-                                <th scope="col" class="ps-4 py-3">No</th>
-                                <th scope="col" class="py-3">Penerima Kuasa (Pemohon)</th>
-                                <th scope="col" class="py-3">Pemberi Kuasa (Prinsipal)</th>
-                                <th scope="col" class="py-3">Detail Perkara & Hubungan</th>
-                                <th scope="col" class="pe-4 py-3 text-center">Aksi</th>
+                                <th scope="col" class="ps-4 py-3" style="width: 5%">No</th>
+                                <th scope="col" class="py-3" style="width: 30%">Nama & Kontak</th>
+                                <th scope="col" class="py-3" style="width: 30%">Tempat, Tgl Lahir & Agama</th>
+                                <th scope="col" class="py-3" style="width: 20%">Pekerjaan / Jabatan</th>
+                                <th scope="col" class="pe-4 py-3 text-center" style="width: 15%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($daftar_kuasa_insidentil as $index => $item)
+                            @forelse($daftar_tidak_dihukum as $index => $item)
+                                @php
+                                    // Mengambil data spesifik pemohon dari kolom JSON secara aman
+                                    $dataSpesifik = is_array($item->data_spesifik)
+                                        ? $item->data_spesifik
+                                        : json_decode($item->data_spesifik, true);
+                                    $pemohon = $dataSpesifik['pemohon'] ?? [];
+                                @endphp
                                 <tr>
-                                    {{-- Penomoran Pagination --}}
+                                    {{-- No --}}
                                     <td class="ps-4 text-muted fw-medium">
-                                        {{ ($daftar_kuasa_insidentil->currentPage() - 1) * $daftar_kuasa_insidentil->perPage() + $index + 1 }}
+                                        {{ ($daftar_tidak_dihukum->currentPage() - 1) * $daftar_tidak_dihukum->perPage() + $index + 1 }}
                                     </td>
-                                    {{-- Info Penerima --}}
+
+                                    {{-- Nama & Kontak --}}
                                     <td>
                                         <div class="fw-bold text-dark mb-1">{{ $item->nama_pemohon }}</div>
-                                        <div class="text-muted small mb-1">
-                                            <i class="bi bi-card-text me-1"></i>{{ $item->nik_pemohon }}
-                                        </div>
                                         <div class="text-muted small">
                                             <i class="bi bi-telephone me-1"></i>{{ $item->no_hp_pemohon }}
                                         </div>
+                                        <div class="text-muted small text-truncate" style="max-width: 250px;"
+                                            title="{{ $pemohon['alamat'] ?? '-' }}">
+                                            <i
+                                                class="bi bi-geo-alt me-1"></i>{{ Str::limit($pemohon['alamat'] ?? '-', 40) }}
+                                        </div>
                                     </td>
-                                    {{-- Info Pemberi --}}
+
+                                    {{-- Tempat, Tgl Lahir & Agama --}}
                                     <td>
-                                        <div class="fw-semibold text-secondary mb-1">
-                                            {{ $item->data_spesifik['pemberi']['nama'] ?? '-' }}
+                                        <div class="text-dark mb-1" style="font-size: 0.9rem;">
+                                            {{ $pemohon['tempat_lahir'] ?? '-' }},
+                                            {{ isset($pemohon['tanggal_lahir']) ? \Carbon\Carbon::parse($pemohon['tanggal_lahir'])->translatedFormat('d F Y') : '-' }}
                                         </div>
                                         <div class="text-muted small">
-                                            <i
-                                                class="bi bi-card-text me-1"></i>{{ $item->data_spesifik['pemberi']['nik'] ?? '-' }}
+                                            <span class="badge bg-light text-secondary border">Agama:
+                                                {{ $pemohon['agama'] ?? '-' }}</span>
+                                            <span
+                                                class="badge bg-light text-secondary border">{{ $pemohon['jenis_kelamin'] ?? '-' }}</span>
                                         </div>
                                     </td>
-                                    {{-- Detail Perkara --}}
+
+                                    {{-- Pekerjaan / Jabatan --}}
                                     <td>
-                                        <div class="p-2 bg-light rounded-2 border border-light-subtle"
-                                            style="font-size: 0.85rem;">
-                                            <ul class="list-unstyled mb-0">
-                                                <li class="mb-1">
-                                                    <span class="text-muted">Hubungan:</span>
-                                                    <span class="badge bg-info-subtle text-info-emphasis">
-                                                        {{ $item->data_spesifik['penerima']['hubungan_keluarga'] ?? '-' }}
-                                                    </span>
-                                                </li>
-                                                <li class="mb-1">
-                                                    <span class="text-muted">Kedudukan:</span>
-                                                    <strong>{{ $item->data_spesifik['perkara']['kedudukan_pemberi'] ?? '-' }}</strong>
-                                                </li>
-                                                <li>
-                                                    <span class="text-muted">Perkara:</span>
-                                                    <span class="text-dark fw-medium">
-                                                        {{ Str::limit($item->data_spesifik['perkara']['jenis_perkara'] ?? '-', 40) }}
-                                                    </span>
-                                                </li>
-                                            </ul>
+                                        <div class="fw-semibold text-dark mb-1" style="font-size: 0.9rem;">
+                                            {{ $pemohon['pekerjaan'] ?? '-' }}
+                                        </div>
+                                        <div class="text-muted small">
+                                            <i class="bi bi-person-badge me-1"></i>Jabatan:
+                                            {{ !empty($pemohon['jabatan']) ? $pemohon['jabatan'] : '-' }}
                                         </div>
                                     </td>
+
                                     {{-- Tombol Aksi --}}
                                     <td class="pe-4 text-center">
-                                        <div class="d-inline-flex gap-1 align-items-center">
-                                            <a href="{{ route('permohonan.kuasa-insidentil.edit', $item->id) }}"
+                                        <div class="d-inline-flex gap-1 align-items-center justify-content-center">
+
+                                            <!-- Tombol Edit -->
+                                            <a href="{{ route('tidak-dipidana.surat-pernyataan-tidak-dihukum.edit', $item->id) }}"
                                                 wire:navigate
-                                                class="btn btn-warning btn-sm px-2 rounded-2 shadow-sm text-white d-inline-flex align-items-center gap-1 text-decoration-none"
-                                                style="height: 31px !important;" title="Ubah Data">
+                                                class="btn btn-warning btn-sm px-2 rounded-2 text-white d-inline-flex align-items-center gap-1 shadow-sm"
+                                                style="height: 31px; font-size: 0.875rem;" title="Ubah Data">
                                                 <i class="bi bi-pencil-square"></i>
                                                 <span>Edit</span>
                                             </a>
 
+                                            <!-- Tombol Hapus (Sudah Disetarakan Tinggi & Flexbox-nya) -->
                                             <button type="button"
                                                 onclick="konfirmasiHapus({{ $item->id }}, '{{ $item->nama_pemohon }}')"
-                                                class="btn btn-danger btn-sm px-2 rounded-2 shadow-sm d-inline-flex align-items-center gap-1"
-                                                style="height: 31px !important;" title="Hapus Data">
+                                                class="btn btn-danger btn-sm px-2 rounded-2 d-inline-flex align-items-center gap-1 shadow-sm"
+                                                style="height: 31px; font-size: 0.875rem;" title="Hapus Data">
                                                 <i class="bi bi-trash-fill"></i>
                                                 <span>Hapus</span>
                                             </button>
 
+                                            <!-- Tombol Cetak -->
                                             <button type="button"
-                                                class="btn btn-primary btn-sm px-2 rounded-2 shadow-sm d-inline-flex align-items-center gap-1"
+                                                class="btn btn-primary btn-sm px-2 rounded-2 d-inline-flex align-items-center gap-1 shadow-sm"
                                                 data-bs-toggle="modal" data-bs-target="#modalCetak{{ $item->id }}"
-                                                style="height: 31px !important;" title="Cetak Dokumen">
+                                                style="height: 31px; font-size: 0.875rem;" title="Cetak Dokumen">
                                                 <i class="bi bi-printer-fill"></i>
                                                 <span>Cetak</span>
                                             </button>
 
-                                            {{-- Modal Cetak per Item --}}
+                                            {{-- Modal Cetak --}}
                                             <div class="modal fade" id="modalCetak{{ $item->id }}" tabindex="-1"
-                                                aria-labelledby="labelModal{{ $item->id }}" aria-hidden="true">
+                                                aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered modal-sm">
                                                     <div class="modal-content border-0 shadow rounded-3">
                                                         <div class="modal-header bg-light border-bottom-0 py-3">
-                                                            <h6 class="modal-title fw-bold text-dark"
-                                                                id="labelModal{{ $item->id }}">
+                                                            <h6 class="modal-title fw-bold text-dark">
                                                                 <i class="bi bi-download text-primary me-2"></i>Format
                                                                 Unduhan
                                                             </h6>
                                                             <button type="button" class="btn-close"
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
-
                                                         <div class="modal-body text-center p-4">
-                                                            <p class="text-muted small mb-4">Silakan pilih format
-                                                                dokumen permohonan Kuasa Insidentil atas nama
-                                                                <strong>{{ $item->nama_pemohon }}</strong> :</p>
-
+                                                            <p class="text-muted small mb-4">Unduh Surat Pernyataan
+                                                                untuk <strong>{{ $item->nama_pemohon }}</strong>:</p>
                                                             <div class="d-grid gap-2">
-                                                                <a href="{{ route('cetak.kuasa-insidentil.pdf', ['id' => $item->id]) }}"
+                                                                <a href="{{ route('cetak.surat-pernyataan-tidak-dihukum.pdf', $item->id) }}"
                                                                     target="_blank"
-                                                                    class="btn btn-danger py-2.5 rounded-2 d-flex align-items-center justify-content-center gap-2 fw-semibold shadow-sm text-decoration-none">
+                                                                    class="btn btn-danger py-2 rounded-2 d-flex align-items-center justify-content-center gap-2 fw-semibold shadow-sm text-decoration-none">
                                                                     <i class="bi bi-file-earmark-pdf-fill fs-5"></i>
-                                                                    <span>Unduh Dokumen PDF</span>
+                                                                    <span>PDF</span>
                                                                 </a>
-
-                                                                <a href="{{ route('cetak.kuasa-insidentil.word', ['id' => $item->id]) }}"
-                                                                    class="btn btn-primary py-2.5 rounded-2 d-flex align-items-center justify-content-center gap-2 fw-semibold shadow-sm text-decoration-none">
+                                                                <a href="{{ route('cetak.surat-pernyataan-tidak-dihukum.word', $item->id) }}"
+                                                                    class="btn btn-primary py-2 rounded-2 d-flex align-items-center justify-content-center gap-2 fw-semibold shadow-sm text-decoration-none">
                                                                     <i class="bi bi-file-earmark-word-fill fs-5"></i>
-                                                                    <span>Unduh Dokumen Word</span>
+                                                                    <span>Word</span>
                                                                 </a>
                                                             </div>
-                                                        </div>
-                                                        <div
-                                                            class="modal-footer bg-light border-top-0 justify-content-center py-2">
-                                                            <button type="button"
-                                                                class="btn btn-link text-decoration-none text-muted btn-sm"
-                                                                data-bs-dismiss="modal">Batal</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -198,8 +192,8 @@
                                     <td colspan="5" class="text-center py-5 text-muted">
                                         <div class="mb-2 fs-1">📂</div>
                                         <h6 class="fw-semibold mb-1">Belum Ada Data</h6>
-                                        <p class="small text-muted mb-0">Permohonan dokumen Surat Kuasa Insidentil
-                                            masih kosong.</p>
+                                        <p class="small text-muted mb-0">Permohonan Surat Keterangan Tidak Pernah
+                                            Dihukum masih kosong.</p>
                                     </td>
                                 </tr>
                             @endforelse
@@ -209,12 +203,12 @@
                     {{-- Pagination Footer --}}
                     <div class="mt-3 d-flex justify-content-between align-items-center flex-wrap gap-2 px-3 pb-3">
                         <div class="text-muted small">
-                            Menampilkan {{ $daftar_kuasa_insidentil->firstItem() ?? 0 }} sampai
-                            {{ $daftar_kuasa_insidentil->lastItem() ?? 0 }} dari
-                            {{ $daftar_kuasa_insidentil->total() }} data permohonan.
+                            Menampilkan {{ $daftar_tidak_dihukum->firstItem() ?? 0 }} sampai
+                            {{ $daftar_tidak_dihukum->lastItem() ?? 0 }} dari
+                            {{ $daftar_tidak_dihukum->total() }} data Surat Pernyataan.
                         </div>
                         <div>
-                            {{ $daftar_kuasa_insidentil->links() }}
+                            {{ $daftar_tidak_dihukum->links() }}
                         </div>
                     </div>
 
@@ -224,7 +218,7 @@
     @else
         {{-- Tampilan Form Create --}}
         <div class="card shadow-sm border-0 rounded-3">
-            @include('livewire.form-kuasa-insidentil.permohonan.create')
+            @include('livewire.tidak-pernah-dipidana.pernyataan-tidak-dihukum.create')
         </div>
     @endif
 
@@ -234,7 +228,7 @@
     function konfirmasiHapus(id, nama) {
         Swal.fire({
             title: 'Apakah Anda yakin?',
-            text: "Data permohonan atas nama " + nama + " akan dihapus permanen dari sistem TRITON!",
+            text: "Data atas nama " + nama + " akan dihapus permanen dari sistem TRITON!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#dc3545', // Warna merah untuk aksi hapus (danger)

@@ -19,7 +19,7 @@ class PemberiKuasaFactory extends Factory
     {
         return [
             'nama'              => $this->faker->name(),
-            'nik'               => $this->faker->numerify('9102##############'), // Pola NIK Papua Barat / Kaimana
+            'nik'               => $this->faker->numerify('9102############'), // Pola NIK Papua Barat / Kaimana
             'jenis_kelamin'     => $this->faker->randomElement(['Laki-laki', 'Perempuan']),
             'agama'             => $this->faker->randomElement(['Islam', 'Kristen Protestan', 'Katolik', 'Hindu', 'Budha']),
             'pekerjaan'         => $this->faker->randomElement(['PNS', 'Karyawan Swasta', 'Wiraswasta', 'Petani', 'Nelayan']),
