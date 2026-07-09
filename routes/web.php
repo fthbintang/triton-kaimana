@@ -7,6 +7,7 @@ use App\Livewire\FormWaarmeking\FormSuratKuasa as WaarmekingSuratKuasa;
 use App\Livewire\FormKuasaInsidentil\FormPermohonan as KuasaInsidentilPermohonan;
 use App\Livewire\FormKuasaInsidentil\FormSuratKuasa as KuasaInsidentilSuratKuasa;
 use App\Livewire\TidakPernahDipidana\FormKeteranganTidakDihukum as TidakDipidanaPernyataan;
+use App\Livewire\TidakPernahDipidana\FormSuratKuasa as TidakDipidanaSuratKuasa;
 
 Route::get('/', function () {
     return view('portal');
@@ -51,3 +52,9 @@ Route::livewire('/surat-pernyataan/tidak-dipidana/tambah', TidakDipidanaPernyata
 Route::livewire('/surat-pernyataan/tidak-dipidana/edit/{id}', TidakDipidanaPernyataan::class)->name('tidak-dipidana.surat-pernyataan-tidak-dihukum.edit');
 Route::livewire('/surat-pernyataan/tidak-dipidana/pernyataan-tidak-dihukum-pdf/{id}', TidakDipidanaPernyataan::class)->name('cetak.surat-pernyataan-tidak-dihukum.pdf');
 Route::get('/surat-pernyataan/tidak-dipidana/pernyataan-tidak-dihukum-word/{id}', [TidakDipidanaPernyataan::class, 'bikinWordDownload'])->name('cetak.surat-pernyataan-tidak-dihukum.word');
+
+Route::livewire('/surat-kuasa/tidak-dipidana', TidakDipidanaSuratKuasa::class)->name('tidak-dipidana.surat-kuasa-tidak-dihukum');
+Route::livewire('/surat-kuasa/tidak-dipidana/tambah', TidakDipidanaSuratKuasa::class)->name('tidak-dipidana.surat-kuasa-tidak-dihukum.create');
+Route::livewire('/surat-kuasa/tidak-dipidana/edit/{id}', TidakDipidanaSuratKuasa::class)->name('tidak-dipidana.surat-kuasa-tidak-dihukum.edit');
+Route::livewire('/surat-kuasa/cetak-surat-kuasa/surat-kuasa-tidak-dipidana-pdf/{id}', TidakDipidanaSuratKuasa::class)->name('cetak.surat-kuasa-tidak-dihukum.pdf');
+Route::get('/surat-kuasa/cetak-surat-kuasa/surat-kuasa-tidak-dipidana-word/{id}', [TidakDipidanaSuratKuasa::class, 'bikinWordDownload'])->name('cetak.surat-kuasa-tidak-dihukum.word');

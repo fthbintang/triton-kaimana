@@ -19,12 +19,12 @@ class PenerimaKuasaFactory extends Factory
     {
         return [
             'nama'            => $this->faker->name(),
-            'nik'             => $this->faker->numerify('9102##############'),
+            'nik'               => $this->faker->numerify('9102############'),
             'jenis_kelamin'   => $this->faker->randomElement(['Laki-laki', 'Perempuan']),
             'agama'           => $this->faker->randomElement(['Islam', 'Kristen Protestan', 'Katolik']),
             'pekerjaan'       => $this->faker->randomElement(['PNS', 'Wiraswasta', 'Advokat']),
             'alamat'          => $this->faker->address(),
-            'status_penerima' => $this->faker->randomElement(['Ahli Waris 1 (Perwakilan Keluarga)', 'Kuasa Hukum / Pengacara']),
+            'urutan_ahli_waris' => null,
         ];
     }
 }

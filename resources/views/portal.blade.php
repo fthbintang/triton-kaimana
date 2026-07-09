@@ -302,7 +302,8 @@
                                 <!-- PILIHAN 2: SURAT KUASA (PENGURUSAN DIWAKILKAN) -->
                                 <div class="col-md-6">
                                     <!-- Silakan sesuaikan nama route surat kuasa tidak dipidana Anda di sini -->
-                                    <a href="#" wire:navigate class="text-decoration-none text-dark">
+                                    <a href="{{ route('tidak-dipidana.surat-kuasa-tidak-dihukum') }}" wire:navigate
+                                        class="text-decoration-none text-dark">
                                         <div class="card p-4 h-100 menu-card border border-light-subtle">
                                             <div class="text-warning mb-2">
                                                 <i class="bi bi-file-earmark-person fs-3"></i>
