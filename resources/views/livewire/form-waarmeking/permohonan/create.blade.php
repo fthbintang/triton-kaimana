@@ -23,10 +23,11 @@
             <h6 class="fw-bold text-court mb-2">
                 <i class="bi bi-info-circle-fill me-2"></i> Apa itu Waarmeking?
             </h6>
-            <p class="small text-muted mb-1">
-                <strong>Waarmeking</strong> adalah proses pendaftaran/pengesahan surat kesepakatan ahli waris di
-                Pengadilan Negeri, biasanya digunakan sebagai syarat utama untuk <strong>mencairkan saldo tabungan
-                    bank</strong> milik keluarga yang sudah meninggal dunia.
+            <p class="small text-muted mb-0">
+                <strong>Waarmeking</strong> adalah pendaftaran surat/akta di bawah tangan (seperti Surat Pernyataan Ahli
+                Waris) ke dalam buku register Kepaniteraan Hukum Pengadilan Negeri. Layanan
+                ini umumnya digunakan sebagai syarat kelengkapan administrasi pencairan <strong>tabungan/deposito bank,
+                    klaim BPJS, Taspen, maupun polis asuransi</strong> milik almarhum/almarhumah.
             </p>
         </div>
 

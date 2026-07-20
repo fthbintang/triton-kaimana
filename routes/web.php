@@ -9,19 +9,22 @@ use App\Livewire\FormKuasaInsidentil\FormPermohonan as KuasaInsidentilPermohonan
 use App\Livewire\FormKuasaInsidentil\FormSuratKuasa as KuasaInsidentilSuratKuasa;
 use App\Livewire\TidakPernahDipidana\FormKeteranganTidakDihukum as TidakDipidanaPernyataan;
 use App\Livewire\TidakPernahDipidana\FormSuratKuasa as TidakDipidanaSuratKuasa;
+use App\Livewire\Auth\UserManagement as UserManagement;
+use App\Livewire\Portal as Portal;
 
 Route::livewire('/', Login::class)->name('login')->middleware('guest');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/portal', function () {
-        return view('livewire/portal');
-    })->name('portal');
+    
+    // Route::get('/portal', function () {
+    //     return view('livewire/portal');
+    // })->name('portal');
+
+    Route::livewire('portal', Portal::class)->name('portal');
 
     Route::post('/logout', [Login::class, 'logout'])->name('logout');
 
-    Route::get('/users', function () {
-        return "Ini adalah halaman CRUD Kelola Pengguna (Sedang dalam pengembangan)";
-    })->name('users.index');
+    Route::livewire('/portal/users', UserManagement::class)->name('users.index');
 
     // =========================================================================
     // 1. MODUL WAARMEKING

@@ -1,0 +1,108 @@
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+:root {
+    --warna-court: #0a5c36;
+    /* Hijau Tua Khas Mahkamah Agung */
+    --warna-court-light: #e8f5e9;
+}
+
+.bg-court {
+    background-color: var(--warna-court) !important;
+}
+
+.text-court {
+    color: var(--warna-court) !important;
+}
+
+.btn-court {
+    background-color: var(--warna-court);
+    color: white;
+}
+
+.btn-court:hover {
+    background-color: #084729;
+    color: white;
+}
+
+.btn-outline-court {
+    border-color: var(--warna-court);
+    color: var(--warna-court);
+}
+
+.btn-outline-court:hover {
+    background-color: var(--warna-court);
+    color: white;
+}
+
+.badge-court {
+    background-color: var(--warna-court);
+    color: white;
+}
+
+.line-double {
+    border-top: 3px double #333;
+    opacity: 1;
+    margin-top: 5px;
+}
+
+/* Efek Hover Keren pada Kartu Pilihan */
+.menu-card {
+    border: none;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.menu-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(10, 92, 54, 0.15);
+    border-bottom: 4px solid var(--warna-court);
+}
+
+.icon-box {
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+    background-color: rgba(10, 92, 54, 0.1);
+    color: var(--warna-court);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    transition: all 0.3s ease;
+}
+
+.menu-card:hover .icon-box {
+    background-color: var(--warna-court) !important;
+    color: white !important;
+}
+
+/* Custom Styles Utility untuk Penyelaras Bootstrap */
+.text-\[\#FFC107\] {
+    color: #ffc107 !important;
+}
+
+.bg-gray-200 {
+    background-color: #e2e8f0 !important;
+}
+
+.text-emerald-700 {
+    color: #047857 !important;
+}
+
+.border-emerald-200 {
+    border-color: #a7f3d0 !important;
+}

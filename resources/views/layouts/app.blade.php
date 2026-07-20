@@ -4,71 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Permohonan Waarmeking - TRITON PN Kaimana</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>TRITON - Pengadilan Negeri Kaimana</title>
+    <link rel="icon" type="image/png" href="{{ asset('img/logo-pn-kaimana.png') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
-    <style>
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        :root {
-            --warna-court: #0A5C36;
-            /* Hijau Tua Khas Mahkamah Agung */
-            --warna-court-light: #e8f5e9;
-        }
-
-        .bg-court {
-            bg-color: var(--warna-court) !important;
-            background: var(--warna-court);
-        }
-
-        .text-court {
-            color: var(--warna-court) !important;
-        }
-
-        .btn-court {
-            background-color: var(--warna-court);
-            color: white;
-        }
-
-        .btn-court:hover {
-            background-color: #084729;
-            color: white;
-        }
-
-        .btn-outline-court {
-            border-color: var(--warna-court);
-            color: var(--warna-court);
-        }
-
-        .btn-outline-court:hover {
-            background-color: var(--warna-court);
-            color: white;
-        }
-
-        .badge-court {
-            background-color: var(--warna-court);
-            color: white;
-        }
-
-        .line-double {
-            border-top: 3px double #333;
-            opacity: 1;
-            margin-top: 5px;
-        }
-    </style>
     @livewireStyles
 </head>
 
@@ -79,7 +20,7 @@
         <div class="container">
 
             <!-- Sisi Kiri: Identitas Aplikasi & Logo Resmi PN Kaimana -->
-            <a class="navbar-brand d-flex align-items-center" href="#">
+            <a class="navbar-brand d-flex align-items-center" href="{{ route('portal') }}" wire:navigate>
                 <!-- Logo Gambar PN Kaimana -->
                 <div class="d-flex align-items-center justify-content-center me-2" style="width: 42px; height: 42px;">
                     <img src="{{ asset('img/logo-pn-kaimana.png') }}" alt="Logo PN Kaimana" class="img-fluid"
@@ -113,14 +54,27 @@
                 <!-- Sisi Kanan: Menu Navigasi, Profil, & Logout -->
                 <div class="navbar-nav ms-auto align-items-lg-center mt-3 mt-lg-0 gap-3">
 
-                    <!-- 1. Tombol CRUD User (Hanya untuk Admin) -->
+                    <!-- Tombol Dinamis Navigasi Admin -->
                     @if (auth()->user()->role === 'Admin')
                         <div class="nav-item">
-                            <a class="btn btn-outline-success btn-sm fw-bold d-inline-flex align-items-center px-3 py-2 rounded-3 border-emerald-200"
-                                href="{{ route('users.index') }}" style="color: #146C43; font-size: 12px;">
-                                <i class="fa-solid fa-users-gear me-2"></i>
-                                <span>Kelola Pengguna</span>
-                            </a>
+                            @if (request()->routeIs('users.index'))
+                                <!-- Tampil jika sedang di Halaman Manajemen Pengguna -->
+                                <a wire:navigate
+                                    class="btn btn-outline-secondary btn-sm fw-bold d-inline-flex align-items-center px-3 py-2 rounded-3 border-0 shadow-sm"
+                                    href="{{ url()->previous() !== request()->url() ? url()->previous() : route('portal') }}"
+                                    style="font-size: 12px; background-color: #f8f9fa; color: #495057;">
+                                    <i class="bi bi-arrow-left me-2"></i>
+                                    <span>Kembali</span>
+                                </a>
+                            @else
+                                <!-- Tampil di seluruh halaman aplikasi lainnya -->
+                                <a wire:navigate
+                                    class="btn btn-outline-success btn-sm fw-bold d-inline-flex align-items-center px-3 py-2 rounded-3 border-emerald-200"
+                                    href="{{ route('users.index') }}" style="color: #146C43; font-size: 12px;">
+                                    <i class="bi bi-people-fill me-2"></i>
+                                    <span>Kelola Pengguna</span>
+                                </a>
+                            @endif
                         </div>
                     @endif
 
@@ -232,7 +186,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -246,6 +200,70 @@
         document.addEventListener('livewire:navigated', () => {
             document.getElementById('global-loader').style.display = 'none';
         });
+    </script>
+
+    {{-- PORTAL --}}
+    <script>
+        (function() {
+            const handleModalBlur = () => {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(function(modal) {
+                    modal.removeEventListener('hide.bs.modal', removeFocus);
+                    modal.addEventListener('hide.bs.modal', removeFocus);
+                });
+            };
+
+            function removeFocus(event) {
+                if (document.activeElement && event.currentTarget.contains(document.activeElement)) {
+                    document.activeElement.blur();
+                }
+            }
+
+            // Sebelum Livewire membersihkan/mengganti isi halaman untuk navigasi:
+            document.addEventListener('livewire:navigating', () => {
+                // 1. Cari modal yang masih terbuka/aktif
+                const activeModalEl = document.querySelector('.modal.show');
+                if (activeModalEl) {
+                    const modalInstance = bootstrap.Modal.getInstance(activeModalEl);
+                    if (modalInstance) {
+                        modalInstance.hide(); // Paksa tutup lewat instance Bootstrap resmi
+                    }
+                }
+
+                // 2. Hapus paksa elemen backdrop hitam (.modal-backdrop) yang sering tertinggal di memori
+                const backdrops = document.querySelectorAll('.modal-backdrop');
+                backdrops.forEach(backdrop => backdrop.remove());
+
+                // 3. Kembalikan scrollbar body yang sering terkunci (style="overflow: hidden") oleh Bootstrap
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+            });
+
+            // Jalankan saat pertama kali halaman selesai dimuat
+            document.addEventListener('DOMContentLoaded', handleModalBlur);
+
+            // Jalankan ulang setiap kali Livewire selesai melakukan update/render DOM
+            document.addEventListener('livewire:navigated', handleModalBlur);
+            document.addEventListener('livewire:load', handleModalBlur);
+
+            // Hook cadangan global jika struktur HTML berubah dinamis
+            if (window.Livewire) {
+                Livewire.hook('morph.updated', handleModalBlur);
+            }
+        })();
+    </script>
+
+    <script>
+        // Mencegah eror null pointer akibat sisa skrip halaman sebelumnya yang tertinggal
+        window.onerror = function(message, source, lineno, colno, error) {
+            // Jika eror mengandung kata kunci pembacaan properti dari objek null (seperti .style)
+            if (message.indexOf("Cannot read properties of null") > -1 || message.indexOf("reading 'style'") > -1) {
+                // Sembunyikan eror secara senyap dari console browser
+                return true;
+            }
+            // Biarkan eror lain yang penting tetap muncul
+            return false;
+        };
     </script>
     @livewireScripts
 </body>
