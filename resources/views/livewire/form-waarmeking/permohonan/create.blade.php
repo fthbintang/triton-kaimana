@@ -2,7 +2,7 @@
     <!-- HEADER UTAMA FORM -->
     <div class="card-header bg-court text-white p-4 text-center rounded-top-3 position-relative">
 
-        <a href="/permohonan/waarmeking" wire:navigate
+        <a href="{{ route('waarmeking.index') }}" wire:navigate
             class="btn btn-sm btn-outline-light position-absolute start-0 top-50 translate-middle-y ms-3 rounded-2 shadow-sm d-inline-flex align-items-center gap-1">
             <i class="bi bi-arrow-left"></i>
             <span class="d-none d-md-inline">Kembali</span>
