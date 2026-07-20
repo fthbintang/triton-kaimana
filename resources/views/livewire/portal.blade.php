@@ -63,12 +63,126 @@
             background-color: var(--court-color);
             color: white;
         }
+
+        /* Custom Styles Utility untuk Penyelaras Bootstrap */
+        .text-\[\#FFC107\] {
+            color: #FFC107 !important;
+        }
+
+        .bg-gray-200 {
+            background-color: #e2e8f0 !important;
+        }
+
+        .text-emerald-700 {
+            color: #047857 !important;
+        }
+
+        .border-emerald-200 {
+            border-color: #a7f3d0 !important;
+        }
     </style>
 </head>
 
 <body>
 
     <div class="container my-auto py-5">
+
+        <!-- Topbar / Navbar Modern Bootstrap 5 -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm fixed-top py-2">
+            <div class="container">
+
+                <!-- Sisi Kiri: Identitas Aplikasi & Logo Resmi PN Kaimana -->
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <!-- Logo Gambar PN Kaimana -->
+                    <div class="d-flex align-items-center justify-content-center me-2"
+                        style="width: 42px; height: 42px;">
+                        <img src="{{ asset('img/logo-pn-kaimana.png') }}" alt="Logo PN Kaimana" class="img-fluid"
+                            style="max-height: 100%; object-fit: contain;">
+                    </div>
+                    <div class="lh-sm">
+                        <div class="d-flex align-items-center mb-0.5">
+                            <!-- Nama Brand Lebih Tegas & Proporsional -->
+                            <span class="fw-bold text-dark" style="font-size: 16px; letter-spacing: -0.3px;">
+                                TRITON - Kepaniteraan Hukum
+                            </span>
+                        </div>
+                        <!-- Sub-teks Instansi dengan Gaya Wide Tracking -->
+                        <span class="text-uppercase text-muted d-block font-semibold"
+                            style="font-size: 9px; letter-spacing: 1px; font-weight: 600;">
+                            PN Kaimana
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Tombol Hamburger untuk Mobile -->
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Konten Navbar -->
+                <div class="collapse navbar-collapse" id="navbarContent">
+
+                    <!-- Sisi Kanan: Menu Navigasi, Profil, & Logout -->
+                    <div class="navbar-nav ms-auto align-items-lg-center mt-3 mt-lg-0 gap-3">
+
+                        <!-- 1. Tombol CRUD User (Hanya untuk Admin) -->
+                        @if (auth()->user()->role === 'Admin')
+                            <div class="nav-item">
+                                <a class="btn btn-outline-success btn-sm fw-bold d-inline-flex align-items-center px-3 py-2 rounded-3 border-emerald-200"
+                                    href="{{ route('users.index') }}" style="color: #146C43; font-size: 12px;">
+                                    <i class="fa-solid fa-users-gear me-2"></i>
+                                    <span>Kelola Pengguna</span>
+                                </a>
+                            </div>
+                        @endif
+
+                        <!-- Pembatas Vertikal (Hanya tampil di Layar Besar) -->
+                        <div class="d-none d-lg-block bg-gray-200" style="width: 1px; height: 24px;"></div>
+
+                        <!-- 2. Informasi User yang Login -->
+                        <div class="nav-item d-flex align-items-center text-lg-end gap-2">
+                            <div class="d-none d-md-block">
+                                <p class="mb-0 fw-bold text-dark" style="font-size: 12px; line-height: 1;">
+                                    {{ auth()->user()->nama_lengkap }}</p>
+                                <p class="mb-0 text-uppercase fw-semibold text-emerald-700"
+                                    style="font-size: 10px; margin-top: 4px; letter-spacing: 0.5px; color: #146C43;">
+                                    {{ auth()->user()->role }}</p>
+                            </div>
+                            <!-- Avatar Lingkaran Inisial Nama -->
+                            <div class="rounded-circle text-white d-flex align-items-center justify-content-center fw-bold shadow-sm"
+                                style="background: linear-gradient(135deg, #146C43 0%, #FFC107 100%); width: 34px; height: 34px; font-size: 12px;">
+                                {{ strtoupper(substr(auth()->user()->username, 0, 2)) }}
+                            </div>
+                        </div>
+
+                        <!-- Pembatas Vertikal (Hanya tampil di Layar Besar) -->
+                        <div class="d-none d-lg-block bg-gray-200" style="width: 1px; height: 24px;"></div>
+
+                        <!-- 3. Tombol Logout (Form POST) -->
+                        <div class="nav-item">
+                            <form action="{{ route('logout') }}" method="POST" class="d-inline m-0">
+                                @csrf
+                                <button type="submit"
+                                    class="btn btn-danger btn-sm fw-bold d-inline-flex align-items-center px-3 py-2 rounded-3 border-0"
+                                    style="background-color: #FFF5F5; color: #E53E3E; font-size: 12px;"
+                                    onmouseover="this.style.backgroundColor='#FED7D7'"
+                                    onmouseout="this.style.backgroundColor='#FFF5F5'">
+                                    <i class="fa-solid fa-right-from-bracket me-2"></i>
+                                    <span>Keluar</span>
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+
+        <!-- Spacer agar Konten Portal di bawahnya tidak terpotong Navbar Fixed -->
+        <div style="margin-top: 85px;"></div>
 
         <!-- HEADER PORTAL -->
         <div class="text-center mb-5">
@@ -152,7 +266,8 @@
                                             <div class="text-warning mb-2"><i
                                                     class="bi bi-file-earmark-person fs-3"></i></div>
                                             <h6 class="fw-bold mb-1">2. Surat Kuasa</h6>
-                                            <p class="text-muted m-0" style="font-size: 0.75rem;">Surat pemberian kuasa
+                                            <p class="text-muted m-0" style="font-size: 0.75rem;">Surat pemberian
+                                                kuasa
                                                 pengurusan jika diwakilkan oleh salah satu ahli waris.</p>
                                         </div>
                                     </a>
@@ -182,8 +297,8 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modalKuasaInsidentil" tabindex="-1" aria-labelledby="modalKuasaInsidentilLabel"
-                aria-hidden="true">
+            <div class="modal fade" id="modalKuasaInsidentil" tabindex="-1"
+                aria-labelledby="modalKuasaInsidentilLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content" style="border-radius: 16px; border: none;">
                         <div class="modal-header border-0 pb-0">
